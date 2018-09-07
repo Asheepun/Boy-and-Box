@@ -1,0 +1,15 @@
+{
+	"left-up": [[0, 0]],
+	"up": [[16, 0]],
+	"right-up": [[32, 0]],
+	"left": [[0, 16]],
+	"middle": [[16, 16]],
+	"right": [[32, 16]],
+	"left-down": [[0, 32]],
+	"down": [[16, 32]],
+	"right-down": [[32, 32]],
+	"inside-right-down": [[0, 48]],
+	"inside-left-down": [[16, 48]],
+	"inside-right-up": [[0, 64]],
+	"inside-left-up": [[16, 64]]
+}
