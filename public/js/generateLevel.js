@@ -26,6 +26,10 @@ const obstacle = (pos) => {
 		size: vec(15, 15),
 	})(that);
 
+	traits.addSpriteTrait({
+		color: "grey",
+	})(that);
+
 	return that;
 }
 

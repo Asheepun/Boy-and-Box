@@ -18,7 +18,7 @@ const player = (pos) => {
 	traits.addMoveTrait({})(that);
 
 	traits.addPhysicsTrait({
-		gravity: 0.02,
+		gravity: 0.025,
 	})(that);
 
 	traits.addColTrait({})(that);
@@ -36,7 +36,7 @@ const player = (pos) => {
 
 	that.jump = ({ world: { add } }) => {
 		if(that.onGround){
-			that.velocity.y = -4;
+			that.velocity.y = -5;
 			for(let i = 0; i < 5; i++){
 				add(particles.dust(
 					vec(that.pos.x + Math.random()*(that.size.x-5), that.pos.y + that.size.y - 5),
@@ -53,7 +53,7 @@ const player = (pos) => {
 	}
 
 	that.maxFallVelocity = 4;
-	that.maxSpeed = 2.7;
+	that.maxSpeed = 2.1;
 
 	that.dir = 0;
 
@@ -99,11 +99,11 @@ const player = (pos) => {
 			for(let i = 0; i < Math.random()*3; i++){
 				if(that.facing.x === 1) add(particles.dust(
 					vec(that.pos.x + Math.random()*3, that.pos.y + that.size.y-5),
-					vec(-Math.random()*1.5, Math.random() * 0.5),
+					vec(-Math.random() * 0.5, Math.random() * 0.5),
 				), "particles", 5);
 				else add(particles.dust(
 					vec(that.pos.x + that.size.x-5 - Math.random()*3, that.pos.y + that.size.y-5),
-					vec(Math.random()*1.5, Math.random() * 0.5),
+					vec(Math.random() * 0.5, Math.random() * 0.5),
 				), "particles", 5);
 			}
 		}

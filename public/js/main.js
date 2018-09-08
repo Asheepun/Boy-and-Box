@@ -50,19 +50,19 @@ Promise.all([
 		"................................",
 		"................................",
 		"................................",
-		"..............................2.",
 		"..........................######",
 		".........................#######",
-		"..............B..........#######",
+		".........................#######",
+		".............B...........#######",
 		".........................#######",
 		".........................#######",
 		".1.................#############",
 		"...............#################",
 		"...............#################",
-		"###............#################",
+		"...............#################",
+		"###...........##################",
 		"###......#######################",
 		"####...#########################",
-		"################################",
 		"################################",
 	];
 
@@ -121,7 +121,7 @@ Promise.all([
 		ctx.save();
 		ctx.scale(c.scale, c.scale);
 		ctx.drawImage(GAME.sprites.background, 0, 0, GAME.width, GAME.height);
-		ctx.drawImage(GAME.sprites["level_1/tiles"], 0, 0, GAME.width, GAME.height);
+		//ctx.drawImage(GAME.sprites["level_1/tiles"], 0, 0, GAME.width, GAME.height);
 
 		GAME.world.draw(ctx, GAME.sprites);
 
@@ -131,12 +131,22 @@ Promise.all([
 
 	GAME.state = GAME.states.setupLevel;
 
-	const loop = () => {
-		GAME.state(GAME);
+	const timeScl = (1/60)*1000;
+	let lastTime = 0;
+	let accTime = 0;
 
-		GAME.keys.update();
-		GAME.pointer.update();
-		setTimeout(loop, 1000/60)
+	const loop = (time = 0) => {
+		accTime += time - lastTime;
+		lastTime = time;
+		while(accTime > timeScl){
+			GAME.state(GAME);
+
+			GAME.keys.update();
+			GAME.pointer.update();
+
+			accTime -= timeScl;
+		}
+		requestAnimationFrame(loop);
 	}
 	
 	loop();
