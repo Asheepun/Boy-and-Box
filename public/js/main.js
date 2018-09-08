@@ -121,7 +121,7 @@ Promise.all([
 		ctx.save();
 		ctx.scale(c.scale, c.scale);
 		ctx.drawImage(GAME.sprites.background, 0, 0, GAME.width, GAME.height);
-		//ctx.drawImage(GAME.sprites["level_1/tiles"], 0, 0, GAME.width, GAME.height);
+		ctx.drawImage(GAME.sprites["level_1/tiles"], 0, 0, GAME.width, GAME.height);
 
 		GAME.world.draw(ctx, GAME.sprites);
 
