@@ -16,6 +16,7 @@ const generateLevel = (template, { add }) => {
 			if(tile === "B") add(box(pos.copy()), "box", 1, true);
 			if(tile === "P") add(point(pos.copy()), "points", 4);
 			if(tile === "0") add(vec(pos.x + 15, pos.y), "pointTarget", 0, true);
+			if(tile === "0" || tile === "O") add(shine(pos.copy()), "shine", 10);
 
 		});
 	});
@@ -40,6 +41,29 @@ const shadow = (pos) => {
 	const that = obstacle(pos);
 
 	that.color = "black";
+
+	return that;
+}
+
+const shine = (pos) => {
+	const that = traitHolder();
+
+	traits.addEntityTrait({
+		pos,
+		size: vec(15, 15),
+	})(that);
+
+	traits.addSpriteTrait({
+		img: "shine",
+		imgSize: that.size.copy(),
+		alpha: 0,
+	})(that);
+
+	that.checkLevelCleared = ({ levelCleared }) => {
+		if(levelCleared && that.alpha < 1) that.alpha += 0.2;
+	}
+
+	that.addMethods("checkLevelCleared");
 
 	return that;
 }

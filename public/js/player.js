@@ -26,7 +26,7 @@ const player = (pos) => {
 	traits.addBoxColTrait({})(that);
 
 	traits.addOubTrait({
-		oubArea: [0, 0, 15 * 32, 15 * 18 + 60],
+		oubArea: [0, 0, 15 * 32 + that.size.x, 15 * 18 + 60],
 	})(that);
 
 	traits.addFrameTrait({
