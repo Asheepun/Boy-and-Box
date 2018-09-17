@@ -1,5 +1,6 @@
 import traitHolder, * as traits from "/js/lib/traits.js";
 import vec, * as v				from "/js/lib/vector.js";
+import * as particles			from "/js/particles.js";
 
 const point = (pos) => {
 	const that = traitHolder();
@@ -32,7 +33,8 @@ const point = (pos) => {
 			that.velocity.y *= -1;
 	}
 
-	that.open = ({ world: { pointTarget, remove }, width }) => {
+	let spawner = 0;
+	that.open = ({ world: { pointTarget, remove, add }, width }) => {
 		that.acceleration = v.add(that.acceleration, v.pipe(
 			v.sub(that.center, pointTarget),
 			v.normalize,
@@ -40,8 +42,14 @@ const point = (pos) => {
 			x => v.mul(x, 0.06),
 		));
 
+		spawner++;
+		if(spawner % 2 === 0) add(particles.dust(that.center.copy(), vec(Math.random()-0.5, Math.random()-0.5)), "particles", 5);
+
 		if(that.pos.x > width){
 			remove(that);
+			for(let i = 0; i < 10; i++){
+				add(particles.dust(vec(width-5, that.pos.y + Math.random()*that.size.y), vec(-Math.random()*2-1, Math.random()*2-1)), "particles", 5);
+			}
 		}
 	}
 
