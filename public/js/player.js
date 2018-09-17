@@ -81,7 +81,8 @@ const player = (pos) => {
 		that.acceleration.x = 0;
 	}
 
-	that.animate = ({ keys }) => {
+	that.landed = false;
+	that.animate = ({ keys, world: { add } }) => {
 		if(that.velocity.x > 0) that.facing.x = 1;
 		if(that.velocity.x < 0) that.facing.x = -1;
 
@@ -89,6 +90,11 @@ const player = (pos) => {
 		else that.frameState = "still";
 
 		if(Math.round(that.velocity.y) > 0) that.frameState = "falling";
+
+		if(that.onGround && !that.landed){
+			that.landed = true;
+		}
+		if(!that.onGround) that.landed = false;
 	}
 
 	let counter = 0;

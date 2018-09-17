@@ -2,6 +2,7 @@ import vec, * as v 				from "/js/lib/vector.js";
 import traitHolder, * as traits from "/js/lib/traits.js";
 import box						from "/js/box.js";
 import player					from "/js/player.js";
+import point					from "/js/points.js";
 
 const generateLevel = (template, { add }) => {
 	let pos;
@@ -12,7 +13,9 @@ const generateLevel = (template, { add }) => {
 			pos = vec(scl * x, scl * y);
 
 			if(tile === "#") add(obstacle(pos.copy()), "obstacles", 1);
-			if(tile === "B") add(box(pos.copy()), "box", 4, true);
+			if(tile === "B") add(box(pos.copy()), "box", 1, true);
+			if(tile === "P") add(point(pos.copy()), "points", 4);
+			if(tile === "0") add(vec(pos.x + 15, pos.y), "pointTarget", 0, true);
 
 		});
 	});
@@ -29,6 +32,14 @@ const obstacle = (pos) => {
 	traits.addSpriteTrait({
 		color: "grey",
 	});//(that);
+
+	return that;
+}
+
+const shadow = (pos) => {
+	const that = obstacle(pos);
+
+	that.color = "black";
 
 	return that;
 }

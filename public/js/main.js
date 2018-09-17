@@ -15,6 +15,8 @@ Promise.all([
 		"background",
 		"level_1/tiles",
 		"dust",
+		"cloud",
+		"point"
 	),
 	loaders.loadJSON(
 		"grass_tiles",
@@ -35,6 +37,7 @@ Promise.all([
 		
 		],
 		state: undefined,
+		context: vec(0, 0),
 	};
 
 	GAME.keys = keys(
@@ -48,12 +51,12 @@ Promise.all([
 	const level1 = [
 		"................................",
 		"................................",
-		"................................",
+		"...............................0",
 		"................................",
 		"..........................######",
 		".........................#######",
 		".........................#######",
-		".............B...........#######",
+		".............B.......P...#######",
 		".........................#######",
 		".........................#######",
 		".1.................#############",
@@ -120,10 +123,14 @@ Promise.all([
 
 		ctx.save();
 		ctx.scale(c.scale, c.scale);
+		ctx.translate(GAME.context.x, GAME.context.y);
 		ctx.drawImage(GAME.sprites.background, 0, 0, GAME.width, GAME.height);
-		ctx.drawImage(GAME.sprites["level_1/tiles"], 0, 0, GAME.width, GAME.height);
 
+		ctx.drawImage(GAME.sprites["level_1/tiles"], 0, 0, GAME.width, GAME.height);
 		GAME.world.draw(ctx, GAME.sprites);
+
+		//handleScreenShake
+		GAME.context = vec(0, 0);
 
 		ctx.restore();
 

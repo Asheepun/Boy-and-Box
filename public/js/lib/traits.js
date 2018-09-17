@@ -84,10 +84,10 @@ export const addColTrait = ({ bounce = false, }) => (that) => {
 
 export const addBoxColTrait = ({ bounce = false }) => (that) => {
 	that.handleBoxCol = ({ world: { box } }) => {
-		if(that.pos.x + that.size.x > box.pos.x
-		&& that.pos.x < box.pos.x + box.size.x
-		&& that.pos.y + that.size.y > box.pos.y
-		&& that.pos.y + that.size.y < box.pos.y + 5
+		if(that.pos.x + that.size.x >= box.pos.x
+		&& that.pos.x <= box.pos.x + box.size.x
+		&& that.pos.y + that.size.y >= box.pos.y
+		&& that.pos.y + that.size.y <= box.pos.y + 5
 		&& that.velocity.y >= 0){
 			that.pos.y = box.pos.y - that.size.y;
 			that.fixCenter();
