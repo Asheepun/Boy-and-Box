@@ -59,11 +59,21 @@ const shine = (pos) => {
 		alpha: 0,
 	})(that);
 
+	traits.addMoveTrait({
+		velocity: vec(0.1, 0),
+	})(that);
+
 	that.checkLevelCleared = ({ levelCleared }) => {
 		if(levelCleared && that.alpha < 1) that.alpha += 0.2;
 	}
 
-	that.addMethods("checkLevelCleared");
+	that.initPos = that.pos.copy();
+	that.hover = ({ levelCleared }) => {
+		if(that.pos.x < that.initPos.x + 0.1 || that.pos.x > that.initPos.x + 6) that.velocity.x *= -1;
+		if(!levelCleared) that.pos.x = that.initPos.x;
+	}
+
+	that.addMethods("checkLevelCleared", "hover");
 
 	return that;
 }

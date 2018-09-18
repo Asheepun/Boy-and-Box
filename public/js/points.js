@@ -34,7 +34,7 @@ const point = (pos) => {
 	}
 
 	let spawner = 0;
-	that.open = ({ world: { pointTarget, remove, add }, width }) => {
+	that.open = ({ world: { pointTarget, remove, add }, width, context }) => {
 		that.acceleration = v.add(that.acceleration, v.pipe(
 			v.sub(that.center, pointTarget),
 			v.normalize,
@@ -50,6 +50,7 @@ const point = (pos) => {
 			for(let i = 0; i < 10; i++){
 				add(particles.dust(vec(width-5, that.pos.y + Math.random()*that.size.y), vec(-Math.random()*2-1, Math.random()*2-1)), "particles", 5);
 			}
+			context.x += 5;
 		}
 	}
 
