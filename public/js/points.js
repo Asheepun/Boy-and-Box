@@ -59,13 +59,14 @@ const point = (pos) => {
 		that.hit = true;
 	}
 
-	that.checkHit = ({ world: { remove, pointTarget } }) => {
+	that.checkHit = (GAME) => {
 		if(that.hit){
 			that.acceleration = v.pipe(
-				v.sub(that.center, pointTarget),
+				v.sub(that.center, GAME.world.pointTarget),
 				v.normalize,
 				x => v.mul(x, 0.7),
-			)
+			);
+			GAME.freeze = 10;
 			that.removeMethods("hover", "checkhit");
 			that.addMethods("open");
 		}

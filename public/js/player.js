@@ -26,7 +26,7 @@ const player = (pos) => {
 	traits.addBoxColTrait({})(that);
 
 	traits.addOubTrait({
-		oubArea: [0, 0, 15 * 32 + that.size.x, 15 * 18 + 60],
+		oubArea: [0, 0, 15 * 32, 15 * 18 + 60],
 	})(that);
 
 	traits.addFrameTrait({
@@ -72,10 +72,14 @@ const player = (pos) => {
 	that.handleOubX = (GAME) => {
 		if(that.velocity.x < 0) that.pos.x = 0;
 		if(that.velocity.x > 0){
-			that.pos.x = 0;
-			GAME.playerSpawn = that.pos.copy();
-			GAME.currentLevel++;
-			GAME.state = GAME.states.setupLevel;
+			if(GAME.levelCleared){
+				that.pos.x = 0;
+				GAME.playerSpawn = that.pos.copy();
+				GAME.currentLevel++;
+				GAME.state = GAME.states.setupLevel;
+			}else
+				that.pos.x = GAME.width - that.size.x;
+
 		}
 		that.velocity.x = 0;
 		that.acceleration.x = 0;

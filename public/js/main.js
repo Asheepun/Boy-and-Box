@@ -39,6 +39,7 @@ Promise.all([
 		],
 		state: undefined,
 		context: vec(0, 0),
+		freeze: 0,
 	};
 
 	GAME.keys = keys(
@@ -62,7 +63,7 @@ Promise.all([
 		".........................#######",
 		".1.................#############",
 		"...............#################",
-		".....P.........#################",
+		"...............#################",
 		"...............#################",
 		"###...........##################",
 		"###......#######################",
@@ -133,6 +134,9 @@ Promise.all([
 
 		ctx.drawImage(GAME.sprites["level_1/tiles"], 0, 0, GAME.width, GAME.height);
 		GAME.world.draw(ctx, GAME.sprites);
+		ctx.globalAlpha = 0.8;
+		ctx.drawImage(GAME.sprites.cloud, 0, 0, 60, 20);
+		ctx.globalAlpha = 1;
 
 		//handleScreenShake
 		GAME.context = v.mul(GAME.context, 0.5);
