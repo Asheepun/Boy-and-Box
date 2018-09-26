@@ -15,3 +15,7 @@ canvas{
   image-rendering: pixelated;
   image-rendering: crisp-edges;
 }
+
+body{
+	background: black;
+}

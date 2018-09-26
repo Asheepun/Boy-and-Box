@@ -5,7 +5,9 @@ import createCanvas 	 		from "/js/lib/canvas.js";
 import gameWorld 		 		from "/js/lib/gameWorld.js";
 import keys						from "/js/lib/keys.js";
 import generateLevel			from "/js/generateLevel.js";
+import addClouds				from "/js/clouds.js";
 import player					from "/js/player.js";
+import blue						from "/js/blue.js";
 
 Promise.all([
 	createCanvas(15 * 32, 15 * 18),
@@ -14,10 +16,12 @@ Promise.all([
 		"box",
 		"background",
 		"level_1/tiles",
+		"level_2/tiles",
 		"dust",
 		"cloud",
 		"point",
 		"shine",
+		"blue",
 	),
 	loaders.loadJSON(
 		"grass_tiles",
@@ -61,7 +65,7 @@ Promise.all([
 		".............B.......P...#######",
 		".........................#######",
 		".........................#######",
-		".1.................#############",
+		".@.................#############",
 		"...............#################",
 		"...............#################",
 		"...............#################",
@@ -72,43 +76,47 @@ Promise.all([
 	];
 
 	const level2 = [
-		"................................",
-		"................................",
-		"................................",
-		"................................",
-		".1..............................",
-		"##...........B..................",
-		"..............................2.",
-		"................................",
-		"................................",
-		"................................",
-		"................................",
-		"................................",
-		"................................",
-		"................................",
-		"................................",
-		"................................",
-		"................................",
-		"................................",
+		"...............................O",
+		"...............................O",
+		"..............P................O",
+		"@..............................0",
+		"...............................O",
+		"............#####..............O",
+		"###.......#########.....B.....##",
+		"###.......#########...........##",
+		"##........#########...........##",
+		"##.........########...........##",
+		"##..........#######..........###",
+		"###.........#####............###",
+		"###..........##..............###",
+		"###..........................###",
+		"####.........................###",
+		"####.........................###",
+		"######......###.............####",
+		"#################...........####",
 	];
 
 	const levels = [level1, level2];
 	GAME.currentLevel = 0;
-
-	GAME.playerSpawn = vec(0, 145),
-
+	GAME.tiles;
 
 	GAME.states.setupLevel = () => {
 
 		GAME.world.clearAll();
-
-		GAME.world.add(player(GAME.playerSpawn), "player", 5, true);
 	
 		generateLevel(levels[GAME.currentLevel], GAME.world);
 
+		addClouds(GAME);
+
+		GAME.world.add(blue(vec(150, 100)), "blues", 2);
+
 		GAME.levelCleared = false;
 
+		GAME.fade = 1;
+
 		GAME.state = GAME.states.level;
+
+		GAME.tiles = "level_" + (GAME.currentLevel + 1) + "/tiles";
 
 	}
 
@@ -125,6 +133,9 @@ Promise.all([
 
 		GAME.world.update(GAME);
 
+		GAME.fade -= 0.02;
+		if(GAME.fade < 0) GAME.fade = 0;
+
 		if(GAME.world.points.length <= 0) GAME.levelCleared = true;
 
 		ctx.save();
@@ -132,10 +143,11 @@ Promise.all([
 		ctx.translate(GAME.context.x, GAME.context.y);
 		ctx.drawImage(GAME.sprites.background, 0, 0, GAME.width, GAME.height);
 
-		ctx.drawImage(GAME.sprites["level_1/tiles"], 0, 0, GAME.width, GAME.height);
 		GAME.world.draw(ctx, GAME.sprites);
-		ctx.globalAlpha = 0.8;
-		ctx.drawImage(GAME.sprites.cloud, 0, 0, 60, 20);
+		ctx.drawImage(GAME.sprites[GAME.tiles], 0, 0, GAME.width, GAME.height);
+		ctx.globalAlpha = GAME.fade;
+		ctx.fillStyle = "black";
+		ctx.fillRect(0, 0, GAME.width, GAME.height);
 		ctx.globalAlpha = 1;
 
 		//handleScreenShake
@@ -143,6 +155,25 @@ Promise.all([
 
 		ctx.restore();
 
+	}
+
+	let afterFadeState;
+	GAME.states.fadeOutState = () => {
+		GAME.fade += 0.05;
+		if(GAME.fade > 0.5) GAME.fade += 0.05;
+		if(GAME.fade > 1){
+			GAME.fade = 1;
+			GAME.state = GAME.states[afterFadeState];
+		}
+		ctx.globalAlpha = GAME.fade;
+		ctx.fillStyle = "black";
+		ctx.fillRect(0, 0, GAME.c.width, GAME.c.height);
+		ctx.globalAlpha = 1;
+	}
+
+	GAME.fadeOut = (state) => {
+		afterFadeState = state;
+		GAME.state = GAME.states.fadeOutState;
 	}
 
 	GAME.state = GAME.states.setupLevel;

@@ -72,17 +72,23 @@ const player = (pos) => {
 	that.handleOubX = (GAME) => {
 		if(that.velocity.x < 0) that.pos.x = 0;
 		if(that.velocity.x > 0){
-			if(GAME.levelCleared){
-				that.pos.x = 0;
-				GAME.playerSpawn = that.pos.copy();
+			if(GAME.levelCleared && !that.hit){
 				GAME.currentLevel++;
-				GAME.state = GAME.states.setupLevel;
+				GAME.fadeOut("setupLevel");
 			}else
 				that.pos.x = GAME.width - that.size.x;
 
 		}
 		that.velocity.x = 0;
 		that.acceleration.x = 0;
+	}
+
+	that.handleOubY = () => {
+		if(that.velocity.y < 0) that.pos.y = 0;
+		if(that.velocity.y > 0) that.hit = true;
+
+		that.velocity.y = 0;
+		that.acceleration.y = 0;
 	}
 
 	that.landed = false;
@@ -119,7 +125,15 @@ const player = (pos) => {
 		}
 	}
 
-	that.addMethods("handleVelocity", "animate", "handleDust");
+	that.checkLevelCleared = ({ levelCleared, width }) => {
+		if(levelCleared) that.oubArea[2] = width + that.size.x -5;
+	}
+
+	that.checkHit = ({ fadeOut }) => {
+		if(that.hit) fadeOut("setupLevel")
+	}
+
+	that.addMethods("handleVelocity", "animate", "handleDust", "checkLevelCleared", "checkHit");
 
 	return that;
 }

@@ -221,7 +221,7 @@ export const addSpriteTrait = ({ color, img, alpha = 1, rotation = 0, visible = 
             ctx.rotate(that.rotation);
             ctx.globalAlpha = that.alpha;
             ctx.fillStyle = that.color;
-            if(that.color) ctx.fillRect(Math.round(-that.size.x/2), Math.round(-that.size.y/2), that.size.x, that.size.y);
+            if(that.color) ctx.fillRect((-that.size.x/2), (-that.size.y/2), that.size.x, that.size.y);
             if(that.img){
 				ctx.scale(that.facing.x, that.facing.y);
 				ctx.drawImage(

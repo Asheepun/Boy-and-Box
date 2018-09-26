@@ -15,10 +15,10 @@ export const checkSetCol = (entity, set) => {
 }
 
 export const checkPlatformCol = (entity, platform) => 
-	entity.pos.y + entity.size.y > platform.pos.y
-	&& entity.pos.y + entity.size.y < platform.pos.y + platform.size.y
-	&& entity.pos.x + entity.size.x > platform.pos.x
-	&& entity.pos.x < platform.pos.x + platform.size.x
+	entity.pos.y + entity.size.y >= platform.pos.y
+	&& entity.pos.y + entity.size.y <= platform.pos.y + platform.size.y
+	&& entity.pos.x + entity.size.x >= platform.pos.x
+	&& entity.pos.x <= platform.pos.x + platform.size.x
 
 export const checkPlatformSetCol = (entity, set) => {
 	for(let i = 0; i < set.length; i++){
@@ -65,9 +65,9 @@ export const checkLOS = (entity, target, obstacles) => {
 export const checkPointCol = (vec, obstacles) => {
 	for(let i = 0; i < obstacles.length; i++){
 		if(vec.x >= obstacles[i].pos.x
-		&& vec.x <= obstacles[i].pos.x + obstacles[i].size.x
+		&& vec.x < obstacles[i].pos.x + obstacles[i].size.x
 		&& vec.y >= obstacles[i].pos.y
-		&& vec.y <= obstacles[i].pos.y + obstacles[i].size.y)
+		&& vec.y < obstacles[i].pos.y + obstacles[i].size.y)
 			return obstacles[i];
 	}
 	return false;
