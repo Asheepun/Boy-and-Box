@@ -22,25 +22,35 @@ const blue = (pos) => {
 
 	traits.addColTrait({})(that);
 
+	traits.addCheckColTrait({
+		singles: ["player"],
+	})(that);
+
+	that.playerCol = () => {
+		that.talking = true;
+	}
+
+	that.bounce = () => {
+	}
+
 	that.originSize = that.size.copy();
 
 	let changeAmount = 0.1;
 
-	that.bounce = () => {
-		if(that.onGround){
-			that.pos.x -= changeAmount / 2;
-			that.size.x += changeAmount;
-			that.size.y -= changeAmount;
-			that.pos.y += changeAmount;
-			if(that.size.x > that.originSize.x + 1) that.velocity.y = -1;
-		}else if(that.size.x > that.originSize.x - 1){
-			that.size.x -= changeAmount;
-			that.size.y += changeAmount;
-			that.pos.x += changeAmount / 2;
-		}
+	that.animate = ({ world: { player } }) => {
+		if(player.center.x > that.center.x) that.facing.x = -1;
+		else that.facing.x = 1;
+
+		if(that.size.x >= that.originSize.x + 1 || that.size.x <= that.originSize.x - 1)
+			changeAmount *= -1;
+
+		that.size.x += changeAmount;
+		that.size.y -= changeAmount;
+		that.pos.x -= changeAmount / 2;
+		that.pos.y += changeAmount;
 	}
 
-	that.addMethods("bounce");
+	that.addMethods("animate");
 
 	return that;
 }
