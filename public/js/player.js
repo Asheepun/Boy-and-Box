@@ -29,13 +29,16 @@ const player = (pos) => {
 		oubArea: [0, 0, 15 * 32, 15 * 18 + 60],
 	})(that);
 
+	traits.addLandingTrait({})(that);
+
 	traits.addFrameTrait({
 		delay: 6,
 		frames: "boy_frames",
 	})(that);
 
-	that.jump = ({ world: { add } }) => {
+	that.jump = ({ world: { add }, audio: { play } }) => {
 		if(that.onGround){
+			play("boy_jump");
 			that.velocity.y = -5;
 			for(let i = 0; i < 5; i++){
 				add(particles.dust(
@@ -50,6 +53,14 @@ const player = (pos) => {
 		if(that.velocity.y < 0 || that.acceleration.y < 0){
 			that.velocity.y = 0;
 		}
+	}
+
+	that.landCounter = 0;
+
+	that.land = ({ audio: { play } }) => {
+		that.landed = true;
+		that.landCounter = 10;
+		play("boy_land");
 	}
 
 	that.maxFallVelocity = 4;
@@ -67,6 +78,41 @@ const player = (pos) => {
 		if(that.velocity.x < -that.maxSpeed) that.velocity.x = -that.maxSpeed;
 		if(that.dir === 0) that.velocity.x *= 0.7;
 
+	}
+
+	that.animate = ({ keys, world: { add }, audio: { play } }) => {
+		if(that.velocity.x > 0) that.facing.x = 1;
+		if(that.velocity.x < 0) that.facing.x = -1;
+
+		if(keys.a.down || keys.d.down) that.frameState = "moving";
+		else that.frameState = "still";
+
+		that.landCounter--;
+		if(that.landCounter > 0) that.frameState = "landing";
+		if(Math.round(that.velocity.y) > 0) that.frameState = "falling";
+
+	}
+
+	let counter = 0;
+	that.handleDust = ({ world: { add }, }) => {
+		if(counter <= 36) counter++;
+		if(that.frameState === "moving" && that.onGround && counter >= 12){
+			counter -= 12;
+			for(let i = 0; i < Math.random()*3; i++){
+				add(particles.dust(
+					vec(that.center.x - 2.5 - that.facing.x * ((that.size.x - 5) / 2), that.pos.y + that.size.y - 5),
+					vec(-Math.random() * 0.5 * that.facing.x, Math.random()*0.5),
+				), "particles", 5);
+			}
+		}
+	}
+
+	that.checkLevelCleared = ({ levelCleared, width }) => {
+		if(levelCleared) that.oubArea[2] = width + that.size.x -5;
+	}
+
+	that.checkHit = ({ fadeOut }) => {
+		if(that.hit) fadeOut("setupLevel")
 	}
 
 	that.handleOubX = (GAME) => {
@@ -89,48 +135,6 @@ const player = (pos) => {
 
 		that.velocity.y = 0;
 		that.acceleration.y = 0;
-	}
-
-	that.landed = false;
-	that.animate = ({ keys, world: { add } }) => {
-		if(that.velocity.x > 0) that.facing.x = 1;
-		if(that.velocity.x < 0) that.facing.x = -1;
-
-		if(keys.a.down || keys.d.down) that.frameState = "moving";
-		else that.frameState = "still";
-
-		if(Math.round(that.velocity.y) > 0) that.frameState = "falling";
-
-		if(that.onGround && !that.landed){
-			that.landed = true;
-		}
-		if(!that.onGround) that.landed = false;
-	}
-
-	let counter = 0;
-	that.handleDust = ({ world: { add }, }) => {
-		if(counter <= 36) counter++;
-		if(that.frameState === "moving" && that.onGround && counter >= 12){
-			counter -= 12;
-			for(let i = 0; i < Math.random()*3; i++){
-				if(that.facing.x === 1) add(particles.dust(
-					vec(that.pos.x + Math.random()*3, that.pos.y + that.size.y-5),
-					vec(-Math.random() * 0.5, Math.random() * 0.5),
-				), "particles", 5);
-				else add(particles.dust(
-					vec(that.pos.x + that.size.x-5 - Math.random()*3, that.pos.y + that.size.y-5),
-					vec(Math.random() * 0.5, Math.random() * 0.5),
-				), "particles", 5);
-			}
-		}
-	}
-
-	that.checkLevelCleared = ({ levelCleared, width }) => {
-		if(levelCleared) that.oubArea[2] = width + that.size.x -5;
-	}
-
-	that.checkHit = ({ fadeOut }) => {
-		if(that.hit) fadeOut("setupLevel")
 	}
 
 	that.addMethods("handleVelocity", "animate", "handleDust", "checkLevelCleared", "checkHit");

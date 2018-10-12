@@ -9,6 +9,10 @@ const flower = (pos) => {
 		size: vec(5, 16),
 	})(that);
 
+	traits.addCheckColTrait({
+		singles: ["player"],
+	})(that);
+
 	that.rotation = 0;
 
 	that.draw = (ctx, sprites) => {
@@ -22,14 +26,29 @@ const flower = (pos) => {
 	}
 
 
-	that.rotateVelocity = 0.005;
+	that.rotateVelocity = 0.002;
 	that.rotate = () => {
 		that.rotation += that.rotateVelocity;
 
 		if(that.rotation > 0.2 || that.rotation < -0.1) that.rotateVelocity *= -1;
 	}
 
-	that.addMethods("rotate");
+	that.playerCol = () => {
+		that.hit = true;
+	}
+
+	that.hit = false;
+
+	that.handleHit = () => {
+		if(that.hit){
+			that.hit = false;
+			if(that.rotateVelocity > 0) that.rotateVelocity = 0.05;
+			else that.rotateVelocity = -0.05;
+		}else if(that.rotateVelocity > 0) that.rotateVelocity = 0.002;
+		else that.rotateVelocity = -0.002;
+	}
+
+	that.addMethods("rotate", "handleHit");
 
 	return that;
 }

@@ -28,6 +28,8 @@ export const white5 = (text, x, y, ctx) => white(text, x, y, 5, ctx);
 
 export const white10 = (text, x, y, ctx) => white(text, x, y, 10, ctx);
 
+export const white13 = (text, x, y, ctx) => white(text, x, y, 13, ctx);
+
 export const white15 = (text, x, y, ctx) => white(text, x, y, 15, ctx);
 
 export const white20 = (text, x, y, ctx) => white(text, x, y, 20, ctx);

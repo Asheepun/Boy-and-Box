@@ -116,6 +116,19 @@ export const addCheckColTrait = ({ sets = [], singles = [] }) => (that) => {
 	that.addMethods("checkCol");
 }
 
+export const addLandingTrait = ({}) => (that) => {
+	that.landed = false;
+	that.checkLanding = (GAME) => {
+		if(that.onGround && !that.landed){
+			that.landed = true;
+			that.land(GAME);
+		}
+		if(!that.onGround) that.landed = false;
+	}
+
+	that.addMethods("checkLanding")
+}
+
 export const addEntityTrait = ({ pos, size }) => (that) => {
     that.pos = pos;
     that.size = size;

@@ -1,5 +1,6 @@
 import vec, * as v 		 		from "/js/lib/vector.js";
 import traitHolder, * as traits from "/js/lib/traits.js";
+import * as text				from "/js/lib/text.js";
 import * as loaders 	 		from "/js/lib/assets.js";
 import createCanvas 	 		from "/js/lib/canvas.js";
 import gameWorld 		 		from "/js/lib/gameWorld.js";
@@ -8,6 +9,9 @@ import generateLevel			from "/js/generateLevel.js";
 import addClouds				from "/js/clouds.js";
 import player					from "/js/player.js";
 import blue						from "/js/blue.js";
+import flower					from "/js/flower.js";
+import * as helpers				from "/js/helpers.js";
+import addBirds 				from "/js/bird.js";
 
 Promise.all([
 	createCanvas(15 * 32, 15 * 18),
@@ -22,12 +26,25 @@ Promise.all([
 		"point",
 		"shine",
 		"blue",
+		"blue_bird",
+		"helper_bird",
+		"flower_1",
+	),
+	loaders.loadAudio(
+		1,
+		"boy_jump",
+		"bj2",
+		"boy_land",
+		"pickup_point",
+		"level_cleared",
 	),
 	loaders.loadJSON(
 		"grass_tiles",
 		"boy_frames",
+		"blue_bird_frames",
+		"helper_bird_frames",
 	),
-]).then(([ { c, ctx, width, height, pointer }, sprites, JSON ]) => {
+]).then(([ { c, ctx, width, height, pointer }, sprites, audio, JSON ]) => {
 	
 	const GAME = {
 		c,
@@ -36,6 +53,7 @@ Promise.all([
 		height,
 		pointer,
 		sprites,
+		audio,
 		JSON,
 		world: gameWorld(),
 		states: [
@@ -57,12 +75,12 @@ Promise.all([
 	const level1 = [
 		"...............................O",
 		"...............................O",
-		"...............................0",
+		"............................P..0",
 		"...............................O",
 		"..........................######",
 		".........................#######",
 		".........................#######",
-		".............B.......P...#######",
+		".............B...........#######",
 		".........................#######",
 		".........................#######",
 		".@.................#############",
@@ -107,18 +125,26 @@ Promise.all([
 		generateLevel(levels[GAME.currentLevel], GAME.world);
 
 		addClouds(GAME);
+		
+		addBirds(GAME);
 
-		GAME.world.add(blue(vec(150, 100)), "blues", 2);
+		if(GAME.currentLevel === 0) GAME.world.add(helpers.boxText(vec(125, 50)), "text", 3);
 
 		GAME.levelCleared = false;
 
 		GAME.fade = 1;
 
-		GAME.state = GAME.states.level;
-
 		GAME.tiles = "level_" + (GAME.currentLevel + 1) + "/tiles";
 
+		boxOriginPos = GAME.world.box.pos.copy();
+
+		GAME.state = GAME.states.level;
+
 	}
+
+	let boxTextFade = 0;
+	let fadeInText = false;
+	let boxOriginPos;
 
 	GAME.states.level = () => {
 
@@ -136,7 +162,10 @@ Promise.all([
 		GAME.fade -= 0.02;
 		if(GAME.fade < 0) GAME.fade = 0;
 
-		if(GAME.world.points.length <= 0) GAME.levelCleared = true;
+		if(GAME.world.points.length <= 0){
+			if(!GAME.levelCleared) GAME.audio.play("level_cleared");
+			GAME.levelCleared = true;
+		}
 
 		ctx.save();
 		ctx.scale(c.scale, c.scale);
@@ -145,9 +174,15 @@ Promise.all([
 
 		GAME.world.draw(ctx, GAME.sprites);
 		ctx.drawImage(GAME.sprites[GAME.tiles], 0, 0, GAME.width, GAME.height);
+
 		ctx.globalAlpha = GAME.fade;
 		ctx.fillStyle = "black";
 		ctx.fillRect(0, 0, GAME.width, GAME.height);
+		ctx.globalAlpha = 0.1;
+
+		ctx.fillStyle = "black";
+		//ctx.fillRect(0, 0, GAME.width, GAME.height);
+
 		ctx.globalAlpha = 1;
 
 		//handleScreenShake

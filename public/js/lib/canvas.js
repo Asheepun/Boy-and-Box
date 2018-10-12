@@ -41,10 +41,14 @@ const createCanvas = (width = 800, height = 600, element = document.body) => new
     c.addEventListener("mousedown", e => {
         if(!pointer.down) pointer.downed = true;
         pointer.down = true;
+        const offset = vec(c.offsetLeft, c.offsetTop);
+        pointer.pos = div(sub(vec(e.pageX, e.pageY), offset), c.scale);
     });
     c.addEventListener("mouseup", e => {
         if(pointer.down) pointer.upped = true;
         pointer.down = false;
+        const offset = vec(c.offsetLeft, c.offsetTop);
+        pointer.pos = div(sub(vec(e.pageX, e.pageY), offset), c.scale);
     });
     c.addEventListener("mousemove", e => {
         const offset = vec(c.offsetLeft, c.offsetTop);

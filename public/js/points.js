@@ -34,7 +34,7 @@ const point = (pos) => {
 	}
 
 	let spawner = 0;
-	that.open = ({ world: { pointTarget, remove, add }, width, context }) => {
+	that.open = ({ world: { pointTarget, remove, add }, width, context, audio: { play } }) => {
 		that.acceleration = v.add(that.acceleration, v.pipe(
 			v.sub(that.center, pointTarget),
 			v.normalize,
@@ -59,14 +59,14 @@ const point = (pos) => {
 		that.hit = true;
 	}
 
-	that.checkHit = (GAME) => {
+	that.checkHit = ({ world: { pointTarget }, audio: { play } }) => {
 		if(that.hit){
+			play("pickup_point");
 			that.acceleration = v.pipe(
-				v.sub(that.center, GAME.world.pointTarget),
+				v.sub(that.center, pointTarget),
 				v.normalize,
 				x => v.mul(x, 0.7),
 			);
-			GAME.freeze = 10;
 			that.removeMethods("hover", "checkhit");
 			that.addMethods("open");
 		}
