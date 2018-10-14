@@ -33,7 +33,7 @@ const obstacle = (pos) => {
 	})(that);
 
 	traits.addSpriteTrait({
-//		color: "grey",
+		color: "grey",
 	})(that);
 
 	return that;
