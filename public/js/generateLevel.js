@@ -3,6 +3,7 @@ import traitHolder, * as traits from "/js/lib/traits.js";
 import box						from "/js/box.js";
 import player					from "/js/player.js";
 import point					from "/js/points.js";
+import * as blues				from "/js/blue.js";
 
 const generateLevel = (template, { add }) => {
 	let pos;
@@ -18,6 +19,8 @@ const generateLevel = (template, { add }) => {
 			if(tile === "P") add(point(pos.copy()), "points", 3);
 			if(tile === "0") add(vec(pos.x + 15, pos.y), "pointTarget", 0, true);
 			if(tile === "0" || tile === "O") add(shine(pos.copy()), "shine", 10);
+
+			if(tile === "b") add(blues.bouncer(pos.copy()), "blues", 3)
 
 		});
 	});

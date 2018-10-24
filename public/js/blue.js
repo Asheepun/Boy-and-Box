@@ -1,7 +1,7 @@
 import traitHolder, * as traits from "/js/lib/traits.js";
 import vec, * as v from "/js/lib/vector.js";
 
-const blue = (pos) => {
+export const bouncer = (pos) => {
 	const that = traitHolder();
 
 	traits.addEntityTrait({
@@ -17,42 +17,42 @@ const blue = (pos) => {
 	traits.addMoveTrait({})(that);
 
 	traits.addPhysicsTrait({
-		gravity: 0.004,
+		gravity: 0.007,
 	})(that);
 
 	traits.addColTrait({})(that);
 
-	traits.addCheckColTrait({
-		singles: ["player"],
-	})(that);
+	traits.addBoxColTrait({})(that);
 
-	that.playerCol = () => {
-		that.talking = true;
+	that.facing.x = -1;
+
+	that.jump = () => {
+		that.velocity.y = -1.4;
 	}
+	
+	that.recharge = 0;
 
 	that.bounce = () => {
+		that.recharge--;
+
+		if(that.onGround && !that.waiting){
+			if(that.recharge === 0) that.jump();
+
+			if(that.recharge < 0) that.recharge = 10;
+		}
 	}
 
-	that.originSize = that.size.copy();
+	that.waiting = false;
+	that.handleVelocity = ({ width, levelCleared }) => {
+		if(that.onGround && that.pos.x >= width - 40 && !levelCleared) that.waiting = true;
 
-	let changeAmount = 0.1;
+		if(levelCleared) that.waiting = false;
 
-	that.animate = ({ world: { player } }) => {
-		if(player.center.x > that.center.x) that.facing.x = -1;
-		else that.facing.x = 1;
-
-		if(that.size.x >= that.originSize.x + 1 || that.size.x <= that.originSize.x - 1)
-			changeAmount *= -1;
-
-		that.size.x += changeAmount;
-		that.size.y -= changeAmount;
-		that.pos.x -= changeAmount / 2;
-		that.pos.y += changeAmount;
+		if(that.onGround || that.waiting) that.velocity.x = 0;
+		else that.velocity.x = 0.7;
 	}
 
-	that.addMethods("animate");
+	that.addMethods("bounce", "handleVelocity");
 
 	return that;
 }
-
-export default blue;
