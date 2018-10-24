@@ -40,8 +40,8 @@ Promise.all([
 		"level_cleared",
 	),
 	loaders.loadJSON(
-		"grass_tiles",
 		"boy_frames",
+		"blue_frames",
 		"blue_bird_frames",
 		"helper_bird_frames",
 	),
@@ -63,7 +63,7 @@ Promise.all([
 		],
 		state: undefined,
 		context: vec(0, 0),
-		currentLevel: 0,
+		currentLevel: 4,
 	};
 
 	GAME.keys = keys(

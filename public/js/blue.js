@@ -24,6 +24,11 @@ export const bouncer = (pos) => {
 
 	traits.addBoxColTrait({})(that);
 
+	traits.addFrameTrait({
+		delay: 20,
+		frames: "blue_frames",
+	})(that);
+
 	that.facing.x = -1;
 
 	that.jump = () => {
@@ -52,7 +57,14 @@ export const bouncer = (pos) => {
 		else that.velocity.x = 0.7;
 	}
 
-	that.addMethods("bounce", "handleVelocity");
+	that.animate = () => {
+		if(that.onGround) that.frameState = "charging";
+		else that.frameState = "jumping";
+		if(that.waiting) that.frameState = "still";
+		
+	}
+
+	that.addMethods("bounce", "handleVelocity", "animate");
 
 	return that;
 }
