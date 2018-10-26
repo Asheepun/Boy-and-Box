@@ -1,5 +1,6 @@
 import traitHolder, * as traits from "/js/lib/traits.js";
-import vec, * as v from "/js/lib/vector.js";
+import vec, * as v 				from "/js/lib/vector.js";
+import * as text				from "/js/lib/text.js";
 
 export const bouncer = (pos) => {
 	const that = traitHolder();
@@ -29,8 +30,6 @@ export const bouncer = (pos) => {
 		frames: "blue_frames",
 	})(that);
 
-	that.facing.x = -1;
-
 	that.jump = () => {
 		that.velocity.y = -1.4;
 	}
@@ -40,7 +39,7 @@ export const bouncer = (pos) => {
 	that.bounce = () => {
 		that.recharge--;
 
-		if(that.onGround && !that.waiting){
+		if(that.onGround && !that.waiting && !that.talking){
 			if(that.recharge === 0) that.jump();
 
 			if(that.recharge < 0) that.recharge = 10;
@@ -53,18 +52,81 @@ export const bouncer = (pos) => {
 
 		if(levelCleared) that.waiting = false;
 
-		if(that.onGround || that.waiting) that.velocity.x = 0;
+		if(that.onGround || that.waiting || that.talking) that.velocity.x = 0;
 		else that.velocity.x = 0.7;
 	}
 
-	that.animate = () => {
+	that.talking = false;
+
+	that.checkPlayer = ({ world: { player }, levelCleared }) => {
+		if(v.sub(that.center, player.center).mag < 25 && !that.waiting)
+			that.talking = true;
+		else that.talking = false;
+	}
+
+	that.texts = [
+		["I can't jump", "this high!"],
+		["Will you help me", "get back to my", "village?"],
+	];
+
+	that.currentText = 0;
+	let lastCurrentText;
+
+	that.talk = ({ world: { add, remove } }) => {
+		if(that.talking && that.text === undefined && that.onGround){
+			that.text = textEntity({
+				pos: vec(that.center.x, that.pos.y - 7),
+				text: that.texts[that.currentText],
+				size: 9,
+			});
+			add(that.text, "texts", 6);
+
+			lastCurrentText = that.currentText;
+			while(that.currentText === lastCurrentText){
+				that.currentText = Math.floor(Math.random()*that.texts.length);
+			}
+		}
+		if(!that.talking && that.text !== undefined){
+			remove(that.text);
+			that.text = undefined; 
+		
+		}
+	}
+
+	that.animate = ({ world: { player } }) => {
 		if(that.onGround) that.frameState = "charging";
 		else that.frameState = "jumping";
-		if(that.waiting) that.frameState = "still";
+		if(that.waiting || that.talking) that.frameState = "still";
+
+		if(that.talking && player.center.x < that.center.x && that.onGround)
+			that.facing.x = -1;
+		else that.facing.x = 1;
 		
 	}
 
-	that.addMethods("bounce", "handleVelocity", "animate");
+	that.addMethods("bounce", "checkPlayer", "handleVelocity", "animate", "talk");
+
+	return that;
+}
+
+const textEntity = ({ pos, size, text }) => {
+	const that = traitHolder();
+
+	that.pos = pos;
+	that.size = size;
+	that.text = text;
+
+	let offsetX;
+
+	that.draw = (ctx) => {
+		ctx.fillStyle = "white";
+		ctx.font = size + "px game";
+		for(let i = 0; i < that.text.length; i++){
+			offsetX = (that.text[i].length / 2) * (that.size / 2);
+			ctx.fillText(that.text[i], that.pos.x - offsetX, that.pos.y - (size + 2) * (that.text.length-1 - i));
+		}
+	}
+
 
 	return that;
 }

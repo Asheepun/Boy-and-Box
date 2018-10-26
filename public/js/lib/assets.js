@@ -1,11 +1,17 @@
 export const loadSprites = (...urls) => new Promise((resolve, reject) => {
+    let loadCounter = 0;
     const sprites = urls.reduce((sprites, url) => {
         const sprite = new Image();
         sprite.src = `/assets/sprites/${url}.png`;
         sprites[url] = sprite;
+        sprite.addEventListener("load", (e) => {
+            loadCounter++;
+            if(loadCounter === urls.length){
+                resolve(sprites);   
+            }
+        });
         return sprites;
     }, {});
-    resolve(sprites);
 });
 
 export const loadAudio = (volume = 0.5, ...urls) => new Promise((resolve, reject) => {

@@ -12,6 +12,7 @@ import flower					from "/js/flower.js";
 import * as helpers				from "/js/helpers.js";
 import addBirds 				from "/js/bird.js";
 import levels					from "/js/levels.js";
+import drawImage 				from "/js/generateTileImg.js";
 
 Promise.all([
 	createCanvas(15 * 32, 15 * 18),
@@ -19,6 +20,7 @@ Promise.all([
 		"boy",
 		"box",
 		"background",
+		"tiles/grass_tiles",
 		"level_1/tiles",
 		"level_2/tiles",
 		"level_3/tiles",
@@ -28,7 +30,6 @@ Promise.all([
 		"shine",
 		"blue",
 		"blue_bird",
-		"helper_bird",
 		"flower_1",
 	),
 	loaders.loadAudio(
@@ -43,7 +44,7 @@ Promise.all([
 		"boy_frames",
 		"blue_frames",
 		"blue_bird_frames",
-		"helper_bird_frames",
+		"grass_tiles",
 	),
 ]).then(([ { c, ctx, width, height, pointer }, sprites, audio, JSON ]) => {
 	
@@ -63,7 +64,7 @@ Promise.all([
 		],
 		state: undefined,
 		context: vec(0, 0),
-		currentLevel: 4,
+		currentLevel: 0,
 	};
 
 	GAME.keys = keys(
@@ -188,6 +189,10 @@ Promise.all([
 		requestAnimationFrame(loop);
 	}
 	
-	loop();
+//	loop();
+	
+	const img = drawImage(GAME.levels[GAME.currentLevel], GAME.sprites["tiles/grass_tiles"], GAME.JSON["grass_tiles"]);
+
+	ctx.drawImage(img, 0, 0)
 
 });
