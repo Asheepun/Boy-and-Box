@@ -80,7 +80,7 @@ Promise.all([
 
 		GAME.world.clearAll();
 	
-		generateLevel(GAME.levels[GAME.currentLevel], GAME.world);
+		generateLevel(GAME.levels[GAME.currentLevel], GAME);
 
 		addClouds(GAME);
 		
@@ -189,10 +189,6 @@ Promise.all([
 		requestAnimationFrame(loop);
 	}
 	
-//	loop();
-	
-	const img = drawImage(GAME.levels[GAME.currentLevel], GAME.sprites["tiles/grass_tiles"], GAME.JSON["grass_tiles"]);
-
-	ctx.drawImage(img, 0, 0)
+	loop();
 
 });

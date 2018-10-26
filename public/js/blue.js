@@ -79,7 +79,7 @@ export const bouncer = (pos) => {
 				text: that.texts[that.currentText],
 				size: 9,
 			});
-			add(that.text, "texts", 6);
+			add(that.text, "texts", 9);
 
 			lastCurrentText = that.currentText;
 			while(that.currentText === lastCurrentText){

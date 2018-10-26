@@ -4,10 +4,13 @@ import box						from "/js/box.js";
 import player					from "/js/player.js";
 import point					from "/js/points.js";
 import * as blues				from "/js/blue.js";
+import generateTileImg 			from "/js/generateTileImg.js";
 
-const generateLevel = (template, { add }) => {
+const generateLevel = (template, { world: { add }, sprites, JSON }) => {
 	let pos;
 	const scl = 15;
+
+	add(tiles(generateTileImg(template, sprites["tiles/grass_tiles"], JSON["grass_tiles"])), "tiles", 8, true);
 
 	template.forEach((row, y) => {
 		strEach(row, (tile, x) => {
@@ -35,17 +38,17 @@ const obstacle = (pos) => {
 		size: vec(15, 15),
 	})(that);
 
-	traits.addSpriteTrait({
-		color: "grey",
-	})(that);
-
 	return that;
 }
 
-const shadow = (pos) => {
-	const that = obstacle(pos);
+const tiles = (img) => {
+	const that = traitHolder();
 
-	that.color = "black";
+	that.img = img;
+
+	that.draw = (ctx) => {
+		ctx.drawImage(that.img, 0, 0, 15 * 32, 15 * 18);
+	}
 
 	return that;
 }
