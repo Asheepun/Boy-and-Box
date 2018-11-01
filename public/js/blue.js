@@ -119,12 +119,14 @@ const textEntity = ({ pos, size, text }) => {
 	let offsetX;
 
 	that.draw = (ctx) => {
+		ctx.globalAlpha = 1;
 		ctx.fillStyle = "white";
 		ctx.font = size + "px game";
 		for(let i = 0; i < that.text.length; i++){
 			offsetX = (that.text[i].length / 2) * (that.size / 2);
 			ctx.fillText(that.text[i], that.pos.x - offsetX, that.pos.y - (size + 2) * (that.text.length-1 - i));
 		}
+		ctx.globalAlpha = 1;
 	}
 
 

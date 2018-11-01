@@ -6,7 +6,7 @@ import point					from "/js/points.js";
 import * as blues				from "/js/blue.js";
 import generateTileImg 			from "/js/generateTileImg.js";
 
-const generateLevel = (template, { world: { add }, sprites, JSON }) => {
+const generateLevel = (template, { world, world: { add }, sprites, JSON }) => {
 	let pos;
 	const scl = 15;
 
@@ -27,6 +27,20 @@ const generateLevel = (template, { world: { add }, sprites, JSON }) => {
 
 		});
 	});
+
+	for(let i = 0; i < world.obstacles.length; i++){
+		const o1 = world.obstacles[i];
+
+		for(let j = 0; j < world.obstacles.length; j++){
+			const o2 = world.obstacles[j];
+
+			if(o1.pos.x + o1.size.x === o2.pos.x && o1.pos.y === o2.pos.y){
+				o1.size.x += o2.size.x;
+				world.obstacles.splice(j, 1);
+				j--;
+			}
+		}
+	}
 
 }
 

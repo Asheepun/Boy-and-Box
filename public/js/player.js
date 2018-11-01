@@ -36,17 +36,28 @@ const player = (pos) => {
 		frames: "boy_frames",
 	})(that);
 
+	that.jumpSaveCounter = 0;
+
 	that.jump = ({ world: { add }, audio: { play } }) => {
-		if(that.onGround){
+		if(that.jumpSaveCounter > 0){
 			play("boy_jump");
 			that.velocity.y = -5;
+			that.acceleration.y = 0.025; //what it would be if onGround
 			for(let i = 0; i < 5; i++){
 				add(particles.dust(
 					vec(that.pos.x + Math.random()*(that.size.x-5), that.pos.y + that.size.y - 5),
 					vec(Math.random()*2-1, Math.random()*0.5),
 				), "particles", 5);
 			}
+			that.jumpSaveCounter = 0;
 		}
+	}
+
+	that.handleJumpSaveCounter = () => {
+		that.jumpSaveCounter--;
+
+		if(that.onGround) that.jumpSaveCounter = 10;
+
 	}
 
 	that.stopJump = () => {
@@ -137,7 +148,7 @@ const player = (pos) => {
 		that.acceleration.y = 0;
 	}
 
-	that.addMethods("handleVelocity", "animate", "handleDust", "checkLevelCleared", "checkHit");
+	that.addMethods("handleVelocity", "animate", "handleDust", "checkLevelCleared", "checkHit", "handleJumpSaveCounter");
 
 	return that;
 }
