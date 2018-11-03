@@ -78,7 +78,7 @@ const bird = (pos) => {
 		if(that.pos.y < 0 || that.pos.y > height || that.pos.x > width || that.pos.x < -that.size.x) remove(that);
 	}
 
-	that.addMethods("animate", "jump", "checkToFly");
+	that.addMethods("animate", "jump", "checkToFly", "handleOub");
 
 	return that;
 }

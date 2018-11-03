@@ -10,14 +10,13 @@ const generateLevel = (template, { world, world: { add }, sprites, JSON }) => {
 	let pos;
 	const scl = 15;
 
-	add(tiles(generateTileImg(template, sprites["tiles/grass_tiles"], JSON["grass_tiles"])), "tiles", 8, true);
+	add(tiles(generateTileImg(template, sprites, JSON["grass_tiles"])), "tiles", 8, true);
 
-	template.forEach((row, y) => {
-		strEach(row, (tile, x) => {
+	template.forEach((row, y) => strEach(row, (tile, x) => {
 			pos = vec(scl * x, scl * y);
 
 			if(tile === "@") add(player(pos.copy()), "player", 4, true);
-			if(tile === "#") add(obstacle(pos.copy()), "obstacles", 1);
+			if(tile === "#" || tile === "¤") add(obstacle(pos.copy()), "obstacles", 1);
 			if(tile === "B") add(box(pos.copy()), "box", 1, true);
 			if(tile === "P") add(point(pos.copy()), "points", 3);
 			if(tile === "0") add(vec(pos.x + 15, pos.y), "pointTarget", 0, true);
@@ -25,8 +24,7 @@ const generateLevel = (template, { world, world: { add }, sprites, JSON }) => {
 
 			if(tile === "b") add(blues.bouncer(pos.copy()), "blues", 3)
 
-		});
-	});
+	}));
 
 	for(let i = 0; i < world.obstacles.length; i++){
 		const o1 = world.obstacles[i];
