@@ -119,11 +119,11 @@ const player = (pos) => {
 	}
 
 	that.checkLevelCleared = ({ levelCleared, width }) => {
-		if(levelCleared) that.oubArea[2] = width + that.size.x -5;
+		if(levelCleared) that.oubArea[2] = width + that.size.x;
 	}
 
-	that.checkHit = ({ fadeOut }) => {
-		if(that.hit) fadeOut("setupLevel")
+	that.checkHit = ({ transitionState }) => {
+		if(that.hit) transitionState("setupLevel")
 	}
 
 	that.handleOubX = (GAME) => {
@@ -131,7 +131,7 @@ const player = (pos) => {
 		if(that.velocity.x > 0){
 			if(GAME.levelCleared && !that.hit){
 				GAME.currentLevel++;
-				GAME.fadeOut("setupLevel");
+				GAME.transitionState("setupLevel");
 			}else
 				that.pos.x = GAME.width - that.size.x;
 

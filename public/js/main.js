@@ -30,12 +30,11 @@ Promise.all([
 		"shine",
 		"blue",
 		"blue_bird",
-		"flower_1",
+		"transition",
 	),
 	loaders.loadAudio(
 		1,
 		"boy_jump",
-		"bj2",
 		"boy_land",
 		"pickup_point",
 		"level_cleared",
@@ -90,8 +89,6 @@ Promise.all([
 
 		GAME.levelCleared = false;
 
-		GAME.fade = 1;
-
 		GAME.tiles = "level_" + (GAME.currentLevel + 1) + "/tiles";
 
 		boxOriginPos = GAME.world.box.pos.copy();
@@ -117,8 +114,9 @@ Promise.all([
 
 		GAME.world.update(GAME);
 
-		GAME.fade -= 0.02;
-		if(GAME.fade < 0) GAME.fade = 0;
+		//GAME.fade -= 0.02;
+		//if(GAME.fade < 0) GAME.fade = 0;
+		GAME.transitionPosX += 20;
 
 		if(GAME.world.points.length <= 0){
 			if(!GAME.levelCleared) GAME.audio.play("level_cleared");
@@ -133,6 +131,8 @@ Promise.all([
 		GAME.world.draw(ctx, GAME.sprites);
 		//ctx.drawImage(GAME.sprites[GAME.tiles], 0, 0, GAME.width, GAME.height);
 
+		ctx.drawImage(GAME.sprites.transition, GAME.transitionPosX, 0, 32 * 15 * 1.5, 18 * 15);
+		/*
 		ctx.globalAlpha = GAME.fade;
 		ctx.fillStyle = "black";
 		ctx.fillRect(0, 0, GAME.width, GAME.height);
@@ -142,6 +142,7 @@ Promise.all([
 		//ctx.fillRect(0, 0, GAME.width, GAME.height);
 
 		ctx.globalAlpha = 1;
+		*/
 
 		//handleScreenShake
 		GAME.context = v.mul(GAME.context, 0.5);
@@ -150,6 +151,7 @@ Promise.all([
 
 	}
 
+	/*
 	let afterFadeState;
 	GAME.states.fadeOutState = () => {
 		GAME.fade += 0.05;
@@ -167,6 +169,26 @@ Promise.all([
 	GAME.fadeOut = (state) => {
 		afterFadeState = state;
 		GAME.state = GAME.states.fadeOutState;
+	}
+	*/
+
+	let nextState;
+	GAME.states.transitionState = () => {
+		GAME.transitionPosX += 20;
+		if(GAME.transitionPosX === 0) GAME.state = GAME.states[nextState];
+
+		ctx.save();
+		ctx.scale(c.scale, c.scale);
+
+		ctx.drawImage(GAME.sprites.transition, GAME.transitionPosX, 0, 32 * 15 * 1.5, 18 * 15);
+
+		ctx.restore();
+	}
+
+	GAME.transitionState = (state) => {
+		nextState = state;
+		GAME.transitionPosX = - 32 * 15 * 1.5;
+		GAME.state = GAME.states.transitionState;
 	}
 
 	GAME.state = GAME.states.setupLevel;
