@@ -122,7 +122,7 @@ const player = (pos) => {
 		if(levelCleared) that.oubArea[2] = width + that.size.x;
 	}
 
-	that.checkHit = ({ transitionState }) => {
+	that.handleHit = ({ transitionState }) => {
 		if(that.hit) transitionState("setupLevel")
 	}
 
@@ -148,7 +148,7 @@ const player = (pos) => {
 		that.acceleration.y = 0;
 	}
 
-	that.addMethods("handleVelocity", "animate", "handleDust", "checkLevelCleared", "checkHit", "handleJumpSaveCounter");
+	that.addMethods("handleVelocity", "animate", "handleDust", "checkLevelCleared", "handleHit", "handleJumpSaveCounter");
 
 	return that;
 }

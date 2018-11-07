@@ -5,12 +5,21 @@ import player					from "/js/player.js";
 import point					from "/js/points.js";
 import * as blues				from "/js/blue.js";
 import generateTileImg 			from "/js/generateTileImg.js";
+import generateShadowImg 		from "/js/generateShadowImg.js";
+import addClouds				from "/js/clouds.js";
+import addBirds 				from "/js/bird.js";
 
-const generateLevel = (template, { world, world: { add }, sprites, JSON }) => {
+const generateLevel = ({ template, time, background }, { world, world: { add }, sprites, JSON, width, height }) => {
 	let pos;
 	const scl = 15;
 
 	add(tiles(generateTileImg(template, sprites, JSON["grass_tiles"])), "tiles", 8, true);
+
+	add(tiles(sprites["backgrounds/" + background]), "background", 0, true);
+
+	if(background === "sky") addClouds({ world, width });
+	
+	addBirds({ world, width, height });
 
 	template.forEach((row, y) => strEach(row, (tile, x) => {
 			pos = vec(scl * x, scl * y);
@@ -23,6 +32,8 @@ const generateLevel = (template, { world, world: { add }, sprites, JSON }) => {
 			if(tile === "0" || tile === "O") add(shine(pos.copy()), "shine", 10);
 
 			if(tile === "b") add(blues.bouncer(pos.copy()), "blues", 3)
+
+			if(tile === "£") add(tileObject(pos, "lamp"), "lamps", 6);
 
 	}));
 
@@ -60,6 +71,18 @@ const tiles = (img) => {
 
 	that.draw = (ctx) => {
 		ctx.drawImage(that.img, 0, 0, 15 * 32, 15 * 18);
+	}
+
+	return that;
+}
+
+const tileObject = (pos, img) => {
+	const that = obstacle(pos);
+
+	that.img = img;
+
+	that.draw = (ctx, sprites) => {
+		ctx.drawImage(sprites[that.img], that.pos.x, that.pos.y, that.size.x, that.size.y);
 	}
 
 	return that;

@@ -25,6 +25,10 @@ export const bouncer = (pos) => {
 
 	traits.addBoxColTrait({})(that);
 
+	traits.addOubTrait({
+		oubArea: [0, 0, 32 * 15 + that.size.x, 18 * 15 + that.size.y * 2]
+	})(that);
+
 	traits.addFrameTrait({
 		delay: 20,
 		frames: "blue_frames",
@@ -59,7 +63,7 @@ export const bouncer = (pos) => {
 	that.talking = false;
 
 	that.checkPlayer = ({ world: { player }, levelCleared }) => {
-		if(v.sub(that.center, player.center).mag < 25 && !that.waiting)
+		if(v.sub(that.center, player.center).mag < 25 && !that.waiting && that.pos.y > player.pos.y)
 			that.talking = true;
 		else that.talking = false;
 	}
@@ -104,7 +108,21 @@ export const bouncer = (pos) => {
 		
 	}
 
-	that.addMethods("bounce", "checkPlayer", "handleVelocity", "animate", "talk");
+	that.handleHit = ({ transitionState }) => {
+		if(that.hit) transitionState("setupLevel")
+	}
+
+	that.handleOubX = ({ world: { remove } }) => {
+		if(that.velocity.x < 0) that.pos.x = 0;
+		else remove(that);
+	}
+
+	that.handleOubY = () => {
+		if(that.velocity.y > 0) that.hit = true;
+		else that.pos.y = 0;
+	}
+
+	that.addMethods("bounce", "checkPlayer", "handleVelocity", "animate", "talk", "checkOub", "handleHit");
 
 	return that;
 }

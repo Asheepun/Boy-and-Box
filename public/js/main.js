@@ -19,7 +19,8 @@ Promise.all([
 	loaders.loadSprites(
 		"boy",
 		"box",
-		"background",
+		"backgrounds/sky",
+		"backgrounds/planks",
 		"tiles/grass_tiles",
 		"tiles/street_tiles",
 		"tiles/grass",
@@ -31,6 +32,8 @@ Promise.all([
 		"blue",
 		"blue_bird",
 		"transition",
+		"shadow",
+		"lamp",
 	),
 	loaders.loadAudio(
 		1,
@@ -63,7 +66,7 @@ Promise.all([
 		],
 		state: undefined,
 		context: vec(0, 0),
-		currentLevel: 0,
+		currentLevel: 7,
 	};
 
 	GAME.keys = keys(
@@ -80,10 +83,6 @@ Promise.all([
 		GAME.world.clearAll();
 	
 		generateLevel(GAME.levels[GAME.currentLevel], GAME);
-
-		addClouds(GAME);
-		
-		addBirds(GAME);
 
 		if(GAME.currentLevel === 0) GAME.world.add(helpers.boxText(vec(125, 50)), "text", 3);
 
@@ -126,7 +125,6 @@ Promise.all([
 		ctx.save();
 		ctx.scale(c.scale, c.scale);
 		ctx.translate(GAME.context.x, GAME.context.y);
-		ctx.drawImage(GAME.sprites.background, 0, 0, GAME.width, GAME.height);
 
 		GAME.world.draw(ctx, GAME.sprites);
 		//ctx.drawImage(GAME.sprites[GAME.tiles], 0, 0, GAME.width, GAME.height);
