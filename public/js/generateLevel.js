@@ -9,9 +9,11 @@ import generateShadowImg 		from "/js/generateShadowImg.js";
 import addClouds				from "/js/clouds.js";
 import addBirds 				from "/js/bird.js";
 
-const generateLevel = ({ template, time, background }, { world, world: { add }, sprites, JSON, width, height }) => {
+const generateLevel = ({ template, time, background, texts }, { world, world: { add }, sprites, JSON, width, height }) => {
 	let pos;
 	const scl = 15;
+
+	let textCounter = 0;
 
 	add(tiles(generateTileImg(template, sprites, JSON["grass_tiles"])), "tiles", 8, true);
 
@@ -31,7 +33,15 @@ const generateLevel = ({ template, time, background }, { world, world: { add }, 
 			if(tile === "0") add(vec(pos.x + 15, pos.y), "pointTarget", 0, true);
 			if(tile === "0" || tile === "O") add(shine(pos.copy()), "shine", 10);
 
-			if(tile === "b") add(blues.bouncer(pos.copy()), "blues", 3)
+			if(tile === "b"){
+				add(blues.bouncer(pos.copy(), texts[textCounter]), "blues", 3)
+				textCounter++;
+			}
+			if(tile === "t"){
+				add(blues.blue(pos.copy(), texts[textCounter]), "blues", 3);
+				textCounter++;
+			}
+			if(tile === "d") add(blues.blueDoc(pos.copy()), "blues", 3)
 
 			if(tile === "£") add(tileObject(pos, "lamp"), "lamps", 6);
 

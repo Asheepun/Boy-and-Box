@@ -30,6 +30,7 @@ Promise.all([
 		"point",
 		"shine",
 		"blue",
+		"blue_doc",
 		"blue_bird",
 		"transition",
 		"shadow",
@@ -66,7 +67,8 @@ Promise.all([
 		],
 		state: undefined,
 		context: vec(0, 0),
-		currentLevel: 7,
+			
+		currentLevel: 0,
 	};
 
 	GAME.keys = keys(

@@ -2,9 +2,9 @@ import traitHolder, * as traits from "/js/lib/traits.js";
 import vec, * as v 				from "/js/lib/vector.js";
 import * as text				from "/js/lib/text.js";
 
-export const bouncer = (pos) => {
+export const blue = (pos, texts) => {
 	const that = traitHolder();
-
+	
 	traits.addEntityTrait({
 		pos,
 		size: vec(12, 12),
@@ -21,9 +21,9 @@ export const bouncer = (pos) => {
 		gravity: 0.007,
 	})(that);
 
-	traits.addColTrait({})(that);
-
 	traits.addBoxColTrait({})(that);
+
+	traits.addColTrait({})(that);
 
 	traits.addOubTrait({
 		oubArea: [0, 0, 32 * 15 + that.size.x, 18 * 15 + that.size.y * 2]
@@ -33,6 +33,54 @@ export const bouncer = (pos) => {
 		delay: 20,
 		frames: "blue_frames",
 	})(that);
+
+	that.texts = texts;
+
+	that.talking = false;
+
+	that.checkPlayer = ({ world: { player }, levelCleared }) => {
+		if(v.sub(that.center, player.center).mag < 25 && !that.waiting && that.pos.y > player.pos.y)
+			that.talking = true;
+		else that.talking = false;
+	}
+
+
+	that.currentText = 0;
+	let lastCurrentText;
+
+	that.talk = ({ world: { add, remove } }) => {
+		if(that.talking && that.text === undefined && that.onGround){
+			that.text = textEntity({
+				pos: vec(that.center.x, that.pos.y - 7),
+				text: that.texts[that.currentText],
+				size: 9,
+			});
+			add(that.text, "texts", 9);
+
+			lastCurrentText = that.currentText;
+//			while(that.currentText === lastCurrentText){
+//			}
+			that.currentText = Math.floor(Math.random()*that.texts.length);
+		}
+		if(!that.talking && that.text !== undefined){
+			remove(that.text);
+			that.text = undefined; 
+		
+		}
+	}
+
+	that.animate = ({ world: { player } }) => {
+		if(player.center.x > that.center.x) that.facing.x = 1;
+		else that.facing.x = -1;
+	}
+
+	that.addMethods("checkPlayer", "talk", "animate");
+	
+	return that;
+}
+
+export const bouncer = (pos, texts) => {
+	const that = blue(pos, texts);
 
 	that.jump = () => {
 		that.velocity.y = -1.4;
@@ -60,42 +108,6 @@ export const bouncer = (pos) => {
 		else that.velocity.x = 0.7;
 	}
 
-	that.talking = false;
-
-	that.checkPlayer = ({ world: { player }, levelCleared }) => {
-		if(v.sub(that.center, player.center).mag < 25 && !that.waiting && that.pos.y > player.pos.y)
-			that.talking = true;
-		else that.talking = false;
-	}
-
-	that.texts = [
-		["I can't jump", "this high!"],
-		["Will you help me", "get back to my", "village?"],
-	];
-
-	that.currentText = 0;
-	let lastCurrentText;
-
-	that.talk = ({ world: { add, remove } }) => {
-		if(that.talking && that.text === undefined && that.onGround){
-			that.text = textEntity({
-				pos: vec(that.center.x, that.pos.y - 7),
-				text: that.texts[that.currentText],
-				size: 9,
-			});
-			add(that.text, "texts", 9);
-
-			lastCurrentText = that.currentText;
-			while(that.currentText === lastCurrentText){
-				that.currentText = Math.floor(Math.random()*that.texts.length);
-			}
-		}
-		if(!that.talking && that.text !== undefined){
-			remove(that.text);
-			that.text = undefined; 
-		
-		}
-	}
 
 	that.animate = ({ world: { player } }) => {
 		if(that.onGround) that.frameState = "charging";
@@ -122,7 +134,19 @@ export const bouncer = (pos) => {
 		else that.pos.y = 0;
 	}
 
-	that.addMethods("bounce", "checkPlayer", "handleVelocity", "animate", "talk", "checkOub", "handleHit");
+	that.addMethods("bounce", "handleVelocity", "checkOub", "handleHit");
+
+	return that;
+}
+
+export const blueDoc = (pos) => {
+	const that = blue(pos, [
+		["He's not doing", "so well."]
+	]);
+
+	that.img = "blue_doc";
+
+	that.removeMethods("animate");
 
 	return that;
 }
