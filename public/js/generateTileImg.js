@@ -23,7 +23,7 @@ const generateTileImg = (map, sprites, json) => {
 		if(tile === "#" || tile === "¤"){
 			sprite = "tiles/";
 			if(tile === "#") sprite += "grass_tiles";
-			if(tile === "¤") sprite += "street_tiles";
+			if(tile === "¤") sprite += "plank_tiles";
 
 			up = down = left = right = false;
 

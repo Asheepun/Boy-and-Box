@@ -88,10 +88,10 @@ export const bouncer = (pos, texts) => {
 	
 	that.recharge = 0;
 
-	that.bounce = () => {
+	that.bounce = ({ width }) => {
 		that.recharge--;
 
-		if(that.onGround && !that.waiting && !that.talking){
+		if(that.onGround && !that.waiting && (!that.talking || that.pos.x > width - 4 * 15)){
 			if(that.recharge === 0) that.jump();
 
 			if(that.recharge < 0) that.recharge = 10;
@@ -104,7 +104,7 @@ export const bouncer = (pos, texts) => {
 
 		if(levelCleared) that.waiting = false;
 
-		if(that.onGround || that.waiting || that.talking) that.velocity.x = 0;
+		if(that.onGround || that.waiting) that.velocity.x = 0;
 		else that.velocity.x = 0.7;
 	}
 

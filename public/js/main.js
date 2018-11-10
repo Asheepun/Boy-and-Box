@@ -22,7 +22,7 @@ Promise.all([
 		"backgrounds/sky",
 		"backgrounds/planks",
 		"tiles/grass_tiles",
-		"tiles/street_tiles",
+		"tiles/plank_tiles",
 		"tiles/grass",
 		"tiles/shadow",
 		"dust",
@@ -35,6 +35,8 @@ Promise.all([
 		"transition",
 		"shadow",
 		"lamp",
+		"lamp_light",
+		"bookshelf"
 	),
 	loaders.loadAudio(
 		1,
@@ -68,7 +70,7 @@ Promise.all([
 		state: undefined,
 		context: vec(0, 0),
 			
-		currentLevel: 0,
+		currentLevel: 7,
 	};
 
 	GAME.keys = keys(
@@ -115,8 +117,6 @@ Promise.all([
 
 		GAME.world.update(GAME);
 
-		//GAME.fade -= 0.02;
-		//if(GAME.fade < 0) GAME.fade = 0;
 		GAME.transitionPosX += 20;
 
 		if(GAME.world.points.length <= 0){
@@ -129,20 +129,8 @@ Promise.all([
 		ctx.translate(GAME.context.x, GAME.context.y);
 
 		GAME.world.draw(ctx, GAME.sprites);
-		//ctx.drawImage(GAME.sprites[GAME.tiles], 0, 0, GAME.width, GAME.height);
 
 		ctx.drawImage(GAME.sprites.transition, GAME.transitionPosX, 0, 32 * 15 * 1.5, 18 * 15);
-		/*
-		ctx.globalAlpha = GAME.fade;
-		ctx.fillStyle = "black";
-		ctx.fillRect(0, 0, GAME.width, GAME.height);
-		ctx.globalAlpha = 0.1;
-
-		ctx.fillStyle = "black";
-		//ctx.fillRect(0, 0, GAME.width, GAME.height);
-
-		ctx.globalAlpha = 1;
-		*/
 
 		//handleScreenShake
 		GAME.context = v.mul(GAME.context, 0.5);
@@ -150,27 +138,6 @@ Promise.all([
 		ctx.restore();
 
 	}
-
-	/*
-	let afterFadeState;
-	GAME.states.fadeOutState = () => {
-		GAME.fade += 0.05;
-		if(GAME.fade > 0.5) GAME.fade += 0.05;
-		if(GAME.fade > 1){
-			GAME.fade = 1;
-			GAME.state = GAME.states[afterFadeState];
-		}
-		ctx.globalAlpha = GAME.fade;
-		ctx.fillStyle = "black";
-		ctx.fillRect(0, 0, GAME.c.width, GAME.c.height);
-		ctx.globalAlpha = 1;
-	}
-
-	GAME.fadeOut = (state) => {
-		afterFadeState = state;
-		GAME.state = GAME.states.fadeOutState;
-	}
-	*/
 
 	let nextState;
 	GAME.states.transitionState = () => {

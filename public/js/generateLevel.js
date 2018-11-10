@@ -4,6 +4,7 @@ import box						from "/js/box.js";
 import player					from "/js/player.js";
 import point					from "/js/points.js";
 import * as blues				from "/js/blue.js";
+import lamp						from "/js/lamp.js";
 import generateTileImg 			from "/js/generateTileImg.js";
 import generateShadowImg 		from "/js/generateShadowImg.js";
 import addClouds				from "/js/clouds.js";
@@ -43,7 +44,9 @@ const generateLevel = ({ template, time, background, texts }, { world, world: { 
 			}
 			if(tile === "d") add(blues.blueDoc(pos.copy()), "blues", 3)
 
-			if(tile === "£") add(tileObject(pos, "lamp"), "lamps", 6);
+			if(tile === "£") add(lamp(pos), "lamps", 6);
+
+			if(tile === "µ") add(bookShelf(pos), "furniture", 1);
 
 	}));
 
@@ -94,6 +97,14 @@ const tileObject = (pos, img) => {
 	that.draw = (ctx, sprites) => {
 		ctx.drawImage(sprites[that.img], that.pos.x, that.pos.y, that.size.x, that.size.y);
 	}
+
+	return that;
+}
+
+const bookShelf = (pos) => {
+	const that = tileObject(pos, "bookshelf");
+
+	that.size = vec(30, 45);
 
 	return that;
 }

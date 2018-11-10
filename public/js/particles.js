@@ -12,6 +12,7 @@ const particle = ({ pos, size, img, imgSize, velocity }) => {
 	traits.addSpriteTrait({
 		img,
 		imgSize,
+		canRotate: true,
 	})(that);
 
 	traits.addMoveTrait({
