@@ -104,7 +104,7 @@ export const bouncer = (pos, texts) => {
 
 	that.waiting = false;
 	that.handleVelocity = ({ width, levelCleared }) => {
-		if(that.onGround && that.pos.x >= width - 40 && !levelCleared) that.waiting = true;
+		if(that.onGround && that.pos.x > width - 15 - that.size.x && !levelCleared) that.waiting = true;
 
 		if(levelCleared) that.waiting = false;
 
