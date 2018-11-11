@@ -72,7 +72,6 @@ Promise.all([
 		],
 		state: undefined,
 		context: vec(0, 0),
-			
 		currentLevel: 0,
 	};
 
