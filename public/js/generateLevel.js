@@ -44,20 +44,38 @@ const generateLevel = ({ template, time, background, texts }, { world, world: { 
 			}
 			if(tile === "d") add(blues.blueDoc(pos.copy()), "blues", 3)
 
-			if(tile === "£") add(lamp(pos), "lamps", 6);
+			if(tile === "£") add(lamp(pos.copy()), "lamps", 6);
 
-			if(tile === "µ") add(bookShelf(pos), "furniture", 1);
+			if(tile === "µ") add(bookShelf(pos.copy()), "furniture", 1);
+
+			if(tile === "=") add(sickBlue(pos.copy()), "blues", 1);
+
+			if(tile === "{") add(blues.blueLock(vec(pos.x + 15, pos.y)), "obstacles", 1);
 
 	}));
 
+	//optimize obstacles
 	for(let i = 0; i < world.obstacles.length; i++){
 		const o1 = world.obstacles[i];
 
 		for(let j = 0; j < world.obstacles.length; j++){
 			const o2 = world.obstacles[j];
 
-			if(o1.pos.x + o1.size.x === o2.pos.x && o1.pos.y === o2.pos.y){
+			if(o1.pos.x + o1.size.x === o2.pos.x && o1.pos.y === o2.pos.y && !o1.img && !o2.img){
 				o1.size.x += o2.size.x;
+				world.obstacles.splice(j, 1);
+				j--;
+			}
+		}
+	}
+
+	for(let i = 0; i < world.obstacles.length; i++){
+		const o1 = world.obstacles[i];
+		
+		for(let j = 0; j < world.obstacles.length; j++){
+			const o2 = world.obstacles[j]
+			if(o1.pos.y + o1.size.y === o2.pos.y && o1.pos.x === o2.pos.x && o1.size.x === o2.size.x && !o1.img && !o2.img){
+				o1.size.y += o2.size.y;
 				world.obstacles.splice(j, 1);
 				j--;
 			}
@@ -105,6 +123,27 @@ const bookShelf = (pos) => {
 	const that = tileObject(pos, "bookshelf");
 
 	that.size = vec(30, 45);
+
+	return that;
+}
+
+const sickBlue = (pos) => {
+	const that = traitHolder();
+
+	traits.addEntityTrait({
+		pos,
+		size: vec(30, 15),
+	})(that);
+
+	traits.addSpriteTrait({
+		img: "sick_blue",
+		imgSize: that.size.copy(),
+	})(that);
+
+	traits.addFrameTrait({
+		frames: "sick_blue_frames",
+		delay: 60,
+	})(that);
 
 	return that;
 }

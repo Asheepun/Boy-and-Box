@@ -32,6 +32,8 @@ Promise.all([
 		"blue",
 		"blue_doc",
 		"blue_bird",
+		"sick_blue",
+		"blue_lock",
 		"transition",
 		"shadow",
 		"lamp",
@@ -49,6 +51,7 @@ Promise.all([
 		"boy_frames",
 		"blue_frames",
 		"blue_bird_frames",
+		"sick_blue_frames",
 		"grass_tiles",
 	),
 ]).then(([ { c, ctx, width, height, pointer }, sprites, audio, JSON ]) => {
@@ -70,7 +73,7 @@ Promise.all([
 		state: undefined,
 		context: vec(0, 0),
 			
-		currentLevel: 7,
+		currentLevel: 0,
 	};
 
 	GAME.keys = keys(

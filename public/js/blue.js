@@ -87,12 +87,16 @@ export const bouncer = (pos, texts) => {
 	}
 	
 	that.recharge = 0;
+	that.jumping = false;
 
 	that.bounce = ({ width }) => {
 		that.recharge--;
 
 		if(that.onGround && !that.waiting && (!that.talking || that.pos.x > width - 4 * 15)){
-			if(that.recharge === 0) that.jump();
+			if(that.recharge === 0){
+				that.jump();
+				that.jumping = true;
+			}
 
 			if(that.recharge < 0) that.recharge = 10;
 		}
@@ -104,8 +108,10 @@ export const bouncer = (pos, texts) => {
 
 		if(levelCleared) that.waiting = false;
 
-		if(that.onGround || that.waiting) that.velocity.x = 0;
-		else that.velocity.x = 0.7;
+		if(that.onGround || that.waiting) that.jumping = false;
+
+		if(that.jumping) that.velocity.x = 0.7;
+		else that.velocity.x = 0;
 	}
 
 
@@ -120,10 +126,6 @@ export const bouncer = (pos, texts) => {
 		
 	}
 
-	that.handleHit = ({ transitionState }) => {
-		if(that.hit) transitionState("setupLevel")
-	}
-
 	that.handleOubX = ({ world: { remove } }) => {
 		if(that.velocity.x < 0) that.pos.x = 0;
 		else remove(that);
@@ -134,7 +136,7 @@ export const bouncer = (pos, texts) => {
 		else that.pos.y = 0;
 	}
 
-	that.addMethods("bounce", "handleVelocity", "checkOub", "handleHit");
+	that.addMethods("handleVelocity", "bounce", "checkOub");
 
 	return that;
 }
@@ -148,6 +150,43 @@ export const blueDoc = (pos) => {
 
 	that.removeMethods("animate");
 
+	return that;
+}
+
+export const blueLock = (pos) => {
+	const that = traitHolder();
+
+	traits.addEntityTrait({
+		pos,
+		size: vec(15, 15),
+	})(that);
+
+	traits.addSpriteTrait({
+		img: "blue_lock",
+		imgSize: that.size.copy(),
+	})(that);
+
+	traits.addMoveTrait({})(that);
+
+	traits.addColTrait({})(that)
+
+	traits.addPhysicsTrait({
+		gravity: 0.01,
+	})(that);
+
+	that.checkBlues = ({ world: { blues, remove } }) => {
+		blues.forEach((blue) => {
+			if(Math.floor(blue.pos.x + blue.size.x) >= that.pos.x - 2
+			&& blue.pos.y >= that.pos.y
+			&& blue.pos.y < that.pos.y + that.size.y
+			&& blue.onGround){
+				remove(that);
+			}
+		});
+	}
+
+	that.addMethods("checkBlues");
+	
 	return that;
 }
 
