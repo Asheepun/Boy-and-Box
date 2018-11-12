@@ -34,6 +34,7 @@ const point = (pos) => {
 	}
 
 	let spawner = 0;
+
 	that.open = ({ world: { pointTarget, remove, add }, width, context, audio: { play } }) => {
 		that.acceleration = v.add(that.acceleration, v.pipe(
 			v.sub(that.center, pointTarget),
@@ -59,8 +60,10 @@ const point = (pos) => {
 		that.hit = true;
 	}
 
-	that.checkHit = ({ world: { pointTarget }, audio: { play } }) => {
+	that.checkHit = ({ world: { pointTarget, remove, add }, audio: { play } }) => {
 		if(that.hit){
+			remove(that);
+			add(that, "points", 9);
 			play("pickup_point");
 			that.acceleration = v.pipe(
 				v.sub(that.center, pointTarget),

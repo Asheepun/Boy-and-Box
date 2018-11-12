@@ -88,12 +88,13 @@ export const bouncer = (pos, texts) => {
 	
 	that.recharge = 0;
 	that.jumping = false;
+	that.jumpSaveCounter = 0;
 
 	let count = 0;
 	that.bounce = ({ width }) => {
 		that.recharge--;
 
-		if(that.onGround && !that.waiting && (!that.talking || that.pos.x > width - 4 * 15)){
+		if(that.jumpSaveCounter > 0 && !that.waiting && (!that.talking || that.pos.x > width - 4 * 15)){
 			if(that.recharge === 0){
 				that.jump();
 				that.jumping = true;
@@ -101,6 +102,13 @@ export const bouncer = (pos, texts) => {
 
 			if(that.recharge < 0) that.recharge = 10;
 		}
+	}
+
+	that.handleJumpSaveCounter = () => {
+		that.jumpSaveCounter--;
+
+		if(that.onGround) that.jumpSaveCounter = 10;
+
 	}
 
 	that.waiting = false;
@@ -137,7 +145,7 @@ export const bouncer = (pos, texts) => {
 		else that.pos.y = 0;
 	}
 
-	that.addMethods("handleVelocity", "bounce", "checkOub");
+	that.addMethods("handleVelocity", "handleJumpSaveCounter", "bounce", "checkOub");
 
 	return that;
 }
