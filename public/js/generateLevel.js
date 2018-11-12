@@ -4,6 +4,7 @@ import box						from "/js/box.js";
 import player					from "/js/player.js";
 import point					from "/js/points.js";
 import * as blues				from "/js/blue.js";
+import * as reds				from "/js/reds.js";
 import lamp						from "/js/lamp.js";
 import generateTileImg 			from "/js/generateTileImg.js";
 import generateShadowImg 		from "/js/generateShadowImg.js";
@@ -51,6 +52,9 @@ const generateLevel = ({ template, time, background, texts }, { world, world: { 
 			if(tile === "=") add(sickBlue(pos.copy()), "blues", 1);
 
 			if(tile === "{") add(blues.blueLock(vec(pos.x + 15, pos.y)), "obstacles", 1);
+
+			//reds
+			if(tile === "1") add(reds.red(pos.copy()), "reds", 5);
 
 	}));
 

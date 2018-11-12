@@ -34,6 +34,7 @@ Promise.all([
 		"blue_bird",
 		"sick_blue",
 		"blue_lock",
+		"red",
 		"transition",
 		"shadow",
 		"lamp",
@@ -52,6 +53,7 @@ Promise.all([
 		"blue_frames",
 		"blue_bird_frames",
 		"sick_blue_frames",
+		"red_frames",
 		"grass_tiles",
 	),
 ]).then(([ { c, ctx, width, height, pointer }, sprites, audio, JSON ]) => {

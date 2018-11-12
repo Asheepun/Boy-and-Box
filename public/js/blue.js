@@ -89,6 +89,7 @@ export const bouncer = (pos, texts) => {
 	that.recharge = 0;
 	that.jumping = false;
 
+	let count = 0;
 	that.bounce = ({ width }) => {
 		that.recharge--;
 
@@ -110,7 +111,7 @@ export const bouncer = (pos, texts) => {
 
 		if(that.onGround || that.waiting) that.jumping = false;
 
-		if(that.jumping) that.velocity.x = 0.7;
+		if(that.jumping) that.velocity.x = 15 / 32;
 		else that.velocity.x = 0;
 	}
 
