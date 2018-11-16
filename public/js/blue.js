@@ -83,6 +83,7 @@ export const bouncer = (pos, texts) => {
 	const that = blue(pos, texts);
 
 	that.jump = () => {
+		that.acceleration.y = 0;
 		that.velocity.y = -1.4;
 	}
 	
