@@ -3,11 +3,12 @@
 		[0, 0]
 	],
 
-	"jumping": [
-		[23, 0]
+	"charging": [
+		[26, 0]
 	],
 
-	"falling": [
+	"jumping": [
 		[52, 0]
 	]
+
 }

@@ -6,7 +6,7 @@ export const red = (pos) => {
 
 	traits.addEntityTrait({
 		pos,
-		size: vec(22, 25),
+		size: vec(25, 21),
 	})(that);
 
 	traits.addSpriteTrait({
@@ -16,17 +16,13 @@ export const red = (pos) => {
 
 	traits.addMoveTrait({})(that);
 
+	traits.addPhysicsTrait({
+		gravity: 0.0045,
+	})(that);
+
 	traits.addColTrait({})(that);
 
 	traits.addBoxColTrait({})(that);
-
-	traits.addOubTrait({
-		oubArea: [0, 0, 15 * 32, 15 * 18 + that.size.y],
-	})(that);
-
-	traits.addPhysicsTrait({
-		gravity: 0.0030,
-	})(that);
 
 	traits.addFrameTrait({
 		frames: "red_frames",
@@ -37,11 +33,6 @@ export const red = (pos) => {
 		that.facing.x *= -1;
 		if(that.velocity.x > 0) that.pos.x = obstacle.pos.x - that.size.x;
 		else that.pos.x = obstacle.pos.x + obstacle.size.x;
-	}
-
-	that.handleOubY = ({ world: { remove } }) => {
-		if(that.velocity.y > 0) remove(that);
-		else that.pos.y = 0;
 	}
 
 	let rechargeCounter = 0;
@@ -56,24 +47,24 @@ export const red = (pos) => {
 				that.jump();
 			}
 
-			if(rechargeCounter < 0) rechargeCounter = 8;
+			if(rechargeCounter < 0) rechargeCounter = 10;
 		}
 	}
 
 	that.jump = () => {
-		that.velocity.y = -1.1;
+		that.velocity.y = -1.2;
 	}
 
 	that.handleVelocity = () => {
-		if(that.onGround) that.jumping = false;
-
-		if(that.jumping) that.velocity.x = that.facing.x * 0.8;
+		if(!that.onGround) that.velocity.x = that.facing.x * 0.5;
 		else that.velocity.x = 0;
 	}
+
 
 	that.animate = () => {
 		if(that.onGround) that.frameState = "still";
 		else that.frameState = "jumping";
+//		if(rechargeCounter < 8 && that.rechargeCounter > 0) that.frameState = "charging";
 	}
 
 	that.addMethods("handleVelocity", "bounce", "animate");
