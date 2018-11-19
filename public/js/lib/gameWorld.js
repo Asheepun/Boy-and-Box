@@ -28,8 +28,6 @@ const gameWorld = () => {
         if(that[entity.type].constructor = Array){
             that[entity.type].splice(that[entity.type].indexOf(entity), 1);
         }else delete that[entity.type];
-        delete entity.type;
-        delete entity.layer;
     }
 
     that.clear = (...types) => {

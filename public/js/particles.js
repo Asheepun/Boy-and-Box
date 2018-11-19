@@ -74,6 +74,5 @@ export const getDustParticle = (pos, velocity) => {
 	dustParticles[dustParticleIndex].velocity = velocity;
 	dustParticles[dustParticleIndex].size = vec(5, 5);
 	dustParticles[dustParticleIndex].rotation = 0;
-	console.log(dustParticleIndex);
 	return dustParticles[dustParticleIndex];
 }
