@@ -44,7 +44,7 @@ const player = (pos) => {
 			that.velocity.y = -5;
 			that.acceleration.y = 0.025; //what it would be if onGround
 			for(let i = 0; i < 5; i++){
-				add(particles.dust(
+				add(particles.getDustParticle(
 					vec(that.pos.x + Math.random()*(that.size.x-5), that.pos.y + that.size.y - 5),
 					vec(Math.random()*2-1, Math.random()*0.5),
 				), "particles", 5);
@@ -110,7 +110,7 @@ const player = (pos) => {
 		if(that.frameState === "moving" && that.onGround && counter >= 12){
 			counter -= 12;
 			for(let i = 0; i < Math.random()*3; i++){
-				add(particles.dust(
+				add(particles.getDustParticle(
 					vec(that.center.x - 2.5 - that.facing.x * ((that.size.x - 5) / 2), that.pos.y + that.size.y - 5),
 					vec(-Math.random() * 0.5 * that.facing.x, Math.random()*0.5),
 				), "particles", 5);

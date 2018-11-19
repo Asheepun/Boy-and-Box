@@ -6,7 +6,7 @@ export const red = (pos) => {
 
 	traits.addEntityTrait({
 		pos,
-		size: vec(25, 21),
+		size: vec(23, 21),
 	})(that);
 
 	traits.addSpriteTrait({

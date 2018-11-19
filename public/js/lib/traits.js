@@ -240,7 +240,7 @@ export const addSpriteTrait = ({ color, img, alpha = 1, rotation = 0, visible = 
 				ctx.drawImage(
 					sprites[that.img],
 					that.imgPos.x, that.imgPos.y, that.imgSize.x, that.imgSize.y,
-					Math.floor(-that.size.x/2), Math.floor(-that.size.y/2), that.size.x, that.size.y
+					~~-that.size.x/2, ~~-that.size.y/2, that.size.x, that.size.y
 				);
 			}
             ctx.globalApha = 1;

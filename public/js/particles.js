@@ -58,3 +58,22 @@ export const dust = (pos, velocity) => {
 
 	return that;
 }
+
+const dustParticles = [];
+
+for(let i = 0; i < 100; i++){
+	dustParticles.push(dust(vec(0, 0), vec(0, 0)));
+}
+
+let dustParticleIndex = 0;
+
+export const getDustParticle = (pos, velocity) => {
+	dustParticleIndex++;
+	if(dustParticleIndex >= dustParticles.length) dustParticleIndex = 0;
+	dustParticles[dustParticleIndex].pos = pos;
+	dustParticles[dustParticleIndex].velocity = velocity;
+	dustParticles[dustParticleIndex].size = vec(5, 5);
+	dustParticles[dustParticleIndex].rotation = 0;
+	console.log(dustParticleIndex);
+	return dustParticles[dustParticleIndex];
+}
