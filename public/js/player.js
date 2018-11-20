@@ -40,7 +40,7 @@ const player = (pos) => {
 
 	that.jump = ({ world: { add }, audio: { play } }) => {
 		if(that.jumpSaveCounter > 0){
-			play("boy_jump");
+			//play("boy_jump");
 			that.velocity.y = -5;
 			that.acceleration.y = 0.025; //what it would be if onGround
 			for(let i = 0; i < 5; i++){

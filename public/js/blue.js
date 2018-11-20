@@ -34,7 +34,7 @@ export const blue = (pos, texts) => {
 		frames: "blue_frames",
 	})(that);
 
-	that.texts = texts;
+	that.texts = texts
 
 	that.talking = false;
 
@@ -208,6 +208,26 @@ const textEntity = ({ pos, size, text }) => {
 	that.text = text;
 
 	let offsetX;
+	
+	//pre render text
+	/*
+	const img = document.createElement("canvas");
+	const ctx = img.getContext("2d");
+	let longestRow = 0;
+	for(let i = 0; i < text.length; i++){
+		if(text[i].length > longestRow) longestRow = text[i].length;
+	}
+	img.width = Math.floor(longestRow * (size / 2));
+	img.height = size;
+	ctx.fillStyle = "white";
+	ctx.font = size + "px game";
+	ctx.webkitImageSmoothingEnabled = false;
+	ctx.mozImageSmoothingEnabled = false;    
+	ctx.imageSmoothingEnabled = false;
+	for(let i = 0; i < text.length; i++){
+		ctx.fillText(that.text[i], 0, size);
+	}
+	*/
 
 	that.draw = (ctx) => {
 		ctx.globalAlpha = 1;

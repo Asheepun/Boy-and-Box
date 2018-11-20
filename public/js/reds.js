@@ -29,6 +29,14 @@ export const red = (pos) => {
 		delay: 10,
 	})(that);
 
+	traits.addCheckColTrait({
+		singles: ["player"],
+	})(that);
+
+	that.playerCol = (player) => {
+		player.hit = true;
+	}
+
 	that.handleColX = (obstacle) => {
 		that.facing.x *= -1;
 		if(that.velocity.x > 0) that.pos.x = obstacle.pos.x - that.size.x;
@@ -64,7 +72,6 @@ export const red = (pos) => {
 	that.animate = () => {
 		if(that.onGround) that.frameState = "still";
 		else that.frameState = "jumping";
-//		if(rechargeCounter < 8 && that.rechargeCounter > 0) that.frameState = "charging";
 	}
 
 	that.addMethods("handleVelocity", "bounce", "animate");

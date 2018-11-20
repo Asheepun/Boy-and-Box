@@ -116,7 +116,9 @@ Promise.all([
 			GAME.world.player.dir = 1;
 		if(GAME.keys.a.down && GAME.keys.d.down || !GAME.keys.a.down && !GAME.keys.d.down)
 			GAME.world.player.dir = 0;
-		if(GAME.keys.w.down || GAME.keys[" "].down) GAME.world.player.jump(GAME);
+		if(GAME.keys.w.down || GAME.keys[" "].down){
+			GAME.world.player.jump(GAME);
+		}
 		if(!GAME.keys.w.down && !GAME.keys[" "].down) GAME.world.player.stopJump();
 
 		GAME.world.update(GAME);
@@ -128,18 +130,10 @@ Promise.all([
 			GAME.levelCleared = true;
 		}
 
-		ctx.save();
-		ctx.scale(c.scale, c.scale);
-		ctx.translate(GAME.context.x, GAME.context.y);
-
-		GAME.world.draw(ctx, GAME.sprites);
-
-		ctx.drawImage(GAME.sprites.transition, GAME.transitionPosX, 0, 32 * 15 * 1.5, 18 * 15);
-
 		//handleScreenShake
 		GAME.context = v.mul(GAME.context, 0.5);
-
-		ctx.restore();
+		
+		
 
 	}
 
@@ -148,12 +142,14 @@ Promise.all([
 		GAME.transitionPosX += 20;
 		if(GAME.transitionPosX === 0) GAME.state = GAME.states[nextState];
 
+		/*
 		ctx.save();
 		ctx.scale(c.scale, c.scale);
 
 		ctx.drawImage(GAME.sprites.transition, GAME.transitionPosX, 0, 32 * 15 * 1.5, 18 * 15);
 
 		ctx.restore();
+		*/
 	}
 
 	GAME.transitionState = (state) => {
@@ -179,6 +175,17 @@ Promise.all([
 
 			accTime -= timeScl;
 		}
+
+		ctx.save();
+		ctx.scale(c.scale, c.scale);
+		ctx.translate(GAME.context.x, GAME.context.y);
+
+		GAME.world.draw(ctx, GAME.sprites);
+
+		ctx.drawImage(GAME.sprites.transition, GAME.transitionPosX, 0, 32 * 15 * 1.5, 18 * 15);
+
+		ctx.restore();
+
 		requestAnimationFrame(loop);
 	}
 	
