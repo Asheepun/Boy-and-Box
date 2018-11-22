@@ -1,5 +1,6 @@
 import traitHolder, * as traits from "/js/lib/traits.js";
 import vec, * as v				from "/js/lib/vector.js";
+import * as col					from "/js/lib/colission.js";
 
 export const red = (pos) => {
 	const that = traitHolder();
@@ -29,12 +30,8 @@ export const red = (pos) => {
 		delay: 10,
 	})(that);
 
-	traits.addCheckColTrait({
-		singles: ["player"],
-	})(that);
-
-	that.playerCol = (player) => {
-		player.hit = true;
+	that.checkPlayerCol = ({ world: { player }, sprites }) => {
+		if(col.checkPixelCol(that, player, sprites)) player.hit = true;
 	}
 
 	that.handleColX = (obstacle) => {
@@ -74,7 +71,7 @@ export const red = (pos) => {
 		else that.frameState = "jumping";
 	}
 
-	that.addMethods("handleVelocity", "bounce", "animate");
+	that.addMethods("handleVelocity", "bounce", "animate", "checkPlayerCol");
 
 	return that;
 }

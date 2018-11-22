@@ -72,3 +72,62 @@ export const checkPointCol = (vec, obstacles) => {
 	}
 	return false;
 }
+
+let difX = 0;
+let difY = 0;
+const c = document.createElement("canvas");
+const ctx = c.getContext("2d");
+
+let entityImgPosX, entityImgPosY, candidateImgPosX, candidateImgPosY;
+
+let imgData;
+
+export const checkPixelCol = (entity, candidate, sprites) => {
+	if(checkCol(entity, candidate)){
+
+		if(entity.pos.x > candidate.pos.x){
+			difX = Math.floor((candidate.pos.x + candidate.size.x) - entity.pos.x);
+			entityImgPosX = 0;
+			candidateImgPosX = candidate.size.x - difX;
+		}
+		else {
+			difX = Math.floor((entity.pos.x + entity.size.x) - candidate.pos.x);
+			entityImgPosX = entity.size.x - difX;
+			candidateImgPosX = 0;
+		}
+		
+		if(entity.pos.y > candidate.pos.y){
+			difY = Math.floor((candidate.pos.y + candidate.size.y) - entity.pos.y);
+			entityImgPosY = 0;
+			candidateImgPosY = candidate.size.y - difY;
+		}
+		else{
+			difY = Math.floor((entity.pos.y + entity.size.y) - candidate.pos.y);
+			entityImgPosY = entity.size.y - difY;
+			candidateImgPosY = 0;
+		}
+
+		if(difX === 0 || difY === 0) return false;
+
+		c.width = difX * 50;
+		c.height = difY * 50;
+		ctx.webkitImageSmoothingEnabled = false;
+		ctx.mozImageSmoothingEnabled = false;    
+		ctx.imageSmoothingEnabled = false;
+		ctx.globalAlpha = 0.5;
+		ctx.scale(50, 50);
+		ctx.drawImage(sprites[entity.img], entityImgPosX, entityImgPosY, difX, difY, 0, 0, difX, difY);
+		ctx.drawImage(sprites[candidate.img], candidateImgPosX, candidateImgPosY, difX, difY, 0, 0, difX, difY);
+
+		imgData = ctx.getImageData(0, 0, c.width, c.height).data;
+
+		for(let i = 0; i < imgData.length / 4; i++){
+			if(imgData[i * 4 + 3] === 192){
+				return true;
+			}
+		}
+
+		return false;
+
+	}else return false;
+}

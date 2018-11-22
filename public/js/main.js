@@ -74,7 +74,7 @@ Promise.all([
 		],
 		state: undefined,
 		context: vec(0, 0),
-		currentLevel: 10,
+		currentLevel: 0,
 	};
 
 	GAME.keys = keys(
