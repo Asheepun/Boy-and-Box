@@ -18,7 +18,7 @@ const player = (pos) => {
 	traits.addMoveTrait({})(that);
 
 	traits.addPhysicsTrait({
-		gravity: 0.025,
+		gravity: 0.024//0.025,
 	})(that);
 
 	traits.addColTrait({})(that);
@@ -41,8 +41,8 @@ const player = (pos) => {
 	that.jump = ({ world: { add }, audio: { play } }) => {
 		if(that.jumpSaveCounter > 0){
 			//play("boy_jump");
-			that.velocity.y = -5;
-			that.acceleration.y = 0.025; //what it would be if onGround
+			that.velocity.y = -4.2//5;
+			that.acceleration.y = 0//0.025; //what it would be if onGround
 			for(let i = 0; i < 5; i++){
 				add(particles.getDustParticle(
 					vec(that.pos.x + Math.random()*(that.size.x-5), that.pos.y + that.size.y - 5),
@@ -74,8 +74,10 @@ const player = (pos) => {
 		play("boy_land");
 	}
 
-	that.maxFallVelocity = 4;
+	that.maxFallVelocity = 3.5;
 	that.maxSpeed = 2.1;
+
+	that.Xresistance = 0.69;
 
 	that.dir = 0;
 
@@ -87,7 +89,7 @@ const player = (pos) => {
 
 		if(that.velocity.x > that.maxSpeed) that.velocity.x = that.maxSpeed;
 		if(that.velocity.x < -that.maxSpeed) that.velocity.x = -that.maxSpeed;
-		if(that.dir === 0) that.velocity.x *= 0.7;
+		if(that.dir === 0) that.velocity.x *= that.Xresistance;
 
 	}
 
