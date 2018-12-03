@@ -72,8 +72,10 @@ export const addColTrait = ({ bounce = false, }) => (that) => {
 		if(that.velocity.y > 0){
 			that.onGround = true;
 			that.pos.y = obstacle.pos.y - that.size.y;
-		}else
+		}else{
+			that.onRoof = true;
 			that.pos.y = obstacle.pos.y + obstacle.size.y;
+		}
 		if(bounce) that.velocity.y *= -1;
 		else{
 			that.velocity.y = 0;
@@ -87,7 +89,7 @@ export const addBoxColTrait = ({ bounce = false }) => (that) => {
 		if(that.pos.x + that.size.x >= box.pos.x
 		&& that.pos.x <= box.pos.x + box.size.x
 		&& that.pos.y + that.size.y >= box.pos.y
-		&& that.pos.y + that.size.y <= box.pos.y + 5
+		&& that.pos.y + that.size.y <= box.pos.y + that.velocity.y + 1
 		&& that.velocity.y >= 0){
 			that.pos.y = box.pos.y - that.size.y;
 			that.fixCenter();
@@ -155,6 +157,11 @@ export const addMoveTrait = ({ velocity = vec(0, 0), canMove = true, obstacleTyp
 
     that.move = (GAME) => {
 
+		that.onRoof = false;
+		that.onGround = false;
+		that.onLeftWall = false;
+		that.onRightWall = false;
+
         col = false;
         oub = false;
 
@@ -166,10 +173,6 @@ export const addMoveTrait = ({ velocity = vec(0, 0), canMove = true, obstacleTyp
                 if(!col && GAME.world[obstacleType]) col = checkSetCol(that, GAME.world[obstacleType]);
             });
             if(col) that.handleColY(col, GAME);
-            else{
-				that.onGround = false;
-				that.onRoof = false;
-            }
         }
 
         col = false;
@@ -183,11 +186,6 @@ export const addMoveTrait = ({ velocity = vec(0, 0), canMove = true, obstacleTyp
                 if(!col && GAME.world[obstacleType]) col = checkSetCol(that, GAME.world[obstacleType]);
             });
             if(col) that.handleColX(col, GAME);
-			else{
-                that.onLeftWall = false;
-                that.onRightWall = false;
-				that.resqued = false;
-			}
 
         }
 

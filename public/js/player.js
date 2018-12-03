@@ -41,7 +41,7 @@ const player = (pos) => {
 	that.jump = ({ world: { add }, audio: { play } }) => {
 		if(that.jumpSaveCounter > 0){
 			//play("boy_jump");
-			that.velocity.y = -4.2//5;
+			that.velocity.y = -4//5;
 			that.acceleration.y = 0//0.025; //what it would be if onGround
 			for(let i = 0; i < 5; i++){
 				add(particles.getDustParticle(

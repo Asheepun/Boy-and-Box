@@ -41,6 +41,7 @@ export const red = (pos) => {
 	}
 
 	let rechargeCounter = 0;
+	that.rechargeTime = 10;
 	that.jumping = false;
 
 	that.bounce = () => {
@@ -52,12 +53,14 @@ export const red = (pos) => {
 				that.jump();
 			}
 
-			if(rechargeCounter < 0) rechargeCounter = 10;
+			if(rechargeCounter < 0) rechargeCounter = that.rechargeTime;
 		}
 	}
 
+	that.jumpVelocity = -1.2;
+
 	that.jump = () => {
-		that.velocity.y = -1.2;
+		that.velocity.y = that.jumpVelocity;
 	}
 
 	that.handleVelocity = () => {
@@ -75,3 +78,25 @@ export const red = (pos) => {
 
 	return that;
 }
+
+export const jumper = (pos) => {
+	const that = red(pos);
+
+	that.pos.x += 2;
+	that.velocity.x = 0;
+	that.jumpVelocity = -2.25;
+	//that.gravity = 0.02;
+
+	that.animate = ({ world: { player } }) => {
+		if(player.center.x > that.center.x) that.facing.x = 1;
+		else that.facing.x = -1;
+
+		if(that.onGround) that.frameState = "still";
+		else that.frameState = "jumping";
+	}
+
+	that.removeMethods("handleVelocity");
+
+	return that;
+}
+
