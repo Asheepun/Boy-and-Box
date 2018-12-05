@@ -6,8 +6,8 @@ const point = (pos) => {
 	const that = traitHolder();
 
 	traits.addEntityTrait({
-		pos,
-		size: vec(15, 15),
+		pos: v.add(pos, vec(2, 2)),
+		size: vec(11, 11),
 	})(that);
 
 	traits.addSpriteTrait({

@@ -75,7 +75,7 @@ const player = (pos) => {
 	}
 
 	that.maxFallVelocity = 3.5;
-	that.maxSpeed = 2.1;
+	that.maxSpeed = 2;
 
 	that.Xresistance = 0.69;
 

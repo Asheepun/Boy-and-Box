@@ -39,7 +39,7 @@ export const blue = (pos, texts) => {
 	that.talking = false;
 
 	that.checkPlayer = ({ world: { player }, levelCleared }) => {
-		if(v.sub(that.center, player.center).mag < 25 && !that.waiting && that.pos.y > player.pos.y)
+		if(v.sub(that.center, player.center).mag < 25 && !that.waiting)
 			that.talking = true;
 		else that.talking = false;
 	}
@@ -49,18 +49,20 @@ export const blue = (pos, texts) => {
 	let lastCurrentText;
 
 	that.talk = ({ world: { add, remove } }) => {
-		if(that.talking && that.text === undefined && that.onGround){
-			that.text = textEntity({
-				pos: vec(that.center.x, that.pos.y - 7),
-				text: that.texts[that.currentText],
-				size: 9,
-			});
-			add(that.text, "texts", 9);
+		if(that.talking ){
+			if(that.text === undefined){
+				that.text = textEntity({
+					pos: vec(that.center.x, that.pos.y - 7),
+					text: that.texts[that.currentText],
+					size: 9,
+				});
+				add(that.text, "texts", 9);
 
-			lastCurrentText = that.currentText;
-//			while(that.currentText === lastCurrentText){
-//			}
-			that.currentText = Math.floor(Math.random()*that.texts.length);
+				lastCurrentText = that.currentText;
+	//			while(that.currentText === lastCurrentText){
+	//			}
+				that.currentText = Math.floor(Math.random()*that.texts.length);
+			}else that.text.pos = vec(that.center.x, that.pos.y - 7);
 		}
 		if(!that.talking && that.text !== undefined){
 			remove(that.text);
@@ -95,7 +97,7 @@ export const bouncer = (pos, texts) => {
 	that.bounce = ({ width }) => {
 		that.recharge--;
 
-		if(that.jumpSaveCounter > 0 && !that.waiting && (!that.talking || that.pos.x > width - 4 * 15)){
+		if(that.jumpSaveCounter > 0 && !that.waiting){
 			if(that.recharge === 0){
 				that.jump();
 				that.jumping = true;
@@ -130,9 +132,7 @@ export const bouncer = (pos, texts) => {
 		else that.frameState = "jumping";
 		if(that.waiting || that.talking) that.frameState = "still";
 
-		if(that.talking && player.center.x < that.center.x && that.onGround)
-			that.facing.x = -1;
-		else that.facing.x = 1;
+		that.facing.x = 1;
 		
 	}
 

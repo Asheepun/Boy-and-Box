@@ -25,6 +25,10 @@ export const red = (pos) => {
 
 	traits.addBoxColTrait({})(that);
 
+	traits.addOubTrait({
+		oubArea: [0, 0, 32 * 15, 18 * 15 + that.size.y],
+	})(that);
+
 	traits.addFrameTrait({
 		frames: "red_frames",
 		delay: 10,
@@ -38,6 +42,17 @@ export const red = (pos) => {
 		that.facing.x *= -1;
 		if(that.velocity.x > 0) that.pos.x = obstacle.pos.x - that.size.x;
 		else that.pos.x = obstacle.pos.x + obstacle.size.x;
+	}
+
+	that.handleOubX = () => {
+		that.facing.x *= -1;
+		if(that.velocity.x > 0) that.pos.x = 32 * 15 - that.size.x;
+		else that.pos.x = 0;
+	}
+
+	that.handleOubY = ({ world: { remove } }) => {
+		if(that.velocity.y > 0) remove(that);
+		else that.pos.y = 0;
 	}
 
 	let rechargeCounter = 0;
@@ -57,7 +72,7 @@ export const red = (pos) => {
 		}
 	}
 
-	that.jumpVelocity = -1.2;
+	that.jumpVelocity = -1.1//-1.2;
 
 	that.jump = () => {
 		that.velocity.y = that.jumpVelocity;
@@ -85,7 +100,8 @@ export const jumper = (pos) => {
 	that.pos.x += 2;
 	that.velocity.x = 0;
 	that.jumpVelocity = -2.25;
-	//that.gravity = 0.02;
+	that.gravity = 0.0045;
+	//that.gravity = 0.01;
 
 	that.animate = ({ world: { player } }) => {
 		if(player.center.x > that.center.x) that.facing.x = 1;
