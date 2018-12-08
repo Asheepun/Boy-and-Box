@@ -34,6 +34,8 @@ export const red = (pos) => {
 		delay: 10,
 	})(that);
 
+	that.facing.x = -1;
+
 	that.checkPlayerCol = ({ world: { player }, sprites }) => {
 		if(col.checkPixelCol(that, player, sprites)) player.hit = true;
 	}
@@ -116,3 +118,113 @@ export const jumper = (pos) => {
 	return that;
 }
 
+let transed = false;
+
+export const blueTrans = (pos) => {
+	const that = traitHolder();
+
+	traits.addEntityTrait({
+		pos: v.add(pos, vec(2, 3)),
+		size: vec(12, 12),
+	})(that);
+
+	traits.addSpriteTrait({
+		img: "blue_trans",
+		imgSize: that.size.copy(),
+	})(that);
+
+	traits.addFrameTrait({
+		frames: "blue_trans_frames",
+		delay: 15,
+	})(that);
+
+	that.transformed = false;
+	that.transform = ({ sprites, world: { remove, add } }) => {
+		if(transed){
+			remove(that);
+			add(red(vec(that.pos.x - 6, that.pos.y - 12)), "reds", 5);
+		}
+
+		if(that.imgPos.x === sprites[that.img].width - 12)
+			that.transformed = true;
+
+		if(that.transformed){
+			if(that.methods["handleFrames"])that.removeMethods("handleFrames");
+			that.facing.x = -1;
+			that.img = "red";
+			that.imgPos = vec(0, 0);
+			that.imgSize = vec(23, 21);
+			that.size.x += 1;
+			that.size.y += 1;
+			that.pos.x -= 0.5;
+			that.pos.y -= 1;
+			if(that.size.x >= 23){
+				remove(that);
+				remove(that.text);
+				add(red(vec(that.pos.x-1, that.pos.y)), "reds", 5);
+				transed = true;
+			}
+		}
+	}
+
+	that.text = textEntity({
+		pos: vec(that.center.x, that.pos.y - 7),
+		text: ["WAIT!"],
+		size: 9,
+	});
+
+	that.addText = ({ world: { add } }) => {
+		if(transed) return;
+		add(that.text, "texts", 5);
+
+		that.removeMethods("addText");
+	}
+
+	that.addMethods("transform", "addText");
+
+	return that;
+}
+
+const textEntity = ({ pos, size, text }) => {
+	const that = traitHolder();
+
+	that.pos = pos;
+	that.size = size;
+	that.text = text;
+
+	let offsetX;
+	
+	//pre render text
+	/*
+	const img = document.createElement("canvas");
+	const ctx = img.getContext("2d");
+	let longestRow = 0;
+	for(let i = 0; i < text.length; i++){
+		if(text[i].length > longestRow) longestRow = text[i].length;
+	}
+	img.width = Math.floor(longestRow * (size / 2));
+	img.height = size;
+	ctx.fillStyle = "white";
+	ctx.font = size + "px game";
+	ctx.webkitImageSmoothingEnabled = false;
+	ctx.mozImageSmoothingEnabled = false;    
+	ctx.imageSmoothingEnabled = false;
+	for(let i = 0; i < text.length; i++){
+		ctx.fillText(that.text[i], 0, size);
+	}
+	*/
+
+	that.draw = (ctx) => {
+		ctx.globalAlpha = 1;
+		ctx.fillStyle = "white";
+		ctx.font = size + "px game";
+		for(let i = 0; i < that.text.length; i++){
+			offsetX = (that.text[i].length / 2) * (that.size / 2);
+			ctx.fillText(that.text[i], that.pos.x - offsetX, that.pos.y - (size + 2) * (that.text.length-1 - i));
+		}
+		ctx.globalAlpha = 1;
+	}
+
+
+	return that;
+}

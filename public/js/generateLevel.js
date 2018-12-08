@@ -22,8 +22,6 @@ const generateLevel = ({ template, time, background, texts }, { world, world: { 
 	add(tiles(sprites["backgrounds/" + background]), "background", 0, true);
 
 	if(background === "sky") addClouds({ world, width });
-	
-	addBirds({ world, width, height });
 
 	template.forEach((row, y) => strEach(row, (tile, x) => {
 			pos = vec(scl * x, scl * y);
@@ -54,10 +52,13 @@ const generateLevel = ({ template, time, background, texts }, { world, world: { 
 			if(tile === "{") add(blues.blueLock(vec(pos.x + 15, pos.y)), "obstacles", 1);
 
 			//reds
+			if(tile === "T") add(reds.blueTrans(pos.copy()), "reds", 5);
 			if(tile === "1") add(reds.red(pos.copy()), "reds", 5);
 			if(tile === "2") add(reds.jumper(pos.copy()), "reds", 5);
 
 	}));
+	
+	addBirds({ world, width, height });
 
 	//optimize obstacles
 	for(let i = 0; i < world.obstacles.length; i++){

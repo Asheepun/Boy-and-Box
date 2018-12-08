@@ -58,10 +58,12 @@ export const blue = (pos, texts) => {
 				});
 				add(that.text, "texts", 9);
 
-				lastCurrentText = that.currentText;
-	//			while(that.currentText === lastCurrentText){
-	//			}
-				that.currentText = Math.floor(Math.random()*that.texts.length);
+				if(that.texts.length > 1){
+					lastCurrentText = that.currentText;
+					while(that.currentText === lastCurrentText){
+						that.currentText = Math.floor(Math.random()*that.texts.length);
+					}
+				}
 			}else that.text.pos = vec(that.center.x, that.pos.y - 7);
 		}
 		if(!that.talking && that.text !== undefined){

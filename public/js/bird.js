@@ -75,7 +75,9 @@ const bird = (pos) => {
 	}
 
 	that.handleOub = ({ world: { remove }, height, width }) => {
-		if(that.pos.y < 0 || that.pos.y > height || that.pos.x > width || that.pos.x < -that.size.x) remove(that);
+		if(that.pos.y < 0 || that.pos.y > height || that.pos.x > width || that.pos.x < -that.size.x){
+			remove(that);
+		}
 	}
 
 	that.addMethods("animate", "jump", "checkToFly", "handleOub");

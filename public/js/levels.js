@@ -150,6 +150,7 @@ const levels = [
 		time: "day",
 		texts: [
 			[
+				["Thank you for", "helping me", "this far."],
 				["I can't cross ", "this gap!"],
 			],
 		],
@@ -180,6 +181,7 @@ const levels = [
 		texts: [
 			[
 				["We're almost", "there!"],
+				["Just a little", "longer!"]
 			],
 		]
 	},
@@ -209,13 +211,14 @@ const levels = [
 		texts: [
 			[
 				["Thank you for", "helping me!"],
-				["I'm very gratefull"],
+				["I'm very gratefull."],
 			],
 			[
-				["Haven't seen you", "here before"],
+				["Haven't seen you", "here before."],
+				["It's nice seeing", "some new faces."],
 			],
 			[
-				["Hello"],
+				["Hello."],
 			]
 		]
 	},
@@ -244,7 +247,7 @@ const levels = [
 		texts: [
 			[
 				["The others have", "been feeling", "sick lately."],
-				["We don't know", "what to do."],
+				["We don't know", "what could have", "caused it."],
 			],
 		]
 	},
@@ -272,7 +275,7 @@ const levels = [
 		background: "sky",
 		texts: [
 			[
-				["Be carefull."]
+				["Be carefull."],
 			]
 		]
 	},
@@ -292,8 +295,8 @@ const levels = [
 			"........................##...###",
 			"..............................##",
 			"@................##........P..##",
-			"###.....B........##....1......##",
-			"####............#####........###",
+			"###.....B........##...........##",
+			"####............#####...T....###",
 			"####...........#################",
 			"####.........###################",
 		],
