@@ -1,6 +1,7 @@
 import traitHolder, * as traits from "/js/lib/traits.js";
 import vec, * as v 				from "/js/lib/vector.js";
 import * as text				from "/js/lib/text.js";
+import * as particles			from "/js/particles.js";
 
 export const blue = (pos, texts) => {
 	const that = traitHolder();
@@ -196,62 +197,25 @@ export const blueLock = (pos) => {
 		gravity: 0.01,
 	})(that);
 
-	that.checkBlues = ({ world: { blues, remove } }) => {
+	that.checkBlues = ({ world: { blues, remove, add } }) => {
 		blues.forEach((blue) => {
 			if(Math.floor(blue.pos.x + blue.size.x) >= that.pos.x - 2
 			&& blue.pos.y >= that.pos.y
 			&& blue.pos.y < that.pos.y + that.size.y
 			&& blue.onGround){
-				remove(that);
+				that.hit = true;
 			}
 		});
 	}
 
-	that.addMethods("checkBlues");
-	
-	return that;
-}
-
-const textEntity = ({ pos, size, text }) => {
-	const that = traitHolder();
-
-	that.pos = pos;
-	that.size = size;
-	that.text = text;
-
-	let offsetX;
-	
-	//pre render text
-	/*
-	const img = document.createElement("canvas");
-	const ctx = img.getContext("2d");
-	let longestRow = 0;
-	for(let i = 0; i < text.length; i++){
-		if(text[i].length > longestRow) longestRow = text[i].length;
-	}
-	img.width = Math.floor(longestRow * (size / 2));
-	img.height = size;
-	ctx.fillStyle = "white";
-	ctx.font = size + "px game";
-	ctx.webkitImageSmoothingEnabled = false;
-	ctx.mozImageSmoothingEnabled = false;    
-	ctx.imageSmoothingEnabled = false;
-	for(let i = 0; i < text.length; i++){
-		ctx.fillText(that.text[i], 0, size);
-	}
-	*/
-
-	that.draw = (ctx) => {
-		ctx.globalAlpha = 1;
-		ctx.fillStyle = "white";
-		ctx.font = size + "px game";
-		for(let i = 0; i < that.text.length; i++){
-			offsetX = (that.text[i].length / 2) * (that.size / 2);
-			ctx.fillText(that.text[i], that.pos.x - offsetX, that.pos.y - (size + 2) * (that.text.length-1 - i));
+	that.checkHit = ({ world: { remove } }) => {
+		if(that.hit){
+			that.alpha -= 0.145;
+			if(that.alpha <= 0) remove(that);
 		}
-		ctx.globalAlpha = 1;
 	}
 
-
+	that.addMethods("checkBlues", "checkHit");
+	
 	return that;
 }

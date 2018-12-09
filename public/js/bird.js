@@ -49,7 +49,7 @@ const bird = (pos) => {
 		}
 	}
 
-	that.checkToFly = ({ world: { player }, levelCleared }) => {
+	that.checkToFly = ({ world: { player, remove, add }, levelCleared }) => {
 		if((v.sub(that.center, player.center).mag < 50 || levelCleared) && !that.flying){
 			that.flying = true;
 			that.velocity.y = -2.5 - Math.random()*1;
@@ -62,6 +62,9 @@ const bird = (pos) => {
 			that.imgSize.x = 11;
 			that.facing = -1;
 			that.handleColX = that.handleColY = undefined;
+
+			remove(that);
+			add(that, "birds", 9);
 			
 			that.removeMethods("jump");
 		}

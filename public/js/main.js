@@ -37,6 +37,7 @@ Promise.all([
 		"blue_lock",
 		"blue_trans",
 		"red",
+		"red_flower",
 		"transition",
 		"shadow",
 		"lamp",

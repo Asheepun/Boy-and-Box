@@ -19,10 +19,6 @@ const point = (pos) => {
 		velocity: vec(0, 0.15),
 	})(that);
 
-	traits.addCheckColTrait({
-		singles: ["player"],
-	})(that);
-
 	traits.addPhysicsTrait({
 		gravity: 0,
 	})(that);
@@ -55,9 +51,9 @@ const point = (pos) => {
 		}
 	}
 
-
-	that.playerCol = () => {
-		that.hit = true;
+	that.checkPlayer = ({ world: { player } }) => {
+		if(v.sub(that.center, player.center).mag + 1 < that.size.x / 2 + player.size.x / 2)
+			that.hit = true;
 	}
 
 	that.checkHit = ({ world: { pointTarget, remove, add }, audio: { play } }) => {
@@ -75,7 +71,7 @@ const point = (pos) => {
 		}
 	}
 
-	that.addMethods("hover", "checkHit");
+	that.addMethods("hover", "checkPlayer", "checkHit");
 
 	return that;
 }

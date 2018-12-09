@@ -155,6 +155,7 @@ export const addMoveTrait = ({ velocity = vec(0, 0), canMove = true, obstacleTyp
     let col = false;
 	let platCol = false;
 
+	let count = 0;
     that.move = (GAME) => {
 
 		that.onRoof = false;
