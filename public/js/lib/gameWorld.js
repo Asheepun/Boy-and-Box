@@ -25,7 +25,7 @@ const gameWorld = () => {
 
     that.remove = (entity) => {
         that.layers[entity.layer].splice(that.layers[entity.layer].indexOf(entity), 1);
-        if(that[entity.type].constructor = Array){
+        if(that[entity.type].constructor === Array){
             that[entity.type].splice(that[entity.type].indexOf(entity), 1);
         }else delete that[entity.type];
     }

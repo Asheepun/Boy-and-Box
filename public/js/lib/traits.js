@@ -264,3 +264,75 @@ export const addFrameTrait = ({ delay, frames, initState = "still" }) => (that) 
 
 	that.addMethods("handleFrames");
 }
+
+export const addTalkTrait = ({ texts, size, Yoffset, condition }) => (that) => {
+	that.texts = texts;
+	that.textYoffset = Yoffset;
+	that.textCondition = condition;
+
+	that.currentText = 0;
+	let lastCurrentText;
+
+	that.text = textEntity({
+		pos: vec(0, 0),
+		text: that.texts[that.currentText],
+		size,
+	});
+
+	that.talking = false;
+	that.addedText = false;
+	
+	that.talk = ({ world: { add, remove } }) => {
+		that.text.pos = vec(that.center.x, that.pos.y - that.textYoffset);
+
+		if(that.talking && !that.addedText){
+			that.text.text = that.texts[that.currentText];
+
+			add(that.text, "texts", 9);
+			that.addedText = true;
+
+			if(that.texts.length > 1){
+				lastCurrentText = that.currentText;
+				while(that.currentText === lastCurrentText){
+					that.currentText = Math.floor(Math.random()*that.texts.length);
+				}
+			}
+		}
+		if(!that.talking && that.addedText){
+			remove(that.text);
+			that.addedText = false;
+		}
+	}
+
+	that.checkTextCondition = (GAME) => {
+		if(that.textCondition(GAME))
+			that.talking = true;
+		else that.talking = false;
+	}
+
+	that.addMethods("checkTextCondition", "talk");
+}
+
+const textEntity = ({ pos, size, text }) => {
+	const that = traitHolder();
+
+	that.pos = pos;
+	that.size = size;
+	that.text = text;
+
+	let offsetX;
+	
+	that.draw = (ctx) => {
+		ctx.globalAlpha = 1;
+		ctx.fillStyle = "white";
+		ctx.font = size + "px game";
+		for(let i = 0; i < that.text.length; i++){
+			offsetX = (that.text[i].length / 2) * (that.size / 2);
+			ctx.fillText(that.text[i], that.pos.x - offsetX, that.pos.y - (size + 2) * (that.text.length-1 - i));
+		}
+		ctx.globalAlpha = 1;
+	}
+
+
+	return that;
+}

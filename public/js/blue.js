@@ -34,6 +34,15 @@ export const blue = (pos, texts) => {
 		frames: "blue_frames",
 	})(that);
 
+	traits.addTalkTrait({
+		texts,
+		Yoffset: 7,
+		size: 9,
+		condition: ({ world: { player } }) =>
+			v.sub(that.center, player.center).mag < 25,
+	})(that);
+
+	/*
 	that.texts = texts
 
 	that.talking = false;
@@ -72,13 +81,14 @@ export const blue = (pos, texts) => {
 		
 		}
 	}
+	*/
 
 	that.animate = ({ world: { player } }) => {
 		if(player.center.x > that.center.x) that.facing.x = 1;
 		else that.facing.x = -1;
 	}
 
-	that.addMethods("checkPlayer", "talk", "animate");
+	that.addMethods("animate");
 	
 	return that;
 }

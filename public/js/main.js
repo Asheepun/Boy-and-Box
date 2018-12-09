@@ -22,6 +22,7 @@ Promise.all([
 		"backgrounds/sky",
 		"backgrounds/planks",
 		"tiles/grass_tiles",
+		"tiles/grass_wall_tiles",
 		"tiles/plank_tiles",
 		"tiles/grass",
 		"tiles/shadow",

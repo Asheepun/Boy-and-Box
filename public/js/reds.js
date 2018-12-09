@@ -34,6 +34,17 @@ export const red = (pos) => {
 		delay: 10,
 	})(that);
 
+	traits.addTalkTrait({
+		texts: [
+			["Hello"],
+			["Hi"],
+		],
+		size: 10,
+		Yoffset: 9,
+		condition: ({ world: { player } }) =>
+			v.sub(that.center, player.center).mag < 45,
+	})(that);
+
 	that.facing.x = -1;
 
 	that.checkPlayerCol = ({ world: { player }, sprites }) => {
@@ -90,7 +101,7 @@ export const red = (pos) => {
 		if(that.onGround) that.frameState = "still";
 		else that.frameState = "jumping";
 	}
-
+	
 	that.addMethods("handleVelocity", "bounce", "animate", "checkPlayerCol");
 
 	return that;
@@ -138,6 +149,13 @@ export const blueTrans = (pos) => {
 		delay: 15,
 	})(that);
 
+	traits.addTalkTrait({
+		texts: [["WAIT!"]],
+		Yoffset: 7,
+		size: 9,
+		condition: () => !transed,
+	})(that);
+
 	that.transformed = false;
 	that.transform = ({ sprites, world: { remove, add } }) => {
 		if(transed){
@@ -167,64 +185,7 @@ export const blueTrans = (pos) => {
 		}
 	}
 
-	that.text = textEntity({
-		pos: vec(that.center.x, that.pos.y - 7),
-		text: ["WAIT!"],
-		size: 9,
-	});
-
-	that.addText = ({ world: { add } }) => {
-		if(transed) return;
-		add(that.text, "texts", 5);
-
-		that.removeMethods("addText");
-	}
-
-	that.addMethods("transform", "addText");
-
-	return that;
-}
-
-const textEntity = ({ pos, size, text }) => {
-	const that = traitHolder();
-
-	that.pos = pos;
-	that.size = size;
-	that.text = text;
-
-	let offsetX;
-	
-	//pre render text
-	/*
-	const img = document.createElement("canvas");
-	const ctx = img.getContext("2d");
-	let longestRow = 0;
-	for(let i = 0; i < text.length; i++){
-		if(text[i].length > longestRow) longestRow = text[i].length;
-	}
-	img.width = Math.floor(longestRow * (size / 2));
-	img.height = size;
-	ctx.fillStyle = "white";
-	ctx.font = size + "px game";
-	ctx.webkitImageSmoothingEnabled = false;
-	ctx.mozImageSmoothingEnabled = false;    
-	ctx.imageSmoothingEnabled = false;
-	for(let i = 0; i < text.length; i++){
-		ctx.fillText(that.text[i], 0, size);
-	}
-	*/
-
-	that.draw = (ctx) => {
-		ctx.globalAlpha = 1;
-		ctx.fillStyle = "white";
-		ctx.font = size + "px game";
-		for(let i = 0; i < that.text.length; i++){
-			offsetX = (that.text[i].length / 2) * (that.size / 2);
-			ctx.fillText(that.text[i], that.pos.x - offsetX, that.pos.y - (size + 2) * (that.text.length-1 - i));
-		}
-		ctx.globalAlpha = 1;
-	}
-
+	that.addMethods("transform");
 
 	return that;
 }

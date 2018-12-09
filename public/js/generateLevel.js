@@ -7,6 +7,7 @@ import * as blues				from "/js/blue.js";
 import * as reds				from "/js/reds.js";
 import lamp						from "/js/lamp.js";
 import generateTileImg 			from "/js/generateTileImg.js";
+import generateWallsImg			from "/js/generateWalls.js";
 import generateShadowImg 		from "/js/generateShadowImg.js";
 import addClouds				from "/js/clouds.js";
 import addBirds 				from "/js/bird.js";
@@ -17,7 +18,7 @@ const generateLevel = ({ template, time, background, texts }, { world, world: { 
 
 	let textCounter = 0;
 
-	add(tiles(generateTileImg(template, sprites, JSON["grass_tiles"])), "tiles", 8, true);
+	add(tiles(generateTileImg(template, sprites, JSON["grass_tiles"])), "tiles", 8);
 
 	add(tiles(sprites["backgrounds/" + background]), "background", 0, true);
 
@@ -32,6 +33,8 @@ const generateLevel = ({ template, time, background, texts }, { world, world: { 
 			if(tile === "P") add(point(pos.copy()), "points", 3);
 			if(tile === "0") add(vec(pos.x + 15, pos.y), "pointTarget", 0, true);
 			if(tile === "0" || tile === "O") add(shine(pos.copy()), "shine", 10);
+
+			//if(tile === ",") add(tileObject(pos.copy(), "tiles/grass_wall_tiles"), "walls", 1);
 
 			if(tile === "b"){
 				add(blues.bouncer(pos.copy(), texts[textCounter]), "blues", 3)
