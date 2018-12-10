@@ -37,8 +37,8 @@ export const red = (pos) => {
 	traits.addTalkTrait({
 		texts: [
 			["GRAAHH!"],
-			["Come 'ere bugger!"],
-			["You scared boy?"],
+			["Come'ere bugger!"],
+			["Twerp!"],
 		],
 		size: 10,
 		Yoffset: 9,
@@ -118,7 +118,7 @@ export const jumper = (pos) => {
 
 	that.texts.push(
 		["Get back here!"],
-		["Stop running away!"],
+		["Don't run away!"],
 	);
 
 	that.animate = ({ world: { player } }) => {

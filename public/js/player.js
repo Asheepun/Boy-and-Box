@@ -36,6 +36,26 @@ const player = (pos) => {
 		frames: "boy_frames",
 	})(that);
 
+	that.handleColX = (obstacle) => {
+		//fix issue when moving from box to ground
+		if(that.pos.y + that.size.y <= obstacle.pos.y + 3){
+			that.pos.y = obstacle.pos.y - that.size.y;
+			that.onGround = true;
+		}else{
+		
+		if(that.velocity.x > 0){
+			that.pos.x = obstacle.pos.x - that.size.x;
+			that.onRightWall = true;
+		}
+		else{
+			that.pos.x = obstacle.pos.x + obstacle.size.x;
+			that.onLeftWall = true;
+		}
+		that.velocity.x = 0;
+		that.acceleration.x = 0;
+		}
+	}
+
 	that.jumpSaveCounter = 0;
 
 	that.jump = ({ world: { add }, audio: { play } }) => {
