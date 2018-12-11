@@ -5,6 +5,7 @@ import * as loaders 	 		from "/js/lib/assets.js";
 import createCanvas 	 		from "/js/lib/canvas.js";
 import gameWorld 		 		from "/js/lib/gameWorld.js";
 import keys						from "/js/lib/keys.js";
+import button					from "/js/lib/button.js";
 import generateLevel			from "/js/generateLevel.js";
 import addClouds				from "/js/clouds.js";
 import player					from "/js/player.js";
@@ -12,7 +13,8 @@ import flower					from "/js/flower.js";
 import * as helpers				from "/js/helpers.js";
 import addBirds 				from "/js/bird.js";
 import levels					from "/js/levels.js";
-import drawImage 				from "/js/generateTileImg.js";
+import setupStartscreen			from "/js/startscreen.js";
+import setupSettings			from "/js/settings.js";
 
 Promise.all([
 	createCanvas(15 * 32, 15 * 18),
@@ -42,7 +44,8 @@ Promise.all([
 		"shadow",
 		"lamp",
 		"lamp_light",
-		"bookshelf"
+		"bookshelf",
+		"settings_button",
 	),
 	loaders.loadAudio(
 		1,
@@ -73,9 +76,10 @@ Promise.all([
 		JSON,
 		levels,
 		world: gameWorld(),
-		states: [
-		
-		],
+		states: {
+			setupStartscreen,
+			setupSettings,
+		},
 		state: undefined,
 		context: vec(0, 0),
 		currentLevel: 0,
@@ -95,6 +99,15 @@ Promise.all([
 		GAME.world.clearAll();
 	
 		generateLevel(GAME.levels[GAME.currentLevel], GAME);
+
+		GAME.world.add(button({
+			pos: vec(GAME.width - 15 + 3, 3),
+			size: vec(9, 9),
+			img: "settings_button",
+			action(GAME){
+				GAME.state = GAME.states.setupSettings;
+			}
+		}), "buttons", 15);
 
 		if(GAME.currentLevel === 0) GAME.world.add(helpers.boxText(vec(170, 50)), "text", 3);
 
@@ -137,8 +150,6 @@ Promise.all([
 		//handleScreenShake
 		GAME.context = v.mul(GAME.context, 0.5);
 		
-		
-
 	}
 
 	let nextState;
@@ -146,14 +157,6 @@ Promise.all([
 		GAME.transitionPosX += 20;
 		if(GAME.transitionPosX === 0) GAME.state = GAME.states[nextState];
 
-		/*
-		ctx.save();
-		ctx.scale(c.scale, c.scale);
-
-		ctx.drawImage(GAME.sprites.transition, GAME.transitionPosX, 0, 32 * 15 * 1.5, 18 * 15);
-
-		ctx.restore();
-		*/
 	}
 
 	GAME.transitionState = (state) => {
@@ -163,6 +166,7 @@ Promise.all([
 	}
 
 	GAME.state = GAME.states.setupLevel;
+	//GAME.state = GAME.states.setupStartScreen;
 
 	const timeScl = (1/60)*1000;
 	let lastTime = 0;

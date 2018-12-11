@@ -230,7 +230,7 @@ const levels = [
 			],
 			[
 				["Welcome to", "Blue's Town!"],
-				["It's the largest", "vill this end", "of the roses."],
+				["It's the largest", "village this end", "of the roses."],
 			]
 		]
 	},
