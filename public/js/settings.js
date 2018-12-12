@@ -1,22 +1,29 @@
-import button	   				from "/js/lib/button.js";
+import * as buttons	   			from "/js/lib/button.js";
 import traitHolder, * as traits from "/js/lib/traits.js"
 import vec, * as v 				from "/js/lib/vector.js";
 
 const setupSettings = (GAME) => {
 	GAME.world.add(dimm(), "dimm", 20, true);
 
+	//return button
+	GAME.world.add(buttons.clickableText({
+		pos: vec(GAME.width / 2 - 35, 160),
+		size: 20,
+		text: "Return",
+		action(GAME){
+			GAME.state = GAME.states.level;
+			GAME.world.dimm.fadeOut = true;
+			GAME.world.clear("settingsButtons");
+		}
+	}), "settingsButtons", 20);
+
 	GAME.state = settings;
 }
 
 const settings = (GAME) => {
-	if(GAME.pointer.upped){
-		GAME.world.clear("dimm");
-
-		GAME.state = GAME.states.level;
-		return;
-	}
-
 	GAME.world.dimm.update(GAME);
+
+	GAME.world.settingsButtons.forEach(b => b.update(GAME));
 }
 
 export default setupSettings;
@@ -26,8 +33,13 @@ const dimm = () => {
 
 	that.alpha = 0;
 
-	that.update = () => {
-		if(that.alpha < 0.5) that.alpha += 0.03;
+	that.fadeOut = false;
+
+	that.update = ({ world: { remove } }) => {
+		if(that.fadeOut) that.alpha -= 0.02;
+		else if(that.alpha < 0.7) that.alpha += 0.03;
+
+		if(that.alpha <= 0) remove(that);
 	}
 
 	that.draw = (ctx, sprites) => {

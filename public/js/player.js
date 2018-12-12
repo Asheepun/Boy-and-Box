@@ -29,7 +29,9 @@ const player = (pos) => {
 		oubArea: [0, 0, 15 * 32, 15 * 18 + 20],
 	})(that);
 
-	traits.addLandingTrait({})(that);
+	traits.addLandingTrait({
+		velocity: 1,
+	})(that);
 
 	traits.addFrameTrait({
 		delay: 6,
@@ -89,7 +91,6 @@ const player = (pos) => {
 	that.landCounter = 0;
 
 	that.land = ({ audio: { play } }) => {
-		that.landed = true;
 		that.landCounter = 10;
 		play("boy_land");
 	}

@@ -89,7 +89,7 @@ export const addBoxColTrait = ({ bounce = false }) => (that) => {
 		if(that.pos.x + that.size.x >= box.pos.x
 		&& that.pos.x <= box.pos.x + box.size.x
 		&& that.pos.y + that.size.y >= box.pos.y
-		&& that.pos.y + that.size.y <= box.pos.y + that.velocity.y + 5
+		&& that.pos.y + that.size.y <= box.pos.y + that.velocity.y + 3
 		&& that.velocity.y >= 0){
 			that.pos.y = box.pos.y - that.size.y;
 			that.fixCenter();
@@ -118,14 +118,19 @@ export const addCheckColTrait = ({ sets = [], singles = [] }) => (that) => {
 	that.addMethods("checkCol");
 }
 
-export const addLandingTrait = ({}) => (that) => {
+export const addLandingTrait = ({ velocity = 0 }) => (that) => {
+	that.requiredLandVelocity = velocity;
+	that.lastFallVelocity;
 	that.landed = false;
 	that.checkLanding = (GAME) => {
-		if(that.onGround && !that.landed){
+		if(that.onGround && !that.landed && that.lastFallVelocity >= that.requiredLandVelocity){
 			that.landed = true;
 			that.land(GAME);
 		}
-		if(!that.onGround) that.landed = false;
+		if(!that.onGround){
+			that.landed = false;
+			that.lastFallVelocity = that.velocity.y;
+		}
 	}
 
 	that.addMethods("checkLanding")
