@@ -14,8 +14,13 @@ const setupSettings = (GAME) => {
 			GAME.state = GAME.states.level;
 			GAME.world.dimm.fadeOut = true;
 			GAME.world.clear("settingsButtons");
+			fullscreenBtn.style.display = "none";
 		}
 	}), "settingsButtons", 20);
+
+	if(document.fullscreenEnabled
+	|| (browser && document[browser + "FullscreenEnabled"]))
+		fullscreenBtn.style.display = "block";
 
 	GAME.state = settings;
 }
@@ -24,6 +29,13 @@ const settings = (GAME) => {
 	GAME.world.dimm.update(GAME);
 
 	GAME.world.settingsButtons.forEach(b => b.update(GAME));
+
+	//fixing fullscreenBtn scale
+	fullscreenBtn.style["font-size"] = 20 * GAME.c.scale + "px";
+	fullscreenBtn.style.top =
+		GAME.c.offsetTop + 120 * GAME.c.scale + "px";
+	fullscreenBtn.style.left =
+		GAME.c.offsetLeft + (GAME.width / 2 - 75) * GAME.c.scale + "px";
 }
 
 export default setupSettings;
@@ -50,3 +62,35 @@ const dimm = () => {
 
 	return that;
 }
+
+//fullscreenBtn
+const fullscreenBtn = document.createElement("p");
+fullscreenBtn.innerHTML = "Fullscreen: off";
+fullscreenBtn.style.display = "none";
+document.body.appendChild(fullscreenBtn);
+
+let isFullscreen = false;
+
+let browser = false;
+
+if(document.body.webkitRequestFullscreen) browser = "webkit";
+if(document.body.mozRequestFullscreen) browser = "moz";
+if(document.body.msRequestFullscreen) browser = "ms";
+
+fullscreenBtn.addEventListener("click", () => {
+
+	if(!isFullscreen){
+		if(!browser) document.body.requestFullscreen();
+		else document.body[browser + "RequestFullscreen"]();
+
+		isFullscreen = true;
+		fullscreenBtn.innerHTML = "Fullscreen: on";
+	}else{
+		if(!browser) document.exitFullscreen();
+		else document[browser + "ExitFullscreen"]();
+
+		isFullscreen = false;
+		fullscreenBtn.innerHTML = "Fullscreen: off";
+	}
+
+});

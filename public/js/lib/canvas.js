@@ -3,6 +3,7 @@ import vec, { div, sub } from "/js/lib/vector.js";
 const createCanvas = (width = 800, height = 600, element = document.body) => new Promise((resolve, reject) => {
     const c = document.createElement("canvas");
     const ctx = c.getContext("2d");
+	c.id = "gameCanvas";
     ctx.webkitImageSmoothingEnabled = false;
     ctx.mozImageSmoothingEnabled = false;    
 	ctx.imageSmoothingEnabled = false;

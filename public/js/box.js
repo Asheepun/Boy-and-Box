@@ -17,7 +17,7 @@ const box = (pos) => {
 
 	let newPos;
 	let lastPos = that.pos.copy();
-	that.checkPointer = ({ pointer, world: { obstacles } }) => {
+	that.checkPointer = ({ pointer, world: { obstacles, buttons } }) => {
 		if(pointer.down){
 			newPos = v.pipe(
 				pointer.pos.copy(),
@@ -26,7 +26,9 @@ const box = (pos) => {
 				x => v.mul(x, 15),
 			);
 
-			if(!col.checkPointCol(newPos, obstacles) && !(lastPos.x === newPos.x && lastPos.y === newPos.y)){
+			if(!col.checkPointCol(newPos, obstacles)
+			&& !col.checkPointCol(pointer.pos, buttons)
+			&& !(lastPos.x === newPos.x && lastPos.y === newPos.y)){
 				lastPos = newPos.copy();
 				that.pos = v.add(newPos, vec(5, 5));
 				that.size = vec(5, 5);
