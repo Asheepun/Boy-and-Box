@@ -26,7 +26,7 @@ export const red = (pos) => {
 	traits.addBoxColTrait({})(that);
 
 	traits.addOubTrait({
-		oubArea: [0, 0, 32 * 15, 18 * 15 + that.size.y],
+		oubArea: [0, 0, 32 * 15, 18 * 15 + that.size.y * 3],
 	})(that);
 
 	traits.addFrameTrait({
@@ -45,6 +45,8 @@ export const red = (pos) => {
 		condition: ({ world: { player } }) =>
 			v.sub(that.center, player.center).mag < 45,
 	})(that);
+
+	that.pos.y += 30 - that.size.y;
 
 	that.facing.x = -1;
 
@@ -65,7 +67,7 @@ export const red = (pos) => {
 	}
 
 	that.handleOubY = ({ world: { remove } }) => {
-		if(that.velocity.y > 0) remove(that);
+		if(that.velocity.y > 0) that.hit = true;
 		else that.pos.y = 0;
 	}
 
@@ -102,8 +104,15 @@ export const red = (pos) => {
 		if(that.onGround) that.frameState = "still";
 		else that.frameState = "jumping";
 	}
+
+	that.hit = false;
+	that.handleHit = ({ world: { remove } }) => {
+		if(that.hit){
+			remove(that);
+		}
+	}
 	
-	that.addMethods("handleVelocity", "bounce", "animate", "checkPlayerCol");
+	that.addMethods("handleVelocity", "bounce", "animate", "checkPlayerCol", "handleHit");
 
 	return that;
 }
@@ -133,6 +142,47 @@ export const jumper = (pos) => {
 
 	return that;
 }
+
+export const spawner = (pos) => {
+	const that = red(pos);
+
+	that.img = "red_spawner";
+	that.pos.x += 30 - that.size.x;
+	that.spawn = pos.copy();
+
+	that.originSize = that.size.copy();
+
+	//that.rechargeTime = 5;
+
+	that.handleHit = () => {
+		if(that.hit){
+			that.pos = that.spawn.copy();
+			that.facing.x = -1;
+			that.hit = false;
+			that.size = vec(5, 5);
+			that.pos.x += (that.originSize.x - 5) / 2;
+			that.pos.y += that.originSize.y - 5;
+		}
+	}
+
+	that.grow = () => {
+
+		if(that.size.x < that.originSize.x){
+			that.pos.x -= 0.75;
+			that.pos.y -= 1.5;
+			that.size.x += 1.5;
+			that.size.y += 1.5;
+		}else{
+			that.size.x = that.originSize.x;
+			that.size.y = that.originSize.y;
+		}
+	}
+
+	that.addMethods("grow");
+
+	return that;
+}
+
 
 let transed = false;
 

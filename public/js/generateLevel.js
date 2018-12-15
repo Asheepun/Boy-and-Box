@@ -57,6 +57,7 @@ const generateLevel = ({ template, time, background, texts }, { world, world: { 
 			if(tile === "T") add(reds.blueTrans(pos.copy()), "reds", 5);
 			if(tile === "1") add(reds.red(pos.copy()), "reds", 5);
 			if(tile === "2") add(reds.jumper(pos.copy()), "reds", 5);
+			if(tile === "3") add(reds.spawner(pos.copy()), "reds", 5);
 
 	}));
 	

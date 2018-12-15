@@ -83,7 +83,7 @@ const bird = (pos) => {
 		}
 	}
 
-	that.addMethods("animate", "jump", "checkToFly", "handleOub");
+	that.addMethods("jump", "checkToFly", "handleOub", "animate");
 
 	return that;
 }

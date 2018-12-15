@@ -9,7 +9,6 @@ import button					from "/js/lib/button.js";
 import generateLevel			from "/js/generateLevel.js";
 import addClouds				from "/js/clouds.js";
 import player					from "/js/player.js";
-import flower					from "/js/flower.js";
 import * as helpers				from "/js/helpers.js";
 import addBirds 				from "/js/bird.js";
 import levels					from "/js/levels.js";
@@ -39,7 +38,9 @@ Promise.all([
 		"blue_lock",
 		"blue_trans",
 		"red",
+		"red_spawner",
 		"red_flower",
+		"red_spawner_flower",
 		"transition",
 		"shadow",
 		"lamp",
@@ -61,6 +62,7 @@ Promise.all([
 		"sick_blue_frames",
 		"blue_trans_frames",
 		"red_frames",
+		"red_spawner_flower_frames",
 		"grass_tiles",
 	),
 ]).then(([ { c, ctx, width, height, pointer }, sprites, audio, JSON ]) => {
@@ -82,7 +84,7 @@ Promise.all([
 		},
 		state: undefined,
 		context: vec(0, 0),
-		currentLevel: 0,
+		currentLevel: 14,
 	};
 
 	GAME.keys = keys(

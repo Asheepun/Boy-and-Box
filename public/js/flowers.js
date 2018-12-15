@@ -25,12 +25,33 @@ const flower = (pos) => {
 	return that;
 }
 
+const spawnerFlower = (pos) => {
+	const that = traitHolder();
+
+	traits.addEntityTrait({
+		pos,
+		size: vec(15, 15)
+	})(that);
+
+	traits.addSpriteTrait({
+		img: "red_spawner_flower",
+		imgSize: that.size.copy(),
+	})(that);
+
+	traits.addFrameTrait({
+		delay: 40,
+		frames: "red_spawner_flower_frames",
+	})(that);
+
+	return that;
+}
+
 const addFlowers = (template, world) => {
 	template.forEach((row, y) => strEach(row, (tile, x) => {
 		if(tile === "T"
 		|| tile === "1"
 		|| tile === "2"
-		|| tile === "3"
+		//|| tile === "3" has it's own flower
 		|| tile === "4"
 		|| tile === "5"){
 			const f = flower(vec(x * 15 + Math.random() * (tile === "T" ? 10 : 25), y * 15))
@@ -45,6 +66,9 @@ const addFlowers = (template, world) => {
 			f.removeMethods("move");
 
 			world.add(f, "flowers", 2);
+		}
+		if(tile === "3"){
+			world.add(spawnerFlower(vec(x * 15 + 12, y * 15 + 15)), "flowers", 2);
 		}
 	}));
 }
