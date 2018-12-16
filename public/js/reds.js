@@ -147,6 +147,7 @@ export const spawner = (pos) => {
 	that.img = "red_spawner";
 	that.pos.x += 30 - that.size.x;
 	that.spawn = pos.copy();
+	that.velocity.y = 5;
 
 	that.originSize = that.size.copy();
 
@@ -186,7 +187,9 @@ export const giant = (pos) => {
 		velocity: 5,
 	})(that);
 
-	that.jumpVelocity = -2.75;
+	that.jumpVelocity = -3.55//2.75;
+
+	that.velocity.y = -1;
 
 	that.size.x = 23 * 6;
 	that.size.y = 21 * 6;
