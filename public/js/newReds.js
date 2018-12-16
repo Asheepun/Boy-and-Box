@@ -47,6 +47,8 @@ export const red = (pos) => {
 			v.sub(that.center, player.center).mag < 45,
 	})(that);
 
+	that.pos.y += 30 - that.size.y;
+
 	that.facing.x = -1;
 
 	that.checkPlayerCol = ({ world: { player }, sprites }) => {
@@ -98,6 +100,7 @@ export const red = (pos) => {
 		else that.velocity.x = 0;
 	}
 
+
 	that.animate = () => {
 		if(that.onGround) that.frameState = "still";
 		else that.frameState = "jumping";
@@ -141,6 +144,7 @@ export const jumper = (pos) => {
 	return that;
 }
 
+/*
 export const spawner = (pos) => {
 	const that = red(pos);
 
@@ -205,6 +209,7 @@ export const giant = (pos) => {
 		context.y = 15;
 
 		for(let i = 0; i < 15; i++){
+			//posX = that.hitBox1.pos.x + Math.random() * that.hitBox1.size.x;
 			posX = that.pos.x + Math.random() * that.size.x;
 			add(particles.getDustParticle(
 				vec(posX, that.pos.y + that.size.y - 5),
@@ -213,27 +218,27 @@ export const giant = (pos) => {
 		}
 	}
 
-	that.hitBox = {
+	that.hitBox1 = {
 		pos: vec(0, 0),
 		size: vec(0, 0),
 	};
 
 	that.handleHitBoxes = () => {
-		that.hitBox.pos.x = that.pos.x + 4 * 6;
-		that.hitBox.pos.y = that.pos.y + 2 * 6;
-		that.hitBox.size.x = that.size.x - 8 * 6;
-		that.hitBox.size.y = that.size.y - 2 * 6;
+		that.hitBox1.pos.x = that.pos.x + 4 * 6;
+		that.hitBox1.pos.y = that.pos.y + 2 * 6;
+		that.hitBox1.size.x = that.size.x - 8 * 6;
+		that.hitBox1.size.y = that.size.y - 2 * 6;
 	}
 
 	that.checkPlayerCol = ({ world: { player } }) => {
-		if(col.checkCol(that.hitBox, player)){
+		if(col.checkCol(that.hitBox1, player)){
 			player.hit = true;
 		}
 	}
 
 	that.handleBoxCol = ({ world: { box } }) => {
-		if(that.hitBox.pos.x + that.hitBox.size.x >= box.pos.x
-		&& that.hitBox.pos.x <= box.pos.x + box.size.x
+		if(that.hitBox1.pos.x + that.hitBox1.size.x >= box.pos.x
+		&& that.hitBox1.pos.x <= box.pos.x + box.size.x
 		&& that.pos.y + that.size.y >= box.pos.y
 		&& that.pos.y + that.size.y <= box.pos.y + that.velocity.y + 3
 		&& that.velocity.y >= 0){
@@ -247,8 +252,8 @@ export const giant = (pos) => {
 
     that.handleColY = (obstacle) => {
 		if(col.checkCol({
-			pos: that.hitBox.pos,
-			size: vec(that.hitBox.size.x, that.size.y)
+			pos: that.hitBox1.pos,
+			size: vec(that.hitBox1.size.x, that.size.y)
 		}, obstacle)){
 			if(that.velocity.y > 0){
 				that.onGround = true;
@@ -271,6 +276,7 @@ export const giant = (pos) => {
 
 	return that;
 }
+*/
 
 let transed = false;
 
@@ -310,7 +316,7 @@ export const blueTrans = (pos) => {
 			that.transformed = true;
 
 		if(that.transformed){
-			if(that.methods["handleFrames"])that.removeMethods("handleFrames");
+			if(that.methods["handleFrames"]) that.removeMethods("handleFrames");
 			that.facing.x = -1;
 			that.img = "red";
 			that.imgPos = vec(0, 0);
@@ -319,8 +325,8 @@ export const blueTrans = (pos) => {
 			that.size.y += 1;
 			that.pos.x -= 0.5;
 			that.pos.y -= 1;
+			//console.log(that.pos.y)
 			if(that.size.x >= 23){
-				console.log(that.pos.y)
 				remove(that);
 				remove(that.text);
 				add(red(vec(that.pos.x-1, that.pos.y)), "reds", 5);

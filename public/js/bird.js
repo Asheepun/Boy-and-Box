@@ -49,7 +49,7 @@ const bird = (pos) => {
 		}
 	}
 
-	that.checkToFly = ({ world: { player, remove, add }, levelCleared }) => {
+	that.checkToFly = ({ world: { player, reds, remove, add }, levelCleared }) => {
 		if((v.sub(that.center, player.center).mag < 50 || levelCleared) && !that.flying){
 			that.flying = true;
 			that.velocity.y = -2.5 - Math.random()*1;

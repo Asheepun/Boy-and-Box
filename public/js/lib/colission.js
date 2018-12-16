@@ -116,8 +116,8 @@ export const checkPixelCol = (entity, candidate, sprites) => {
 		ctx.imageSmoothingEnabled = false;
 		ctx.globalAlpha = 0.5;
 		ctx.scale(50, 50);
-		ctx.drawImage(sprites[entity.img], entityImgPosX, entityImgPosY, difX, difY, 0, 0, difX, difY);
-		ctx.drawImage(sprites[candidate.img], candidateImgPosX, candidateImgPosY, difX, difY, 0, 0, difX, difY);
+		ctx.drawImage(sprites[entity.img], entity.imgPos.x + entityImgPosX, entity.imgPos.y + entityImgPosY, difX, difY, 0, 0, difX, difY);
+		ctx.drawImage(sprites[candidate.img], candidate.imgPos.x + candidateImgPosX, candidate.imgPos.y + candidateImgPosY, difX, difY, 0, 0, difX, difY);
 
 		imgData = ctx.getImageData(0, 0, c.width, c.height).data;
 

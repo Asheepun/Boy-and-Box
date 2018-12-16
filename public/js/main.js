@@ -41,6 +41,7 @@ Promise.all([
 		"red_spawner",
 		"red_flower",
 		"red_spawner_flower",
+		"red_giant",
 		"transition",
 		"shadow",
 		"lamp",
@@ -63,6 +64,7 @@ Promise.all([
 		"blue_trans_frames",
 		"red_frames",
 		"red_spawner_flower_frames",
+		"red_giant_frames",
 		"grass_tiles",
 	),
 ]).then(([ { c, ctx, width, height, pointer }, sprites, audio, JSON ]) => {
@@ -84,7 +86,7 @@ Promise.all([
 		},
 		state: undefined,
 		context: vec(0, 0),
-		currentLevel: 14,
+		currentLevel: 0,
 	};
 
 	GAME.keys = keys(
@@ -157,6 +159,7 @@ Promise.all([
 	let nextState;
 	GAME.states.transitionState = () => {
 		GAME.transitionPosX += 20;
+		GAME.context = vec(0, 0);
 		if(GAME.transitionPosX === 0) GAME.state = GAME.states[nextState];
 
 	}

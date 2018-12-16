@@ -275,6 +275,7 @@ export const addTalkTrait = ({ texts, size, Yoffset, condition }) => (that) => {
 	that.texts = texts;
 	that.textYoffset = Yoffset;
 	that.textCondition = condition;
+	that.textSize = size;
 
 	that.currentText = 0;
 	let lastCurrentText;
@@ -282,7 +283,7 @@ export const addTalkTrait = ({ texts, size, Yoffset, condition }) => (that) => {
 	that.text = textEntity({
 		pos: vec(0, 0),
 		text: that.texts[that.currentText],
-		size,
+		size: that.textSize,
 	});
 
 	that.talking = false;
@@ -293,6 +294,7 @@ export const addTalkTrait = ({ texts, size, Yoffset, condition }) => (that) => {
 
 		if(that.talking && !that.addedText){
 			that.text.text = that.texts[that.currentText];
+			that.text.size = that.textSize;
 
 			add(that.text, "texts", 9);
 			that.addedText = true;
@@ -331,7 +333,7 @@ const textEntity = ({ pos, size, text }) => {
 	that.draw = (ctx) => {
 		ctx.globalAlpha = 1;
 		ctx.fillStyle = "white";
-		ctx.font = size + "px game";
+		ctx.font = that.size + "px game";
 		for(let i = 0; i < that.text.length; i++){
 			offsetX = (that.text[i].length / 2) * (that.size / 2);
 			ctx.fillText(that.text[i], that.pos.x - offsetX, that.pos.y - (size + 2) * (that.text.length-1 - i));
