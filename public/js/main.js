@@ -19,6 +19,7 @@ Promise.all([
 	createCanvas(15 * 32, 15 * 18),
 	loaders.loadSprites(
 		"boy",
+		"boy_hit",
 		"box",
 		"backgrounds/sky",
 		"backgrounds/planks",

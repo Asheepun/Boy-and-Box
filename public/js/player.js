@@ -145,8 +145,15 @@ const player = (pos) => {
 		if(levelCleared) that.oubArea[2] = width + that.size.x;
 	}
 
-	that.handleHit = ({ transitionState }) => {
-		if(that.hit) transitionState("setupLevel")
+	let hitCounter = 0;
+	that.handleHit = ({ transitionState, world: { add, remove } }) => {
+		if(that.hit) hitCounter++;
+		else hitCounter = 0;
+		if(hitCounter > 2){
+			if(that.pos.y !== -60) transitionState("setupLevel");
+			that.pos.y = -60;
+			that.canMove = false;
+		}
 	}
 
 	that.handleOubX = (GAME) => {
@@ -163,7 +170,7 @@ const player = (pos) => {
 		that.acceleration.x = 0;
 	}
 
-	that.handleOubY = () => {
+	that.handleOubY = ({ transitionState }) => {
 		if(that.velocity.y < 0) that.pos.y = 0;
 		if(that.velocity.y > 0) that.hit = true;
 

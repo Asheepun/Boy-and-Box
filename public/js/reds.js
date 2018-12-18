@@ -50,7 +50,9 @@ export const red = (pos) => {
 	that.facing.x = -1;
 
 	that.checkPlayerCol = ({ world: { player }, sprites }) => {
-		if(col.checkPixelCol(that, player, sprites)) player.hit = true;
+		if(col.checkPixelCol(that, player, sprites)){
+			player.hit = true;
+		}
 	}
 
 	that.handleColX = (obstacle) => {
