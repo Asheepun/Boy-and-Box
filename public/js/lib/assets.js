@@ -15,42 +15,49 @@ export const loadSprites = (...urls) => new Promise((resolve, reject) => {
 });
 
 export const loadAudio = (volume = 0.5, ...urls) => new Promise((resolve, reject) => {
-    const audio = {
-        //get audio elements
-        sounds: urls.reduce((sounds, url) => {
-            const a = new Audio(`/assets/audio/${url}.wav`);
-			a.preload = "auto";
-            a.load();
-            sounds[url] = a;
-            a.originVolume = volume;
-            return sounds;
-        }, {}),
-        volume: 100,
-    };
-    audio.play = (url) => {
-		audio.sounds[url].load();
-		audio.sounds[url].play();
-    }
-	let a;
-	audio.playOffSync = (url) => {
-		a = audio.sounds[url].cloneNode();
-		a.volume = audio.sounds[url].volume;
-		a.play();
+	const audio = {
+		volume,
+		ctx: new AudioContext(),
+		buffers: {},
+	};
+
+	audio.play = (buffer, { volume = 1 }) => {
+		const soundNode = audio.ctx.createBufferSource();
+		soundNode.buffer = audio.buffers[buffer];
+
+		const volumeNode = audio.ctx.createGain();
+		volumeNode.gain.value = audio.volume * volume;
+
+		soundNode.connect(volumeNode);
+
+		volumeNode.connect(audio.ctx.destination);
+
+		soundNode.start(audio.ctx.currentTime);
 	}
-    audio.loop = (url) => {
-        audio.sounds[url].loop = true;
-        audio.play(url);
-    }
-    audio.stop = (url) => {
-        audio.sounds[url].loop = false;
-        audio.sounds[url].load();
-    }
-    audio.setVolume = (volume) => {
-        for(let key in audio.sounds){
-            audio.sounds[key].volume = audio.sounds[key].originVolume * (volume !== undefined ? volume : audio.volume/100);
-        }
-    }
-    resolve(audio);
+
+	let loadedBuffers = 0;
+	urls.forEach(url => {
+		const xhr = new XMLHttpRequest();
+
+		xhr.open("Get", `/assets/audio/${url}.wav`, true);
+
+		xhr.responseType = "arraybuffer";
+
+		xhr.send();
+
+		xhr.addEventListener("load", (e) => {
+			audio.ctx.decodeAudioData(
+				xhr.response,
+				buffer => {
+					audio.buffers[url] = buffer;
+					loadedBuffers++;
+					if(loadedBuffers === urls.length) resolve(audio);
+				},
+				err => console.log(err),
+			);
+		}, false);
+	});
+
 });
 
 export const loadJSON = (...srcs) => new Promise((resolve, reject) => {

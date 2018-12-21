@@ -51,8 +51,9 @@ Promise.all([
 		"settings_button",
 	),
 	loaders.loadAudio(
-		1,
-		"boy_jump",
+		0.5,
+		"boy_jump1",
+		"boy_jump2",
 		"boy_land",
 		"pickup_point",
 		"level_cleared",
@@ -148,7 +149,7 @@ Promise.all([
 		GAME.transitionPosX += 20;
 
 		if(GAME.world.points.length <= 0){
-			if(!GAME.levelCleared) GAME.audio.play("level_cleared");
+			if(!GAME.levelCleared) GAME.audio.play("level_cleared", {});
 			GAME.levelCleared = true;
 		}
 
@@ -158,7 +159,7 @@ Promise.all([
 	}
 
 	let nextState;
-	GAME.states.transitionState = () => {
+	GAME.states.transitionState = (GAME) => {
 		GAME.transitionPosX += 20;
 		GAME.context = vec(0, 0);
 		if(GAME.transitionPosX === 0) GAME.state = GAME.states[nextState];

@@ -126,7 +126,7 @@ export const jumper = (pos) => {
 	that.gravity = 0.0045;
 
 	that.texts.push(
-		["Get back here!"],
+		["Get over here!"],
 		["Don't run away!"],
 	);
 
@@ -189,6 +189,21 @@ export const giant = (pos) => {
 		velocity: 5,
 	})(that);
 
+	that.texts = [
+		[
+			"GRAAH!",
+		],
+		[
+			"Bugger!",
+		],
+		[
+			"Twerp!",
+		],
+		[
+			"Chicken little!",
+		],
+	]
+
 	that.jumpVelocity = -3.55//2.75;
 
 	that.velocity.y = -1;
@@ -220,14 +235,12 @@ export const giant = (pos) => {
 
 	that.hitBox = {
 		pos: vec(0, 0),
-		size: vec(0, 0),
+		size: vec(that.size.x - 8 * 6, that.size.y - 2 * 6),
 	};
 
-	that.handleHitBoxes = () => {
+	that.handleHitBoxes = (GAME) => {
 		that.hitBox.pos.x = that.pos.x + 4 * 6;
 		that.hitBox.pos.y = that.pos.y + 2 * 6;
-		that.hitBox.size.x = that.size.x - 8 * 6;
-		that.hitBox.size.y = that.size.y - 2 * 6;
 	}
 
 	that.checkPlayerCol = ({ world: { player } }) => {
@@ -237,7 +250,7 @@ export const giant = (pos) => {
 	}
 
 	that.handleBoxCol = ({ world: { box } }) => {
-		if(that.hitBox.pos.x + that.hitBox.size.x >= box.pos.x
+		if(that.hitBox.pos.x + that.hitBox.size.x + 4 >= box.pos.x//+4 for fix with stupid collission issue
 		&& that.hitBox.pos.x <= box.pos.x + box.size.x
 		&& that.pos.y + that.size.y >= box.pos.y
 		&& that.pos.y + that.size.y <= box.pos.y + that.velocity.y + 3
