@@ -15,7 +15,7 @@ export const checkSetCol = (entity, set) => {
 }
 
 export const checkPlatformCol = (entity, platform) => 
-	entity.pos.y + entity.size.y >= platform.pos.y
+	entity.pos.y + entity.size.y > platform.pos.y
 	&& entity.pos.y + entity.size.y <= platform.pos.y + platform.size.y
 	&& entity.pos.x + entity.size.x >= platform.pos.x
 	&& entity.pos.x <= platform.pos.x + platform.size.x

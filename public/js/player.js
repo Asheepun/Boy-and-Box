@@ -42,7 +42,6 @@ const player = (pos) => {
 		//fix issue when moving from box to ground
 		if(that.pos.y + that.size.y <= obstacle.pos.y + 3){
 			that.pos.y = obstacle.pos.y - that.size.y;
-			//that.onGround = true;
 		}else{
 		
 		if(that.velocity.x > 0){
@@ -171,7 +170,10 @@ const player = (pos) => {
 	}
 
 	that.handleOubY = ({ transitionState }) => {
-		if(that.velocity.y < 0) that.pos.y = 0;
+		if(that.velocity.y < 0){
+			that.onRoof = true;
+			that.pos.y = 0;
+		}
 		if(that.velocity.y > 0) that.hit = true;
 
 		that.velocity.y = 0;

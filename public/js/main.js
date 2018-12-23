@@ -89,6 +89,7 @@ Promise.all([
 		state: undefined,
 		context: vec(0, 0),
 		currentLevel: 0,
+		volume: 1,
 	};
 
 	GAME.keys = keys(
@@ -195,7 +196,7 @@ Promise.all([
 		ctx.scale(c.scale, c.scale);
 		ctx.translate(GAME.context.x, GAME.context.y);
 
-		GAME.world.draw(ctx, GAME.sprites);
+		GAME.world.draw(ctx, GAME.sprites, GAME);
 
 		ctx.drawImage(GAME.sprites.transition, GAME.transitionPosX, 0, 32 * 15 * 1.5, 18 * 15);
 

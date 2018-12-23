@@ -31,18 +31,22 @@ export const addOubTrait = ({ oubArea = [0, 0, 900, 600], bounce = false }) => (
         if(that.velocity.x > 0)
             that.pos.x = that.oubArea[0] + that.oubArea[2] - that.size.x;
 		else{
-			that.velocity.x = 0;
-			if(that.acceleration) that.acceleration.x = 0;
+			that.pos.x = that.oubArea[0];
 		}
         if(bounce) that.velocity.x *= -1;
-		else that.velocity.x = 0;
+		else{
+			if(that.acceleration) that.acceleration.x = 0;
+			that.velocity.x = 0;
+		}
     }
     that.handleOubY = () => {
         if(that.velocity.y > 0){
             that.onGround = true;
             that.pos.y = oubArea[1] + oubArea[3] - that.size.y;
-        }else
+        }else{
+			that.onRoof = true;
             that.pos.y = oubArea[1];
+		}
         if(bounce) that.velocity.y *= -1;
 		else{
 			that.velocity.y = 0;
@@ -321,7 +325,7 @@ export const addTalkTrait = ({ texts, size, Yoffset, condition }) => (that) => {
 	that.addMethods("checkTextCondition", "talk");
 }
 
-const textEntity = ({ pos, size, text }) => {
+export const textEntity = ({ pos, size, text }) => {
 	const that = traitHolder();
 
 	that.pos = pos;
@@ -330,13 +334,14 @@ const textEntity = ({ pos, size, text }) => {
 
 	let offsetX;
 	
-	that.draw = (ctx) => {
+	that.draw = (ctx, sprites, GAME) => {
 		ctx.globalAlpha = 1;
-		ctx.fillStyle = "white";
+		ctx.fillStyle = "white"
 		ctx.font = that.size + "px game";
 		for(let i = 0; i < that.text.length; i++){
 			offsetX = (that.text[i].length / 2) * (that.size / 2);
-			ctx.fillText(that.text[i], that.pos.x - offsetX, that.pos.y - (size + 2) * (that.text.length-1 - i));
+			if(that.text[i].constructor === Function) ctx.fillText(that.text[i](GAME), that.pos.x - offsetX, that.pos.y - (size + 2) * (that.text.length-1 - i));
+			else ctx.fillText(that.text[i], that.pos.x - offsetX, that.pos.y - (size + 2) * (that.text.length-1 - i));
 		}
 		ctx.globalAlpha = 1;
 	}

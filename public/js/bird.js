@@ -49,6 +49,7 @@ const bird = (pos) => {
 		}
 	}
 
+	that.hasBeenOffGround = 0;
 	that.checkToFly = ({ world: { player, reds, remove, add }, levelCleared }) => {
 		if((v.sub(that.center, player.center).mag < 50 || levelCleared) && !that.flying){
 			that.flying = true;

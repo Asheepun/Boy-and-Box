@@ -62,9 +62,9 @@ const gameWorld = () => {
         }
     }
 
-    that.draw = (ctx, sprites) => {
+    that.draw = (ctx, sprites, GAME) => {
         that.layers.forEach(layer => layer.forEach(entity => {
-            if(entity.draw) entity.draw(ctx, sprites);
+            if(entity.draw) entity.draw(ctx, sprites, GAME);
         }));
     }
 

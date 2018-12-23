@@ -21,16 +21,16 @@ export const loadAudio = (volume = 0.5, ...urls) => new Promise((resolve, reject
 		buffers: {},
 	};
 
-	audio.play = (buffer, { volume = 1 }) => {
+	audio.play = (buffer, { volume = 1, frequencyScale = 1 }) => {
 		const soundNode = audio.ctx.createBufferSource();
 		soundNode.buffer = audio.buffers[buffer];
 
-		const volumeNode = audio.ctx.createGain();
-		volumeNode.gain.value = audio.volume * volume;
+		const gainNode = audio.ctx.createGain();
+		gainNode.gain.value = audio.volume * volume;
 
-		soundNode.connect(volumeNode);
+		soundNode.connect(gainNode);
 
-		volumeNode.connect(audio.ctx.destination);
+		gainNode.connect(audio.ctx.destination);
 
 		soundNode.start(audio.ctx.currentTime);
 	}

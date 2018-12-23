@@ -40,7 +40,8 @@ const point = (pos) => {
 		));
 
 		spawner++;
-		if(spawner % 2 === 0) add(particles.getDustParticle(that.center.copy(), vec(Math.random()-0.5, Math.random()-0.5)), "particles", 5);
+		if(spawner % 2 === 0)
+			add(particles.getDustParticle(that.center.copy(), vec(Math.random()-0.5, Math.random()-0.5)), "particles", 5);
 
 		if(that.pos.x > width){
 			remove(that);
@@ -52,7 +53,7 @@ const point = (pos) => {
 	}
 
 	that.checkPlayer = ({ world: { player } }) => {
-		if(v.sub(that.center, player.center).mag + 1 < that.size.x / 2 + player.size.x / 2)
+		if(v.sub(that.center, player.center).mag < that.size.x / 2 + player.size.x / 2 - 1)
 			that.hit = true;
 	}
 
