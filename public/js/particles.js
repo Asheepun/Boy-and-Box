@@ -45,7 +45,7 @@ export const dust = (pos, velocity) => {
 		that.size.x -= shrinkage;
 		that.size.y -= shrinkage;
 
-		if(that.size.x < 0 || that.size.y < 0){
+		if(that.size.x <= 0 || that.size.y <= 0){
 			remove(that);
 		}
 	}
@@ -72,6 +72,7 @@ export const getDustParticle = (pos, velocity) => {
 	if(dustParticleIndex >= dustParticles.length) dustParticleIndex = 0;
 	dustParticles[dustParticleIndex].pos = pos;
 	dustParticles[dustParticleIndex].velocity = velocity;
+	dustParticles[dustParticleIndex].acceleration = vec(0, 0);
 	dustParticles[dustParticleIndex].size = vec(5, 5);
 	dustParticles[dustParticleIndex].rotation = 0;
 	return dustParticles[dustParticleIndex];

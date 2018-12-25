@@ -12,7 +12,6 @@ import player					from "/js/player.js";
 import * as helpers				from "/js/helpers.js";
 import addBirds 				from "/js/bird.js";
 import levels					from "/js/levels.js";
-import setupStartscreen			from "/js/startscreen.js";
 import setupSettings			from "/js/settings.js";
 
 Promise.all([
@@ -83,7 +82,6 @@ Promise.all([
 		levels,
 		world: gameWorld(),
 		states: {
-			setupStartscreen,
 			setupSettings,
 		},
 		state: undefined,
@@ -174,11 +172,12 @@ Promise.all([
 	}
 
 	GAME.state = GAME.states.setupLevel;
-	//GAME.state = GAME.states.setupStartScreen;
 
 	const timeScl = (1/60)*1000;
 	let lastTime = 0;
 	let accTime = 0;
+
+	let firstLevelFade = 1;
 
 	const loop = (time = 0) => {
 		accTime += time - lastTime;
@@ -199,6 +198,13 @@ Promise.all([
 		GAME.world.draw(ctx, GAME.sprites, GAME);
 
 		ctx.drawImage(GAME.sprites.transition, GAME.transitionPosX, 0, 32 * 15 * 1.5, 18 * 15);
+
+		if(firstLevelFade > 0){
+			ctx.globalAlpha = firstLevelFade;
+			ctx.drawImage(GAME.sprites.transition, 0, 0, 1, 1, 0, 0, GAME.c.width, GAME.c.height);
+			firstLevelFade -= 0.015;
+			ctx.globalAlpha = 1;
+		}
 
 		ctx.restore();
 
