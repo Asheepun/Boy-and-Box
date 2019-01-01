@@ -149,9 +149,7 @@ const player = (pos) => {
 		if(that.hit) hitCounter++;
 		else hitCounter = 0;
 		if(hitCounter > 2){
-			if(that.pos.y !== -60) transitionState("setupLevel");
-			that.pos.y = -60;
-			that.canMove = false;
+			transitionState("setupLevel");
 		}
 	}
 
@@ -161,6 +159,7 @@ const player = (pos) => {
 			if(GAME.levelCleared && !that.hit){
 				GAME.currentLevel++;
 				GAME.transitionState("setupLevel");
+				if(GAME.saveProgress) localStorage.currentLevel = GAME.currentLevel;
 			}else
 				that.pos.x = GAME.width - that.size.x;
 

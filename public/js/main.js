@@ -86,9 +86,13 @@ Promise.all([
 		},
 		state: undefined,
 		context: vec(0, 0),
-		currentLevel: 0,
+		currentLevel: 16,
 		volume: 1,
+		saveProgress: true,
 	};
+
+	//if(GAME.saveProgress && localStorage.currentLevel)
+		//GAME.currentLevel = localStorage.currentLevel;
 
 	GAME.keys = keys(
 		"a",
