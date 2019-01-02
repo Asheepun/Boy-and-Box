@@ -59,8 +59,8 @@ const player = (pos) => {
 
 	that.jumpSaveCounter = 0;
 
-	that.jump = ({ world: { add }, audio: { play } }) => {
-		if(that.jumpSaveCounter > 0){
+	that.jump = ({ world: { add, obstacles }, audio: { play } }) => {
+		if(that.jumpSaveCounter > 0 && !that.checkObstaclesAbove(obstacles)){
 			play("boy_jump1", {});
 			that.velocity.y = -4//5;
 			that.acceleration.y = 0//0.025; //what it would be if onGround
@@ -74,7 +74,7 @@ const player = (pos) => {
 		}
 	}
 
-	that.handleJumpSaveCounter = () => {
+	that.handleJumpSaveCounter = (GAME) => {
 		that.jumpSaveCounter--;
 
 		if(that.onGround) that.jumpSaveCounter = 10;
@@ -92,6 +92,18 @@ const player = (pos) => {
 	that.land = ({ audio: { play } }) => {
 		that.landCounter = 10;
 		play("boy_land", {});
+	}
+
+	let obs;
+	that.checkObstaclesAbove = (obstacles) => {
+		for(let i = 0; i < obstacles.length; i++){
+			obs = obstacles[i];
+
+			if(that.pos.x + that.size.x > obs.pos.x
+			&& that.pos.x < obs.pos.x + obs.size.x
+			&& Math.floor(that.pos.y) === obs.pos.y + obs.size.y) return obs;
+		}
+		return false;
 	}
 
 	that.maxFallVelocity = 3.5;
@@ -158,7 +170,7 @@ const player = (pos) => {
 		if(that.velocity.x > 0){
 			if(GAME.levelCleared && !that.hit){
 				GAME.currentLevel++;
-				GAME.transitionState("setupLevel");
+				GAME.transitionState("setupLevel", 5);
 				if(GAME.saveProgress) localStorage.currentLevel = GAME.currentLevel;
 			}else
 				that.pos.x = GAME.width - that.size.x;

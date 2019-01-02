@@ -86,7 +86,7 @@ Promise.all([
 		},
 		state: undefined,
 		context: vec(0, 0),
-		currentLevel: 16,
+		currentLevel: 0,
 		volume: 1,
 		saveProgress: true,
 	};
@@ -162,15 +162,24 @@ Promise.all([
 	}
 
 	let nextState;
+	let transitionDelayCounter;
 	GAME.states.transitionState = (GAME) => {
 		GAME.transitionPosX += 20;
 		GAME.context = vec(0, 0);
-		if(GAME.transitionPosX === 0) GAME.state = GAME.states[nextState];
-
+		if(GAME.transitionPosX === -20) GAME.state = GAME.states.transitionDelay;
 	}
 
-	GAME.transitionState = (state) => {
+	GAME.states.transitionDelay = (GAME) => {
+		transitionDelayCounter--;
+		if(transitionDelayCounter <= 0){
+			GAME.state = GAME.states[nextState];
+			GAME.transitionPosX = 0;
+		}
+	}
+
+	GAME.transitionState = (state, delay = 0) => {
 		nextState = state;
+		transitionDelayCounter = delay;
 		GAME.transitionPosX = - 32 * 15 * 1.5;
 		GAME.state = GAME.states.transitionState;
 	}
