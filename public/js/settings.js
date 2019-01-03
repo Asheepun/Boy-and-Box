@@ -57,21 +57,6 @@ const setupSettings = (GAME) => {
 		}
 	}), "settingsButtons", 20);
 
-	//delete save button
-	GAME.world.add(buttons.clickableText({
-		pos: vec(GAME.width / 2 - 55, 210),
-		size: 18,
-		text: "Delete Save",
-		action(GAME){
-			localStorage.clear();
-			GAME.currentLevel = 0;
-			GAME.state = GAME.states.setupLevel;
-			GAME.world.dimm.fadeOut = true;
-			GAME.world.clear("settingsButtons");
-			fullscreenBtn.style.display = "none";
-		}
-	}), "settingsButtons", 20);
-
 	//fixing fullscreenBtn scale
 	fullscreenBtn.style["font-size"] = 20 * GAME.c.scale + "px";
 	fullscreenBtn.style.top =

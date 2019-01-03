@@ -43,47 +43,6 @@ export const blue = (pos, texts) => {
 			v.sub(that.center, player.center).mag < 25,
 	})(that);
 
-	/*
-	that.texts = texts
-
-	that.talking = false;
-
-	that.checkPlayer = ({ world: { player }, levelCleared }) => {
-		if(v.sub(that.center, player.center).mag < 25 && !that.waiting)
-			that.talking = true;
-		else that.talking = false;
-	}
-
-
-	that.currentText = 0;
-	let lastCurrentText;
-
-	that.talk = ({ world: { add, remove } }) => {
-		if(that.talking ){
-			if(that.text === undefined){
-				that.text = textEntity({
-					pos: vec(that.center.x, that.pos.y - 7),
-					text: that.texts[that.currentText],
-					size: 9,
-				});
-				add(that.text, "texts", 9);
-
-				if(that.texts.length > 1){
-					lastCurrentText = that.currentText;
-					while(that.currentText === lastCurrentText){
-						that.currentText = Math.floor(Math.random()*that.texts.length);
-					}
-				}
-			}else that.text.pos = vec(that.center.x, that.pos.y - 7);
-		}
-		if(!that.talking && that.text !== undefined){
-			remove(that.text);
-			that.text = undefined; 
-		
-		}
-	}
-	*/
-
 	that.animate = ({ world: { player } }) => {
 		if(player.center.x > that.center.x) that.facing.x = 1;
 		else that.facing.x = -1;

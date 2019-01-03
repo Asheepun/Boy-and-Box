@@ -60,7 +60,7 @@ const player = (pos) => {
 	that.jumpSaveCounter = 0;
 
 	that.jump = ({ world: { add, obstacles }, audio: { play } }) => {
-		if(that.jumpSaveCounter > 0 && !that.checkObstaclesAbove(obstacles)){
+		if(that.jumpSaveCounter > 0 && !that.checkObstaclesAbove(obstacles) && that.pos.y > 0){
 			play("boy_jump1", {});
 			that.velocity.y = -4//5;
 			that.acceleration.y = 0//0.025; //what it would be if onGround
