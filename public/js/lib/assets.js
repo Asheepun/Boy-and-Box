@@ -63,7 +63,7 @@ export const loadAudio = (volume = 0.5, ...urls) => new Promise((resolve, reject
 
 	audio.fadeOutLoop = (buffer, fade) => {
 		audio.loops[buffer].fadeOut = true;
-		audio.loops[buffer].fade = fade;
+		audio.loops[buffer].fade = fade * audio.loops[buffer].gainNode.gain.value;
 	}
 
 	audio.updateLoops = (GAME) => {

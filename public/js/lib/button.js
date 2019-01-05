@@ -61,4 +61,43 @@ export const clickableText = ({ pos, size, text, action }) => {
 	return that;
 }
 
+export const slider = ({ pos, startSlidePos, action }) => {
+	const that = traitHolder();
+
+	traits.addEntityTrait({
+		pos,
+		size: vec(70, 6),
+	})(that);
+
+	that.action = action;
+
+	that.slidePos = startSlidePos * that.size.x;
+	that.downed = false;
+
+	let lastSlidePos;
+	that.checkPointer = (GAME) => {
+		if(GAME.pointer.pos.x > that.pos.x
+		&& GAME.pointer.pos.x < that.pos.x + that.size.x
+		&& GAME.pointer.pos.y > that.pos.y
+		&& GAME.pointer.pos.y < that.pos.y + that.size.y
+		&& GAME.pointer.down){
+			that.slidePos = Math.floor(GAME.pointer.pos.x - that.pos.x);
+		}
+		if(that.slidePos !== lastSlidePos)
+			that.action(GAME, Math.floor(that.slidePos * 100 / that.size.x) / 100);
+
+		lastSlidePos = that.slidePos;
+	}
+
+	that.draw = (ctx, sprites) => {
+		ctx.fillStyle = "white";
+		ctx.fillRect(that.pos.x, that.pos.y + 2, that.size.x, 2);
+		ctx.fillRect(that.pos.x + that.slidePos, that.pos.y, 2, that.size.y)
+	}
+
+	that.addMethods("checkPointer");
+
+	return that;
+}
+
 export default button;

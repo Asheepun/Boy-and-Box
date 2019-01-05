@@ -5,7 +5,7 @@ import * as loaders 	 		from "/js/lib/assets.js";
 import createCanvas 	 		from "/js/lib/canvas.js";
 import gameWorld 		 		from "/js/lib/gameWorld.js";
 import keys						from "/js/lib/keys.js";
-import button					from "/js/lib/button.js";
+import button, * as buttons		from "/js/lib/button.js";
 import generateLevel			from "/js/generateLevel.js";
 import addClouds				from "/js/clouds.js";
 import player					from "/js/player.js";
@@ -93,6 +93,8 @@ Promise.all([
 		volume: 1,
 		saveProgress: true,
 	};
+
+	//GAME.audio.setVolume(0);
 
 	//if(GAME.saveProgress && localStorage.currentLevel)
 		//GAME.currentLevel = localStorage.currentLevel;

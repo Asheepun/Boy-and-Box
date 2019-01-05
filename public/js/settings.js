@@ -18,7 +18,22 @@ const setupSettings = (GAME) => {
 		}
 	}), "settingsButtons", 20);
 
+	GAME.world.add(buttons.slider({
+		pos: vec(GAME.width / 2 - 35, 80),
+		startSlidePos: 0.5,
+		action(GAME, value){
+			GAME.audio.setVolume(value * 2);
+		},
+	}), "settingsButtons", 20);
+
+	GAME.world.add(traits.textEntity({
+		pos: vec(GAME.width / 2 - 1, 70),
+		size: 10,
+		text: ["Volume"],
+	}), "settingsButtons", 20);
+
 	//volume control
+	/*
 	GAME.world.add(traits.textEntity({
 		pos: vec(GAME.width / 2-35, 100),
 		size: 20,
@@ -43,7 +58,6 @@ const setupSettings = (GAME) => {
 			GAME.audio.volume -= 10;
 			GAME.audio.volume = GAME.audio.volume / 100;
 			if(GAME.audio.volume < 0) GAME.audio.volume = 0;
-			*/
 		}
 	}), "settingsButtons", 20);
 
@@ -59,9 +73,9 @@ const setupSettings = (GAME) => {
 			GAME.audio.volume += 10;
 			GAME.audio.volume = GAME.audio.volume / 100;
 			if(GAME.audio.volume > 2) GAME.audio.volume = 2;
-			*/
 		}
 	}), "settingsButtons", 20);
+*/
 
 	//fixing fullscreenBtn scale
 	fullscreenBtn.style["font-size"] = 20 * GAME.c.scale + "px";

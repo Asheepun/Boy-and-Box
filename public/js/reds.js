@@ -224,7 +224,7 @@ export const giant = (pos) => {
 	that.land = ({ context, world: { add } }) => {
 		context.y = 15;
 
-		for(let i = 0; i < 15; i++){
+		for(let i = 0; i < 7 + Math.random() * 4; i++){
 			posX = that.pos.x + Math.random() * that.size.x;
 			add(particles.getDustParticle(
 				vec(posX, that.pos.y + that.size.y - 5),
