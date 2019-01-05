@@ -64,7 +64,9 @@ const point = (pos) => {
 		if(that.hit){
 			remove(that);
 			add(that, "points", 9);
-			play("pickup_point", {});
+			play("pickup_point", {
+				volume: 0.5,
+			});
 			that.acceleration = v.pipe(
 				v.sub(that.center, pointTarget),
 				v.normalize,

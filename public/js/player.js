@@ -61,7 +61,9 @@ const player = (pos) => {
 
 	that.jump = ({ world: { add, obstacles }, audio: { play } }) => {
 		if(that.jumpSaveCounter > 0 && !that.checkObstaclesAbove(obstacles) && that.pos.y > 0){
-			play("boy_jump1", {});
+			play("boy_jump1", {
+				volume: 0.5 + Math.random() * 0.1,
+			});
 			that.velocity.y = -4//5;
 			that.acceleration.y = 0//0.025; //what it would be if onGround
 			for(let i = 0; i < 5; i++){
@@ -91,7 +93,9 @@ const player = (pos) => {
 
 	that.land = ({ audio: { play } }) => {
 		that.landCounter = 10;
-		play("boy_land", {});
+		play("boy_land", {
+			volume: 0.5,
+		});
 	}
 
 	let obs;
@@ -169,9 +173,7 @@ const player = (pos) => {
 		if(that.velocity.x < 0) that.pos.x = 0;
 		if(that.velocity.x > 0){
 			if(GAME.levelCleared && !that.hit){
-				GAME.currentLevel++;
-				GAME.transitionState("setupLevel", 5);
-				if(GAME.saveProgress) localStorage.currentLevel = GAME.currentLevel;
+				GAME.transitionToNextLevel(GAME);
 			}else
 				that.pos.x = GAME.width - that.size.x;
 

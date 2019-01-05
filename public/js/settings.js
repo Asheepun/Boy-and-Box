@@ -36,11 +36,14 @@ const setupSettings = (GAME) => {
 		size: 20,
 		text: "-",
 		action(GAME){
+			GAME.audio.changeVolume(-10);
 			//fix dumbass floating point
+			/*
 			GAME.audio.volume = Math.floor(GAME.audio.volume * 100);
 			GAME.audio.volume -= 10;
 			GAME.audio.volume = GAME.audio.volume / 100;
 			if(GAME.audio.volume < 0) GAME.audio.volume = 0;
+			*/
 		}
 	}), "settingsButtons", 20);
 
@@ -49,11 +52,14 @@ const setupSettings = (GAME) => {
 		size: 20,
 		text: "+",
 		action(GAME){
+			GAME.audio.changeVolume(10);
 			//fix dumbass floating point
+			/*
 			GAME.audio.volume = Math.floor(GAME.audio.volume * 100);
 			GAME.audio.volume += 10;
 			GAME.audio.volume = GAME.audio.volume / 100;
 			if(GAME.audio.volume > 2) GAME.audio.volume = 2;
+			*/
 		}
 	}), "settingsButtons", 20);
 

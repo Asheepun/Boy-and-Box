@@ -12,6 +12,7 @@ import generateShadowImg 		from "/js/generateShadowImg.js";
 import addClouds				from "/js/clouds.js";
 import addBirds 				from "/js/bird.js";
 import addFlowers				from "/js/flowers.js";
+import shadow					from "/js/shadow.js";
 
 const generateLevel = ({ template, time, background, texts }, { world, world: { add }, sprites, JSON, width, height }) => {
 	let pos;

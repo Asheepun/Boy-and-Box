@@ -19,6 +19,7 @@ export const loadAudio = (volume = 0.5, ...urls) => new Promise((resolve, reject
 		volume,
 		ctx: new AudioContext(),
 		buffers: {},
+		loops: {},
 	};
 
 	audio.play = (buffer, { volume = 1, frequencyScale = 1 }) => {
@@ -33,6 +34,51 @@ export const loadAudio = (volume = 0.5, ...urls) => new Promise((resolve, reject
 		gainNode.connect(audio.ctx.destination);
 
 		soundNode.start(audio.ctx.currentTime);
+	}
+
+	audio.loop = (buffer, { volume = 1 }) => {
+		const loop = {
+			volume,
+		}
+		loop.soundNode = audio.ctx.createBufferSource();
+		loop.soundNode.buffer = audio.buffers[buffer]
+		loop.soundNode.loop = true;
+
+		loop.gainNode = audio.ctx.createGain();
+		loop.gainNode.gain.value = audio.volume * volume;
+
+		loop.soundNode.connect(loop.gainNode);
+
+		loop.gainNode.connect(audio.ctx.destination);
+
+		loop.soundNode.start(audio.ctx.currentTime);
+
+		audio.loops[buffer] = loop;
+	}
+	
+	audio.stopLoop = (buffer) => {
+		audio.loops[buffer].soundNode.stop(audio.ctx.currentTime);
+		delete audio.loops[buffer];
+	}
+
+	audio.changeVolume = (change) => {
+		audio.volume *= 100;
+		audio.volume = Math.floor(audio.volume);
+		audio.volume += change;
+		audio.volume /= 100;
+		if(audio.volume < 0) audio.volume = 0;
+
+		for(let key in audio.loops){
+			audio.loops[key].gainNode.gain.value = audio.loops[key].volume * audio.volume;
+		}
+	}
+
+	audio.setVolume = (volume) => {
+		audio.volume = volume;
+
+		for(let key in audio.loops){
+			audio.loops[key].gainNode.gain.value = audio.loops[key].volume * audio.volume;
+		}
 	}
 
 	let loadedBuffers = 0;

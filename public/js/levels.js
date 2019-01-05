@@ -22,7 +22,7 @@ const levels = [
 			"################################",
 		],
 		background: "sky",
-		time: "day",
+		music: "the-beginning",
 	},
 	//2
 	{
@@ -47,7 +47,7 @@ const levels = [
 			"#################...........####",
 		],
 		background: "sky",
-		time: "day",
+		music: "the-beginning",
 	},
 	//3
 	{
@@ -72,7 +72,7 @@ const levels = [
 			"##......#####................###",
 		],
 		background: "sky",
-		time: "day",
+		music: "the-beginning",
 	},
 	//4
 	{
@@ -97,7 +97,7 @@ const levels = [
 			"###............................#",
 		],
 		background: "sky",
-		time: "day",
+		music: "the-beginning",
 	},
 	//5
 	{
@@ -122,7 +122,7 @@ const levels = [
 			".................###############",
 		],
 		background: "sky",
-		time: "day",
+		music: "the-beginning",
 		texts: [
 			[
 				["I can't jump", "this High!"],
@@ -156,7 +156,7 @@ const levels = [
 			"##......##########.............#",
 		],
 		background: "sky",
-		time: "day",
+		music: "the-beginning",
 		texts: [
 			[
 				["Thank you for", "helping me", "this far."],
@@ -187,7 +187,7 @@ const levels = [
 			"#########.......#####..........#",
 		],
 		background: "sky",
-		time: "day",
+		music: "the-beginning",
 		texts: [
 			[
 				["We're almost", "there!"],
@@ -218,7 +218,7 @@ const levels = [
 			"¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤B",
 		],
 		background: "planks",
-		time: "night",
+		music: "east-village",
 		texts: [
 			[
 				["Thank you for", "helping me!"],
@@ -258,6 +258,7 @@ const levels = [
 			"¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤B",
 		],
 		background: "planks",
+		music: "east-village",
 		texts: [
 			[
 				["The others have", "been feeling", "sick lately."],
@@ -317,6 +318,7 @@ const levels = [
 			"####.........###################",
 		],
 		background: "sky",
+		music: "enemies",
 		texts: [
 			[
 				["h"],
@@ -348,6 +350,7 @@ const levels = [
 			"B",
 		],
 		background: "sky",
+		music: "enemies",
 	},
 	//13
 	{
@@ -372,6 +375,7 @@ const levels = [
 			"#....###########################",
 		],
 		background: "sky",
+		music: "enemies",
 	},
 	//14
 	{
@@ -396,6 +400,7 @@ const levels = [
 			"###.........................####",
 		],
 		background: "sky",
+		music: "enemies",
 	},
 	//15
 	{
@@ -420,6 +425,7 @@ const levels = [
 			"####......###......######....####",
 		],
 		background: "sky",
+		music: "enemies",
 	},
 	//16
 	{
@@ -444,6 +450,7 @@ const levels = [
 			"####......#############......###",
 		],
 		background: "sky",
+		music: "enemies",
 	},
 	//17
 	{

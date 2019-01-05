@@ -50,12 +50,15 @@ Promise.all([
 		"settings_button",
 	),
 	loaders.loadAudio(
-		0.5,
+		1,
 		"boy_jump1",
 		"boy_jump2",
 		"boy_land",
 		"pickup_point",
 		"level_cleared",
+		"the-beginning",
+		"east-village",
+		"enemies",
 	),
 	loaders.loadJSON(
 		"boy_frames",
@@ -93,6 +96,10 @@ Promise.all([
 
 	//if(GAME.saveProgress && localStorage.currentLevel)
 		//GAME.currentLevel = localStorage.currentLevel;
+	
+	//start music
+	if(GAME.levels[GAME.currentLevel].music)
+		GAME.audio.loop(GAME.levels[GAME.currentLevel].music, {});
 
 	GAME.keys = keys(
 		"a",
@@ -101,12 +108,11 @@ Promise.all([
 		" ",
 	);
 
-	GAME.tiles;
-
 	GAME.states.setupLevel = () => {
 
 		GAME.world.clearAll();
 	
+		//handle Level
 		generateLevel(GAME.levels[GAME.currentLevel], GAME);
 
 		GAME.world.add(button({
@@ -122,9 +128,16 @@ Promise.all([
 
 		GAME.levelCleared = false;
 
-		GAME.tiles = "level_" + (GAME.currentLevel + 1) + "/tiles";
-
 		boxOriginPos = GAME.world.box.pos.copy();
+
+		//handle music
+		if(GAME.levels[GAME.currentLevel-1].music !== GAME.levels[GAME.currentLevel].music){
+			if(GAME.levels[GAME.currentLevel-1].music)
+				GAME.audio.stopLoop(GAME.levels[GAME.currentLevel-1].music);
+
+			if(GAME.levels[GAME.currentLevel].music)
+				GAME.audio.loop(GAME.levels[GAME.currentLevel].music, {});
+		}
 
 		GAME.state = GAME.states.level;
 
@@ -152,7 +165,9 @@ Promise.all([
 		GAME.transitionPosX += 20;
 
 		if(GAME.world.points.length <= 0){
-			if(!GAME.levelCleared) GAME.audio.play("level_cleared", {});
+			if(!GAME.levelCleared) GAME.audio.play("level_cleared", {
+				volume: 0.5,
+			});
 			GAME.levelCleared = true;
 		}
 
@@ -182,6 +197,13 @@ Promise.all([
 		transitionDelayCounter = delay;
 		GAME.transitionPosX = - 32 * 15 * 1.5;
 		GAME.state = GAME.states.transitionState;
+	}
+
+	GAME.transitionToNextLevel = (GAME) => {
+		GAME.currentLevel++;
+		if(GAME.saveProgress)
+			localStorage.currentLevel = GAME.currentLevel;
+		GAME.transitionState("setupLevel", 5);
 	}
 
 	GAME.state = GAME.states.setupLevel;
