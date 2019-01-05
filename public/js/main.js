@@ -130,14 +130,13 @@ Promise.all([
 
 		boxOriginPos = GAME.world.box.pos.copy();
 
-		//handle music
-		if(GAME.levels[GAME.currentLevel-1].music !== GAME.levels[GAME.currentLevel].music){
-			if(GAME.levels[GAME.currentLevel-1].music)
-				GAME.audio.stopLoop(GAME.levels[GAME.currentLevel-1].music);
+		//GAME.audio.fadeOutLoop("the-beginning", 0.005)
 
-			if(GAME.levels[GAME.currentLevel].music)
-				GAME.audio.loop(GAME.levels[GAME.currentLevel].music, {});
-		}
+		//handle music
+		if(GAME.currentLevel !== 0
+		&& GAME.levels[GAME.currentLevel-1].music !== GAME.levels[GAME.currentLevel].music
+		&& GAME.levels[GAME.currentLevel].music)
+			GAME.audio.loop(GAME.levels[GAME.currentLevel].music, {});
 
 		GAME.state = GAME.states.level;
 
@@ -199,11 +198,18 @@ Promise.all([
 		GAME.state = GAME.states.transitionState;
 	}
 
+	let delay;
 	GAME.transitionToNextLevel = (GAME) => {
+		delay = 5;
 		GAME.currentLevel++;
 		if(GAME.saveProgress)
 			localStorage.currentLevel = GAME.currentLevel;
-		GAME.transitionState("setupLevel", 5);
+		if(GAME.levels[GAME.currentLevel-1].music
+		&& GAME.levels[GAME.currentLevel-1].music !== GAME.levels[GAME.currentLevel].music){
+			GAME.audio.fadeOutLoop(GAME.levels[GAME.currentLevel-1].music, 0.005);
+			delay = 180;
+		}
+		GAME.transitionState("setupLevel", delay);
 	}
 
 	GAME.state = GAME.states.setupLevel;
@@ -222,6 +228,7 @@ Promise.all([
 
 			GAME.keys.update();
 			GAME.pointer.update();
+			GAME.audio.updateLoops();
 
 			accTime -= timeScl;
 		}

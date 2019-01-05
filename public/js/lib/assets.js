@@ -61,6 +61,23 @@ export const loadAudio = (volume = 0.5, ...urls) => new Promise((resolve, reject
 		delete audio.loops[buffer];
 	}
 
+	audio.fadeOutLoop = (buffer, fade) => {
+		audio.loops[buffer].fadeOut = true;
+		audio.loops[buffer].fade = fade;
+	}
+
+	audio.updateLoops = (GAME) => {
+		for(let key in audio.loops){
+			if(audio.loops[key].fadeOut){
+				audio.loops[key].gainNode.gain.value -= audio.loops[key].fade;
+				if(audio.loops[key].gainNode.gain.value < 0){
+					audio.loops[key].soundNode.stop(audio.ctx.currentTime);
+					delete audio.loops[key];
+				}
+			}
+		}
+	}
+
 	audio.changeVolume = (change) => {
 		audio.volume *= 100;
 		audio.volume = Math.floor(audio.volume);
