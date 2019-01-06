@@ -20,7 +20,7 @@ const setupSettings = (GAME) => {
 
 	GAME.world.add(buttons.slider({
 		pos: vec(GAME.width / 2 - 35, 80),
-		startSlidePos: 0.5,
+		startSlidePos: GAME.audio.volume / 2,
 		action(GAME, value){
 			GAME.audio.setVolume(value * 2);
 		},

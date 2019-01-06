@@ -9,6 +9,7 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+	overflow: hidden;
 }
 
 @font-face{
@@ -25,6 +26,11 @@ canvas{
 
 body{
 	background: black;
+}
+
+h1{
+	color: white;
+	font-family: game;
 }
 
 p{

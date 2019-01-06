@@ -72,6 +72,8 @@ Promise.all([
 		"grass_tiles",
 	),
 ]).then(([ { c, ctx, width, height, pointer }, sprites, audio, JSON ]) => {
+
+	document.getElementById("loading-text").style.display = "none";
 	
 	const GAME = {
 		c,

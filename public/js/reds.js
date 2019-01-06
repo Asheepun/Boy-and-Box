@@ -143,6 +143,14 @@ export const jumper = (pos) => {
 	return that;
 }
 
+export const smallJumper = (pos) => {
+	const that = jumper(pos);
+
+	that.jumpVelocity = -1.05;
+
+	return that;
+}
+
 export const spawner = (pos) => {
 	const that = red(pos);
 
