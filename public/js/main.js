@@ -139,8 +139,10 @@ Promise.all([
 		//handle music
 		if(GAME.currentLevel !== 0
 		&& GAME.levels[GAME.currentLevel-1].music !== GAME.levels[GAME.currentLevel].music
-		&& GAME.levels[GAME.currentLevel].music)
+		&& GAME.levels[GAME.currentLevel].music
+		&& GAME.audio.loops[GAME.levels[GAME.currentLevel].music] === undefined){
 			GAME.audio.loop(GAME.levels[GAME.currentLevel].music, {});
+		}
 
 		GAME.state = GAME.states.level;
 
