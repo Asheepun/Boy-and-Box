@@ -170,9 +170,6 @@ Promise.all([
 		GAME.transitionPosX += 20;
 
 		if(GAME.world.points.length <= 0){
-			if(!GAME.levelCleared) GAME.audio.play("level_cleared", {
-				volume: 0.5,
-			});
 			GAME.levelCleared = true;
 		}
 

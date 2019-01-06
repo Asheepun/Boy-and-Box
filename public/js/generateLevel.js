@@ -14,7 +14,7 @@ import addBirds 				from "/js/bird.js";
 import addFlowers				from "/js/flowers.js";
 import shadow					from "/js/shadow.js";
 
-const generateLevel = ({ template, time, background, texts }, { world, world: { add }, sprites, JSON, width, height }) => {
+const generateLevel = ({ template, time, background, texts }, { world, world: { add, remove }, sprites, JSON, width, height }) => {
 	let pos;
 	const scl = 15;
 
@@ -25,6 +25,11 @@ const generateLevel = ({ template, time, background, texts }, { world, world: { 
 	add(tiles(sprites["backgrounds/" + background]), "background", 0, true);
 
 	if(background === "sky") addClouds({ world, width });
+
+	//inintialize points array
+	let x = {};
+	add(x, "points", 0);
+	remove(x);
 
 	template.forEach((row, y) => strEach(row, (tile, x) => {
 			pos = vec(scl * x, scl * y);
