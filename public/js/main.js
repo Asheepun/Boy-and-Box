@@ -73,7 +73,7 @@ Promise.all([
 	),
 ]).then(([ { c, ctx, width, height, pointer }, sprites, audio, JSON ]) => {
 
-	document.getElementById("loading-text").style.display = "none";
+	document.getElementById("loading").style.display = "none";
 	
 	const GAME = {
 		c,
