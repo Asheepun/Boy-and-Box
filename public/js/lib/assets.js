@@ -1,4 +1,5 @@
 export const loadSprites = (...urls) => new Promise((resolve, reject) => {
+	document.getElementById("loading-text").innerHTML = "Loading sprites 0%";
     let loadCounter = 0;
     const sprites = urls.reduce((sprites, url) => {
         const sprite = new Image();
@@ -100,6 +101,7 @@ export const loadAudio = (volume = 0.5, ...urls) => new Promise((resolve, reject
 		}
 	}
 
+	document.getElementById("loading-text").innerHTML = "Loading audio 0%";
 	let loadedBuffers = 0;
 	urls.forEach(url => {
 		const xhr = new XMLHttpRequest();
