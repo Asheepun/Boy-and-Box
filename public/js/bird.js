@@ -90,7 +90,7 @@ const bird = (pos) => {
 }
 
 const addBirds = ({ world, world: { add }, width, height }) => {
-	const amount = Math.floor(1 + Math.random() * 3);
+	const amount = Math.floor(2 + Math.random() * 2);
 	const noise = width / amount;
 
 	for(let i = 0; i < amount; i++){

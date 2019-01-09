@@ -275,11 +275,14 @@ export const addFrameTrait = ({ delay, frames, initState = "still" }) => (that) 
 	that.addMethods("handleFrames");
 }
 
-export const addTalkTrait = ({ texts, size, Yoffset, condition }) => (that) => {
+export const addTalkTrait = ({ texts, size, Yoffset, condition, sound = false, soundSpec = {} }) => (that) => {
 	that.texts = texts;
 	that.textYoffset = Yoffset;
 	that.textCondition = condition;
 	that.textSize = size;
+	that.talkSound = sound;
+	that.talkSoundSpec = soundSpec;
+	that.hasTalked = false;
 
 	that.currentText = 0;
 	let lastCurrentText;
@@ -293,10 +296,16 @@ export const addTalkTrait = ({ texts, size, Yoffset, condition }) => (that) => {
 	that.talking = false;
 	that.addedText = false;
 	
-	that.talk = ({ world: { add, remove } }) => {
+	that.talk = ({ world: { add, remove }, audio: { play } }) => {
 		that.text.pos = vec(that.center.x, that.pos.y - that.textYoffset);
 
 		if(that.talking && !that.addedText){
+			if(that.talkSound
+			&& !that.hasTalked){
+				play(that.talkSound, that.talkSoundSpec);
+				that.hasTalked = true;
+			}
+
 			that.text.text = that.texts[that.currentText];
 			that.text.size = that.textSize;
 

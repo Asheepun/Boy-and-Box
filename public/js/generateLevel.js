@@ -103,7 +103,7 @@ const generateLevel = ({ template, time, background, texts }, { world, world: { 
 
 }
 
-const obstacle = (pos) => {
+export const obstacle = (pos) => {
 	const that = traitHolder();
 
 	traits.addEntityTrait({
@@ -114,7 +114,7 @@ const obstacle = (pos) => {
 	return that;
 }
 
-const tiles = (img) => {
+export const tiles = (img) => {
 	const that = traitHolder();
 
 	that.img = img;
@@ -126,7 +126,7 @@ const tiles = (img) => {
 	return that;
 }
 
-const tileObject = (pos, img) => {
+export const tileObject = (pos, img) => {
 	const that = obstacle(pos);
 
 	that.img = img;

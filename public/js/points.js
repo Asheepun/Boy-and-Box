@@ -40,7 +40,7 @@ const point = (pos) => {
 		));
 
 		spawner++;
-		if(spawner % 2 === 0){
+		if(spawner % 3 === 0){
 			const p = particles.dust(that.center.copy(), vec(Math.random()-0.5, Math.random()-0.5))
 			p.handleColX = p.handleColY = undefined;
 			add(p, "particles", 5);
@@ -48,7 +48,7 @@ const point = (pos) => {
 
 		if(that.pos.x > width){
 			remove(that);
-			for(let i = 0; i < 10; i++){
+			for(let i = 0; i < 7 + Math.random() * 3; i++){
 				add(particles.dust(vec(width-5, that.pos.y + Math.random()*that.size.y), vec(-Math.random()*2-1, Math.random()*2-1)), "particles", 5);
 			}
 			context.x += 5 * 2;

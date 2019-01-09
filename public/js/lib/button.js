@@ -100,4 +100,64 @@ export const slider = ({ pos, startSlidePos, action }) => {
 	return that;
 }
 
+export const addFullscreenBtn = (pos) => {
+	const that = {
+		pos,
+	};
+
+	const btn = document.createElement("p");
+	btn.innerHTML  = "Fullscreen: off";
+
+	document.body.appendChild(btn);
+
+	let isFullscreen = false;
+
+	let browser = false;
+
+	if(document.body.webkitRequestFullscreen) browser = "webkit";
+	if(document.body.mozRequestFullscreen) browser = "moz";
+	if(document.body.msRequestFullscreen) browser = "ms";
+
+	if(!(document.fullscreenEnabled
+	|| (browser && document[browser + "FullscreenEnabled"]))){
+		fullscreenBtn.style.display = "none";
+	}
+
+	btn.addEventListener("click", () => {
+
+		if(!isFullscreen){
+			if(!browser) document.body.requestFullscreen();
+			else document.body[browser + "RequestFullscreen"]();
+
+			isFullscreen = true;
+			btn.innerHTML = "Fullscreen: on";
+		}else{
+			if(!browser) document.exitFullscreen();
+			else document[browser + "ExitFullscreen"]();
+
+			isFullscreen = false;
+			btn.innerHTML = "Fullscreen: off";
+		}
+
+	});
+
+	that.update = (GAME) => {
+		btn.style["font-size"] = 20 * GAME.c.scale + "px";
+		btn.style.top =
+			GAME.c.offsetTop + that.pos.y * GAME.c.scale + "px";
+		btn.style.left =
+			GAME.c.offsetLeft + that.pos.x * GAME.c.scale + "px";
+	}
+
+	that.hide = () => {
+		document.body.removeChild(btn);
+	}
+
+	that.show = () => {
+		document.body.appendChild(btn);
+	}
+
+	return that;
+}
+
 export default button;

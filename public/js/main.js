@@ -13,6 +13,7 @@ import * as helpers				from "/js/helpers.js";
 import addBirds 				from "/js/bird.js";
 import levels					from "/js/levels.js";
 import setupSettings			from "/js/settings.js";
+import setupStartscreen 		from "/js/startscreen.js";
 
 Promise.all([
 	createCanvas(15 * 32, 15 * 18),
@@ -22,6 +23,7 @@ Promise.all([
 		"box",
 		"backgrounds/sky",
 		"backgrounds/planks",
+		"backgrounds/startscreen",
 		"tiles/grass_tiles",
 		"tiles/grass_wall_tiles",
 		"tiles/plank_tiles",
@@ -51,11 +53,14 @@ Promise.all([
 	),
 	loaders.loadAudio(
 		1,
+		//sfx
 		"boy_jump1",
 		"boy_jump2",
 		"boy_land",
 		"pickup_point",
 		"level_cleared",
+		"blue",
+		//music
 		"the-beginning",
 		"east-village",
 		"enemies",
@@ -88,6 +93,7 @@ Promise.all([
 		world: gameWorld(),
 		states: {
 			setupSettings,
+			setupStartscreen,
 		},
 		state: undefined,
 		context: vec(0, 0),
@@ -96,14 +102,12 @@ Promise.all([
 		saveProgress: true,
 	};
 
+	GAME.state = GAME.states.setupStartscreen;
+
 	//GAME.audio.setVolume(0);
 
 	//if(GAME.saveProgress && localStorage.currentLevel)
 		//GAME.currentLevel = localStorage.currentLevel;
-	
-	//start music
-	if(GAME.levels[GAME.currentLevel].music)
-		GAME.audio.loop(GAME.levels[GAME.currentLevel].music, {});
 
 	GAME.keys = keys(
 		"a",
@@ -111,6 +115,8 @@ Promise.all([
 		"w",
 		" ",
 	);
+
+	let musicHasStarted = false;
 
 	GAME.states.setupLevel = () => {
 
@@ -137,7 +143,11 @@ Promise.all([
 		//GAME.audio.fadeOutLoop("the-beginning", 0.005)
 
 		//handle music
-		if(GAME.currentLevel !== 0
+		if(!musicHasStarted){
+			musicHasStarted = true;
+			if(GAME.levels[GAME.currentLevel].music)
+				GAME.audio.loop(GAME.levels[GAME.currentLevel].music, {});
+		}else if(GAME.currentLevel !== 0
 		&& GAME.levels[GAME.currentLevel-1].music !== GAME.levels[GAME.currentLevel].music
 		&& GAME.levels[GAME.currentLevel].music
 		&& GAME.audio.loops[GAME.levels[GAME.currentLevel].music] === undefined){
@@ -168,6 +178,8 @@ Promise.all([
 		GAME.world.update(GAME);
 
 		GAME.transitionPosX += 20;
+		GAME.transitionFade -= 0.01;
+		if(GAME.transitionFade < 0) GAME.transitionFade = 0;
 
 		if(GAME.world.points.length <= 0){
 			GAME.levelCleared = true;
@@ -201,6 +213,22 @@ Promise.all([
 		GAME.state = GAME.states.transitionState;
 	}
 
+	GAME.transitionFade = 0;
+
+	GAME.states.fade = (GAME) => {
+		GAME.transitionFade += 0.02;
+		if(GAME.transitionFade > 1){
+			GAME.transitionFade = 1;
+			GAME.state = GAME.states[nextState];
+		}
+	}
+
+	GAME.fadeToState = (state) => {
+		nextState = state;
+		GAME.transitionFade = 0;
+		GAME.state = GAME.states.fade;
+	}
+
 	let delay;
 	GAME.transitionToNextLevel = (GAME) => {
 		delay = 5;
@@ -215,13 +243,11 @@ Promise.all([
 		GAME.transitionState("setupLevel", delay);
 	}
 
-	GAME.state = GAME.states.setupLevel;
+	//GAME.state = GAME.states.setupLevel;
 
 	const timeScl = (1/60)*1000;
 	let lastTime = 0;
 	let accTime = 0;
-
-	let firstLevelFade = 1;
 
 	const loop = (time = 0) => {
 		accTime += time - lastTime;
@@ -242,14 +268,13 @@ Promise.all([
 
 		GAME.world.draw(ctx, GAME.sprites, GAME);
 
+		//transition
 		ctx.drawImage(GAME.sprites.transition, GAME.transitionPosX, 0, 32 * 15 * 1.5, 18 * 15);
 
-		if(firstLevelFade > 0){
-			ctx.globalAlpha = firstLevelFade;
-			ctx.drawImage(GAME.sprites.transition, 0, 0, 1, 1, 0, 0, GAME.c.width, GAME.c.height);
-			firstLevelFade -= 0.015;
-			ctx.globalAlpha = 1;
-		}
+		//fade
+		ctx.globalAlpha = GAME.transitionFade;
+		ctx.drawImage(GAME.sprites.transition, 1, 0, 32, 18, 0, 0, GAME.width, GAME.height);
+		ctx.globalAlpha = 1;
 
 		ctx.restore();
 

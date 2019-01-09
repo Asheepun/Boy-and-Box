@@ -41,6 +41,10 @@ export const blue = (pos, texts) => {
 		size: 9,
 		condition: ({ world: { player } }) =>
 			v.sub(that.center, player.center).mag < 25,
+		sound: "blue",
+		soundSpec: {
+			volume: 0.09 + Math.random() * 0.02,
+		},
 	})(that);
 
 	that.animate = ({ world: { player } }) => {
