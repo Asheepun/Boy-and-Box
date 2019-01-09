@@ -72,7 +72,7 @@ export const slider = ({ pos, startSlidePos, action }) => {
 	that.action = action;
 
 	that.slidePos = startSlidePos * that.size.x;
-	that.downed = false;
+	that.down = false;
 
 	let lastSlidePos;
 	that.checkPointer = (GAME) => {
@@ -80,9 +80,19 @@ export const slider = ({ pos, startSlidePos, action }) => {
 		&& GAME.pointer.pos.x < that.pos.x + that.size.x
 		&& GAME.pointer.pos.y > that.pos.y
 		&& GAME.pointer.pos.y < that.pos.y + that.size.y
-		&& GAME.pointer.down){
+		&& GAME.pointer.downed){
+			that.down = true;
+		}
+
+		if(!GAME.pointer.down) that.down = false;
+
+		if(that.down){
 			that.slidePos = Math.floor(GAME.pointer.pos.x - that.pos.x);
 		}
+
+		if(that.slidePos < 0) that.slidePos = 0;
+		if(that.slidePos > that.size.x) that.slidePos = that.size.x;
+
 		if(that.slidePos !== lastSlidePos)
 			that.action(GAME, Math.floor(that.slidePos * 100 / that.size.x) / 100);
 
