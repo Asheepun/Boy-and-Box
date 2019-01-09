@@ -19,14 +19,35 @@ const setupStartscreen = (GAME) => {
 	addBirds(GAME);
 
 	//buttons
-	GAME.world.add(buttons.clickableText({
-		text: "Start",
-		size: 20,
-		pos: vec(GAME.width / 2 - 35, 100),
-		action(GAME){
-			GAME.fadeToState("setupLevel");
-		}
-	}), "buttons", 10);
+	if(parseInt(GAME.currentLevel) === 0){
+		GAME.world.add(buttons.clickableText({
+			text: "Start",
+			size: 20,
+			pos: vec(GAME.width / 2 - 35, 100),
+			action(GAME){
+				GAME.fadeToState("setupLevel");
+			}
+		}), "buttons", 10);
+	}else{
+		GAME.world.add(buttons.clickableText({
+			text: "Continue",
+			size: 20,
+			pos: vec(GAME.width / 2 - 40, 100),
+			action(GAME){
+				GAME.fadeToState("setupLevel");
+			}
+		}), "buttons", 10);
+		GAME.world.add(buttons.clickableText({
+			text: "New game",
+			size: 20,
+			pos: vec(GAME.width / 2 - 40, 130),
+			action(GAME){
+				localStorage.currentLevel = 0;
+				GAME.currentLevel = 0;
+				GAME.fadeToState("setupLevel");
+			}
+		}), "buttons", 10);
+	}
 
 	GAME.fullscreenBtn = buttons.addFullscreenBtn(vec(GAME.width / 2 - 86, 200));
 	GAME.fullscreenBtn.hide();

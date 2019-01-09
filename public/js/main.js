@@ -105,9 +105,12 @@ Promise.all([
 	GAME.state = GAME.states.setupStartscreen;
 
 	//GAME.audio.setVolume(0);
+	
+	if(localStorage.currentLevel === undefined)
+		localStorage.currentLevel = 0;
 
-	//if(GAME.saveProgress && localStorage.currentLevel)
-		//GAME.currentLevel = localStorage.currentLevel;
+	if(localStorage.currentLevel)
+		GAME.currentLevel = localStorage.currentLevel;
 
 	GAME.keys = keys(
 		"a",
@@ -139,8 +142,6 @@ Promise.all([
 		GAME.levelCleared = false;
 
 		boxOriginPos = GAME.world.box.pos.copy();
-
-		//GAME.audio.fadeOutLoop("the-beginning", 0.005)
 
 		//handle music
 		if(!musicHasStarted){
