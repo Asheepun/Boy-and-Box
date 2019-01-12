@@ -19,18 +19,34 @@ const setupSettings = (GAME) => {
 		}
 	}), "settingsButtons", 20);
 
+	//sfx volume
 	GAME.world.add(buttons.slider({
-		pos: vec(GAME.width / 2 - 35, 80),
-		startSlidePos: GAME.audio.volume / 2,
+		pos: vec(GAME.width / 2 - 35, 55),
+		startSlidePos: GAME.audio.sfxVolume / 2,
 		action(GAME, value){
-			GAME.audio.setVolume(value * 2);
+			GAME.audio.setVolume(value * 2, "sfx");
 		},
 	}), "settingsButtons", 20);
 
 	GAME.world.add(traits.textEntity({
-		pos: vec(GAME.width / 2 - 1, 70),
+		pos: vec(GAME.width / 2 - 1, 45),
 		size: 10,
-		text: ["Volume"],
+		text: ["Sounds"],
+	}), "settingsButtons", 20);
+
+	//music volume
+	GAME.world.add(buttons.slider({
+		pos: vec(GAME.width / 2 - 35, 85),
+		startSlidePos: GAME.audio.musicVolume / 2,
+		action(GAME, value){
+			GAME.audio.setVolume(value * 2, "music");
+		},
+	}), "settingsButtons", 20);
+
+	GAME.world.add(traits.textEntity({
+		pos: vec(GAME.width / 2 - 1, 75),
+		size: 10,
+		text: ["Music"],
 	}), "settingsButtons", 20);
 
 	//pos: vec(120, GAME.width / 2 - 75);

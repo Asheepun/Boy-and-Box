@@ -16,20 +16,21 @@ export const loadSprites = (...urls) => new Promise((resolve, reject) => {
     }, {});
 });
 
-export const loadAudio = (volume = 0.5, ...urls) => new Promise((resolve, reject) => {
+export const loadAudio = (sfxVolume = 1, musicVolume = 1, ...urls) => new Promise((resolve, reject) => {
 	const audio = {
-		volume,
+		sfxVolume,
+		musicVolume,
 		ctx: new AudioContext(),
 		buffers: {},
 		loops: {},
 	};
 
-	audio.play = (buffer, { volume = 1, frequencyScale = 1 }) => {
+	audio.play = (buffer, { volume = 1, frequencyScale = 1, type = "sfx" }) => {
 		const soundNode = audio.ctx.createBufferSource();
 		soundNode.buffer = audio.buffers[buffer];
 
 		const gainNode = audio.ctx.createGain();
-		gainNode.gain.value = audio.volume * volume;
+		gainNode.gain.value = audio[type + "Volume"] * volume;
 
 		soundNode.connect(gainNode);
 
@@ -38,16 +39,17 @@ export const loadAudio = (volume = 0.5, ...urls) => new Promise((resolve, reject
 		soundNode.start(audio.ctx.currentTime);
 	}
 
-	audio.loop = (buffer, { volume = 1 }) => {
+	audio.loop = (buffer, { volume = 1 , type = "sfx"}) => {
 		const loop = {
 			volume,
 		}
 		loop.soundNode = audio.ctx.createBufferSource();
 		loop.soundNode.buffer = audio.buffers[buffer]
 		loop.soundNode.loop = true;
+		loop.type = type;
 
 		loop.gainNode = audio.ctx.createGain();
-		loop.gainNode.gain.value = audio.volume * volume;
+		loop.gainNode.gain.value = audio[type + "Volume"] * volume;
 
 		loop.soundNode.connect(loop.gainNode);
 
@@ -88,15 +90,15 @@ export const loadAudio = (volume = 0.5, ...urls) => new Promise((resolve, reject
 		if(audio.volume < 0) audio.volume = 0;
 
 		for(let key in audio.loops){
-			audio.loops[key].gainNode.gain.value = audio.loops[key].volume * audio.volume;
+			audio.loops[key].gainNode.gain.value = audio.loops[key].volume * audio[audio.loops[key].type + "Volume"];
 		}
 	}
 
-	audio.setVolume = (volume) => {
-		audio.volume = volume;
+	audio.setVolume = (volume, type) => {
+		audio[type + "Volume"] = volume;
 
 		for(let key in audio.loops){
-			audio.loops[key].gainNode.gain.value = audio.loops[key].volume * audio.volume;
+			audio.loops[key].gainNode.gain.value = audio.loops[key].volume * audio[audio.loops[key].type + "Volume"];
 		}
 	}
 
