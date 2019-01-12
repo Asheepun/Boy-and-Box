@@ -109,6 +109,7 @@ Promise.all([
 	GAME.state = GAME.states.setupStartscreen;
 
 	//GAME.audio.setVolume(0);
+	//localStorage.currentLevel = GAME.currentLevel;
 	
 	if(localStorage.currentLevel === undefined)
 		localStorage.currentLevel = 0;
@@ -144,8 +145,6 @@ Promise.all([
 		if(GAME.currentLevel === 0) GAME.world.add(helpers.boxText(vec(170, 50)), "text", 3);
 
 		GAME.levelCleared = false;
-
-		boxOriginPos = GAME.world.box.pos.copy();
 
 		//handle music
 		if(!musicHasStarted && GAME.levels[GAME.currentLevel].music){
