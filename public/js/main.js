@@ -60,10 +60,14 @@ Promise.all([
 		"pickup_point",
 		"level_cleared",
 		"blue",
+		"giant_land",
+		"menu-select",
+		"blue_lock_dissappear",
 		//music
 		"the-beginning",
 		"east-village",
 		"enemies",
+		"blue_bird_flap",
 	),
 	loaders.loadJSON(
 		"boy_frames",
@@ -110,7 +114,7 @@ Promise.all([
 		localStorage.currentLevel = 0;
 
 	if(localStorage.currentLevel)
-		GAME.currentLevel = localStorage.currentLevel;
+		GAME.currentLevel = Number(localStorage.currentLevel);
 
 	GAME.keys = keys(
 		"a",
@@ -144,10 +148,9 @@ Promise.all([
 		boxOriginPos = GAME.world.box.pos.copy();
 
 		//handle music
-		if(!musicHasStarted){
+		if(!musicHasStarted && GAME.levels[GAME.currentLevel].music){
 			musicHasStarted = true;
-			if(GAME.levels[GAME.currentLevel].music)
-				GAME.audio.loop(GAME.levels[GAME.currentLevel].music, {});
+			GAME.audio.loop(GAME.levels[GAME.currentLevel].music, {});
 		}else if(GAME.currentLevel !== 0
 		&& GAME.levels[GAME.currentLevel-1].music !== GAME.levels[GAME.currentLevel].music
 		&& GAME.levels[GAME.currentLevel].music
@@ -159,9 +162,7 @@ Promise.all([
 
 	}
 
-	let boxTextFade = 0;
-	let fadeInText = false;
-	let boxOriginPos;
+	if(!GAME.state) GAME.state = GAME.states.setupLevel;
 
 	GAME.states.level = () => {
 

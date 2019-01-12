@@ -50,7 +50,7 @@ const bird = (pos) => {
 	}
 
 	that.hasBeenOffGround = 0;
-	that.checkToFly = ({ world: { player, reds, remove, add }, levelCleared }) => {
+	that.checkToFly = ({ world: { player, reds, remove, add }, levelCleared, audio: { play } }) => {
 		if((v.sub(that.center, player.center).mag < 50 || levelCleared) && !that.flying){
 			that.flying = true;
 			that.velocity.y = -2.5 - Math.random()*1;
@@ -81,6 +81,19 @@ const bird = (pos) => {
 	that.handleOub = ({ world: { remove }, height, width }) => {
 		if(that.pos.y < 0 || that.pos.y > height || that.pos.x > width || that.pos.x < -that.size.x){
 			remove(that);
+		}
+	}
+
+	let counter = 0;
+	let volume = 0.3;
+	that.flap = ({ audio: { play } }) => {
+		counter++;
+		volume -= 0.002;
+		if(volume < 0) volume = 0;
+		if(that.flying && counter % 8 === 0){
+			play("boy_jump1", {
+				volume,
+			});
 		}
 	}
 

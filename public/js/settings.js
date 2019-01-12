@@ -13,6 +13,7 @@ const setupSettings = (GAME) => {
 		action(GAME){
 			GAME.state = GAME.states.level;
 			GAME.world.dimm.fadeOut = true;
+			GAME.world.box.waitedForDowned = false;
 			GAME.world.clear("settingsButtons");
 			GAME.fullscreenBtn.hide();
 		}

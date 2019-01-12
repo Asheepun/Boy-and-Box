@@ -25,7 +25,12 @@ export const button = ({ pos, size, img, action }) => {
 		&& GAME.pointer.pos.y < that.pos.y + that.size.y){
 			that.alpha = 0.5;
 			if(GAME.pointer.downed) that.downed = true;
-			if(GAME.pointer.upped && that.downed) that.action(GAME);
+			if(that.downed){
+				that.action(GAME);
+				GAME.audio.play("menu-select", {
+					volume: 0.3,
+				})
+			}
 		}else {
 			that.alpha = 1;
 			that.downed = false;

@@ -19,7 +19,7 @@ const setupStartscreen = (GAME) => {
 	addBirds(GAME);
 
 	//buttons
-	if(parseInt(GAME.currentLevel) === 0){
+	if(Number(GAME.currentLevel) === 0){
 		GAME.world.add(buttons.clickableText({
 			text: "Start",
 			size: 20,

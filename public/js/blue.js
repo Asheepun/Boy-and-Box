@@ -171,8 +171,15 @@ export const blueLock = (pos) => {
 		});
 	}
 
-	that.checkHit = ({ world: { remove } }) => {
+	let playedSound = false;
+	that.checkHit = ({ world: { remove }, audio: { play } }) => {
 		if(that.hit){
+			if(!playedSound){
+				playedSound = true;
+				play("blue_lock_dissappear", {
+					volume: 0.15,
+				});
+			}
 			that.alpha -= 0.145;
 			if(that.alpha <= 0) remove(that);
 		}

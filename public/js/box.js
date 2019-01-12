@@ -15,10 +15,13 @@ const box = (pos) => {
 		imgSize: that.size.copy(),
 	})(that);
 
+	that.waitedForDowned = false; //make sure box is not moved when clickin buttons
+
 	let newPos;
 	let lastPos = that.pos.copy();
 	that.checkPointer = ({ pointer, world: { obstacles, buttons } }) => {
-		if(pointer.down){
+		if(pointer.downed) that.waitedForDowned = true;
+		if(pointer.down && that.waitedForDowned){
 			newPos = v.pipe(
 				pointer.pos.copy(),
 				x => v.div(x, 15),

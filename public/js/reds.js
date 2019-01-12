@@ -229,7 +229,7 @@ export const giant = (pos) => {
 	that.textSize = 20;
 
 	let posX;
-	that.land = ({ context, world: { add } }) => {
+	that.land = ({ context, world: { add }, audio }) => {
 		context.y = 15;
 
 		for(let i = 0; i < 7 + Math.random() * 4; i++){
