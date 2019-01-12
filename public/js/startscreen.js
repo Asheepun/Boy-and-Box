@@ -18,12 +18,22 @@ const setupStartscreen = (GAME) => {
 	
 	addBirds(GAME);
 
-	//buttons
+	GAME.world.add(buttons.clickableText({
+		text: "Options",
+		size: 20,
+		pos: vec(GAME.width / 2 - 35, 160),
+		action(GAME){
+			GAME.world.clear("buttons", "birds");
+			GAME.state = setupOptions;
+		}
+	}), "buttons", 10);
+
+	//start contine newGame buttons
 	if(Number(GAME.currentLevel) === 0){
 		GAME.world.add(buttons.clickableText({
 			text: "Start",
 			size: 20,
-			pos: vec(GAME.width / 2 - 35, 100),
+			pos: vec(GAME.width / 2 - 24, 100),
 			action(GAME){
 				GAME.fadeToState("setupLevel");
 			}
@@ -49,8 +59,7 @@ const setupStartscreen = (GAME) => {
 		}), "buttons", 10);
 	}
 
-	GAME.fullscreenBtn = buttons.addFullscreenBtn(vec(GAME.width / 2 - 86, 200));
-	GAME.fullscreenBtn.hide();
+	//GAME.states.setupOptions = setupOptions;
 
 	GAME.state = startscreen;
 }
@@ -70,6 +79,65 @@ const obstacle = (pos, size) => {
 	})(that);
 
 	return that;
+}
+
+const setupOptions = (GAME) => {
+	//return button
+	GAME.world.add(buttons.clickableText({
+		pos: vec(GAME.width / 2 - 35, 160),
+		size: 20,
+		text: "Return",
+		action(GAME){
+			GAME.state = setupStartscreen;
+			GAME.world.box.waitedForDowned = false;
+			GAME.world.clear("settingsButtons");
+			GAME.fullscreenBtn.hide();
+		}
+	}), "settingsButtons", 20);
+
+	//sfx volume
+	GAME.world.add(buttons.slider({
+		pos: vec(GAME.width / 2 - 35, 55),
+		startSlidePos: GAME.audio.sfxVolume / 2,
+		action(GAME, value){
+			GAME.audio.setVolume(value * 2, "sfx");
+		},
+	}), "settingsButtons", 20);
+
+	GAME.world.add(traits.textEntity({
+		pos: vec(GAME.width / 2 - 1, 45),
+		size: 10,
+		text: ["Sounds"],
+	}), "settingsButtons", 20);
+
+	//music volume
+	GAME.world.add(buttons.slider({
+		pos: vec(GAME.width / 2 - 35, 85),
+		startSlidePos: GAME.audio.musicVolume / 2,
+		action(GAME, value){
+			GAME.audio.setVolume(value * 2, "music");
+		},
+	}), "settingsButtons", 20);
+
+	GAME.world.add(traits.textEntity({
+		pos: vec(GAME.width / 2 - 1, 75),
+		size: 10,
+		text: ["Music"],
+	}), "settingsButtons", 20);
+
+	if(!GAME.fullscreenBtn) GAME.fullscreenBtn = buttons.addFullscreenBtn(vec(GAME.width / 2 - 75, 120));
+	else GAME.fullscreenBtn.show();
+	GAME.fullscreenBtn.update(GAME);
+
+	GAME.state = options;
+	
+}
+
+const options = (GAME) => {
+	GAME.transitionFade -= 0.01;
+	if(GAME.transitionFade < 0) GAME.transitionFade = 0;
+	GAME.world.update(GAME);
+	GAME.fullscreenBtn.update(GAME);
 }
 
 export default setupStartscreen;

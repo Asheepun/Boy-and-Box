@@ -49,9 +49,8 @@ const setupSettings = (GAME) => {
 		text: ["Music"],
 	}), "settingsButtons", 20);
 
-	//pos: vec(120, GAME.width / 2 - 75);
-	GAME.fullscreenBtn.pos = vec(GAME.width / 2 - 75, 120);
-	GAME.fullscreenBtn.show();
+	if(!GAME.fullscreenBtn) GAME.fullscreenBtn = buttons.addFullscreenBtn(vec(GAME.width / 2 - 75, 120));
+	else GAME.fullscreenBtn.show();
 
 	GAME.state = settings;
 }

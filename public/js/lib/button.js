@@ -24,16 +24,14 @@ export const button = ({ pos, size, img, action }) => {
 		&& GAME.pointer.pos.y > that.pos.y
 		&& GAME.pointer.pos.y < that.pos.y + that.size.y){
 			that.alpha = 0.5;
-			if(GAME.pointer.downed) that.downed = true;
-			if(that.downed){
+			if(GAME.pointer.downed){
 				that.action(GAME);
 				GAME.audio.play("menu-select", {
-					volume: 0.3,
-				})
+					volume: 0.25,
+				});
 			}
 		}else {
 			that.alpha = 1;
-			that.downed = false;
 		}
 	}
 
@@ -138,8 +136,11 @@ export const addFullscreenBtn = (pos) => {
 		fullscreenBtn.style.display = "none";
 	}
 
-	btn.addEventListener("click", () => {
+	that.playSound;
 
+	btn.addEventListener("mousedown", () => {
+
+		that.playSound();
 		if(!isFullscreen){
 			if(!browser) document.body.requestFullscreen();
 			else document.body[browser + "RequestFullscreen"]();
@@ -157,6 +158,9 @@ export const addFullscreenBtn = (pos) => {
 	});
 
 	that.update = (GAME) => {
+		that.playSound = () => GAME.audio.play("menu-select", {
+			volume: 0.25,
+		});
 		btn.style["font-size"] = 20 * GAME.c.scale + "px";
 		btn.style.top =
 			GAME.c.offsetTop + that.pos.y * GAME.c.scale + "px";
