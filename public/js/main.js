@@ -298,10 +298,9 @@ Promise.all([
 
 function storageAvailable(type) {
     try {
-        var storage = window[type],
-            x = '__storage_test__';
-        storage.setItem(x, x);
-        storage.removeItem(x);
+        const x = '__storage_test__';
+        localStorage.setItem(x, x);
+        localStorage.removeItem(x);
         return true;
     }
     catch(e) {
