@@ -52,7 +52,7 @@ const setupStartscreen = (GAME) => {
 			size: 20,
 			pos: vec(GAME.width / 2 - 40, 130),
 			action(GAME){
-				localStorage.currentLevel = 0;
+				if(storageAvailable()) localStorage.currentLevel = 0;
 				GAME.currentLevel = 0;
 				GAME.fadeToState("setupLevel");
 			}
@@ -138,6 +138,30 @@ const options = (GAME) => {
 	if(GAME.transitionFade < 0) GAME.transitionFade = 0;
 	GAME.world.update(GAME);
 	GAME.fullscreenBtn.update(GAME);
+}
+
+function storageAvailable(type) {
+    try {
+        var storage = window[type],
+            x = '__storage_test__';
+        storage.setItem(x, x);
+        storage.removeItem(x);
+        return true;
+    }
+    catch(e) {
+        return e instanceof DOMException && (
+            // everything except Firefox
+            e.code === 22 ||
+            // Firefox
+            e.code === 1014 ||
+            // test name field too, because code might not be present
+            // everything except Firefox
+            e.name === 'QuotaExceededError' ||
+            // Firefox
+            e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+            // acknowledge QuotaExceededError only if there's something already stored
+            storage.length !== 0;
+    }
 }
 
 export default setupStartscreen;
