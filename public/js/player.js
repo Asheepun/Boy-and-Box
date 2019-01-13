@@ -62,7 +62,7 @@ const player = (pos) => {
 	that.jump = ({ world: { add, obstacles }, audio: { play } }) => {
 		if(that.jumpSaveCounter > 0 && !that.checkObstaclesAbove(obstacles) && that.pos.y > 0){
 			play("boy_jump1", {
-				volume: 0.5 + Math.random() * 0.1,
+				volume: 0.4 + Math.random() * 0.1,
 			});
 			that.velocity.y = -4//5;
 			that.acceleration.y = 0//0.025; //what it would be if onGround
@@ -94,7 +94,7 @@ const player = (pos) => {
 	that.land = ({ audio: { play } }) => {
 		that.landCounter = 10;
 		play("boy_land", {
-			volume: 0.5,
+			volume: 0.1,
 		});
 	}
 

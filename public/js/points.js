@@ -71,6 +71,9 @@ const point = (pos) => {
 			play("pickup_point", {
 				volume: 0.5,
 			});
+			//play("point_pickup_jingle", {
+				//volume: 0.2,
+			//});
 			that.acceleration = v.pipe(
 				v.sub(that.center, pointTarget),
 				v.normalize,

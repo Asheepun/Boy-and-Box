@@ -55,14 +55,17 @@ Promise.all([
 		1,
 		1,
 		//sfx
+		"boy_jump",
 		"boy_jump1",
 		"boy_jump2",
 		"boy_land",
 		"pickup_point",
+		"point_pickup_jingle",
 		"level_cleared",
 		"blue",
 		"giant_land",
-		"menu-select",
+		"menu_hover",
+		"menu_select",
 		"blue_lock_dissappear",
 		//music
 		"the-beginning",

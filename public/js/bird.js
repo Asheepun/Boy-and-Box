@@ -88,16 +88,16 @@ const bird = (pos) => {
 	let volume = 0.3;
 	that.flap = ({ audio: { play } }) => {
 		counter++;
-		volume -= 0.002;
+		if(that.flying) volume -= 0.007;
 		if(volume < 0) volume = 0;
 		if(that.flying && counter % 8 === 0){
-			play("boy_jump1", {
-				volume,
-			});
+			//play("boy_jump1", {
+			//	volume,
+			//});
 		}
 	}
 
-	that.addMethods("jump", "checkToFly", "handleOub", "animate");
+	that.addMethods("jump", "checkToFly", "handleOub", "animate", "flap");
 
 	return that;
 }

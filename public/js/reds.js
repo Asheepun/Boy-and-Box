@@ -229,8 +229,11 @@ export const giant = (pos) => {
 	that.textSize = 20;
 
 	let posX;
-	that.land = ({ context, world: { add }, audio }) => {
+	that.land = ({ context, world: { add }, audio: { play } }) => {
 		context.y = 15;
+		play("giant_land", {
+			volume: 0.5 + Math.random() * 0.1,
+		});
 
 		for(let i = 0; i < 7 + Math.random() * 4; i++){
 			posX = that.pos.x + Math.random() * that.size.x;

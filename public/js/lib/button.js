@@ -18,20 +18,29 @@ export const button = ({ pos, size, img, action }) => {
 
 	that.downed = false;
 
+	that.hoverSoundPlayed = true;
+
 	that.checkPointer = (GAME) => {
 		if(GAME.pointer.pos.x > that.pos.x
 		&& GAME.pointer.pos.x < that.pos.x + that.size.x
 		&& GAME.pointer.pos.y > that.pos.y
 		&& GAME.pointer.pos.y < that.pos.y + that.size.y){
 			that.alpha = 0.5;
+			if(!that.hoverSoundPlayed){
+				GAME.audio.play("menu_hover", {
+					volume: 0.30,
+				});
+				that.hoverSoundPlayed = true;
+			}
 			if(GAME.pointer.downed){
 				that.action(GAME);
-				GAME.audio.play("menu-select", {
+				GAME.audio.play("menu_select", {
 					volume: 0.25,
 				});
 			}
 		}else {
 			that.alpha = 1;
+			that.hoverSoundPlayed = false;
 		}
 	}
 
@@ -138,6 +147,8 @@ export const addFullscreenBtn = (pos) => {
 
 	that.playSound;
 
+	that.playHoverSound;
+
 	btn.addEventListener("mousedown", () => {
 
 		that.playSound();
@@ -157,10 +168,19 @@ export const addFullscreenBtn = (pos) => {
 
 	});
 
+	btn.addEventListener("mouseover", () => {
+		that.playHoverSound();
+	})
+
 	that.update = (GAME) => {
-		that.playSound = () => GAME.audio.play("menu-select", {
+		that.playSound = () => GAME.audio.play("menu_select", {
 			volume: 0.25,
 		});
+		that.playHoverSound = () => {
+			GAME.audio.play("menu_hover", {
+				volume: 0.3,
+			});
+		}
 		btn.style["font-size"] = 20 * GAME.c.scale + "px";
 		btn.style.top =
 			GAME.c.offsetTop + that.pos.y * GAME.c.scale + "px";
