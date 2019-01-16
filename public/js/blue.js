@@ -90,6 +90,7 @@ export const bouncer = (pos, texts) => {
 
 	}
 
+	that.openingLock = false;
 	that.waiting = false;
 	that.handleVelocity = ({ width, levelCleared }) => {
 		if(that.onGround && that.pos.x > width - 15 - that.size.x && !levelCleared) that.waiting = true;
@@ -98,7 +99,8 @@ export const bouncer = (pos, texts) => {
 
 		if(that.onGround || that.waiting) that.jumping = false;
 
-		if(that.jumping) that.velocity.x = 15 / 32;
+		if(that.jumping
+		&& !that.openingLock) that.velocity.x = 15 / 32;
 		else that.velocity.x = 0;
 	}
 
@@ -122,7 +124,24 @@ export const bouncer = (pos, texts) => {
 		else that.pos.y = 0;
 	}
 
-	that.addMethods("handleVelocity", "handleJumpSaveCounter", "bounce", "checkOub");
+	let o;
+	that.checkLocks = ({ world: { obstacles } }) => {
+		for(let i = 0; i < obstacles.length; i++){
+			o = obstacles[i];
+			if(o.isBlueLock
+			&& Math.floor(that.pos.x) + that.size.x === o.pos.x
+			&& that.pos.y >= o.pos.y - o.size.y - 1
+			&& that.pos.y < o.pos.y + o.size.y){
+				that.openingLock = true;
+				if(that.onGround) o.hit = true;
+				break;
+			}else that.openingLock = false;
+		}
+		obstacles.forEach(o => {
+		});
+	}
+
+	that.addMethods("checkLocks", "handleVelocity", "handleJumpSaveCounter", "bounce", "checkOub");
 
 	return that;
 }
@@ -159,6 +178,8 @@ export const blueLock = (pos) => {
 	traits.addPhysicsTrait({
 		gravity: 0.01,
 	})(that);
+
+	that.isBlueLock = true;
 
 	that.checkBlues = ({ world: { blues, remove, add } }) => {
 		blues.forEach((blue) => {

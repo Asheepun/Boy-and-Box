@@ -140,12 +140,11 @@ const options = (GAME) => {
 	GAME.fullscreenBtn.update(GAME);
 }
 
-function storageAvailable(type) {
+function storageAvailable() {
     try {
-        var storage = window[type],
-            x = '__storage_test__';
-        storage.setItem(x, x);
-        storage.removeItem(x);
+		const x = "test";
+        localStorage.setItem(x, x);
+        localStorage.removeItem(x);
         return true;
     }
     catch(e) {

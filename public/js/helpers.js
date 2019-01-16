@@ -2,63 +2,46 @@ import traitHolder, * as traits from "/js/lib/traits.js";
 import vec, * as v				from "/js/lib/vector.js";
 import * as text				from "/js/lib/text.js";
 
-const helperBird = (pos) => {
+export const wasdText = (pos) => {
 	const that = traitHolder();
 
-	traits.addEntityTrait({
-		pos,
-		size: vec(8, 9),
-	})(that);
+	that.pos = pos;
 
-	traits.addSpriteTrait({
-		img: "helper_bird",
-		imgSize: that.size.copy(),
-	})(that);
+	that.alpha = 1;
 
-	traits.addFrameTrait({
-		delay: 6,
-		frames: "helper_bird_frames",
-		initState: "idle",
-	})(that);
+	that.fadeOut = false;
 
-	traits.addMoveTrait({})(that);
-
-	traits.addPhysicsTrait({
-		gravity: 0.004,
-	})(that);
-
-	traits.addBoxColTrait({})(that);
-
-	traits.addCheckColTrait({
-		singles: ["player"],
-	})(that);
-
-	that.target;
-
-	that.playerCol = (player) => {
-		if(player.onGround && that.target === undefined){
-			that.target = v.sub(that.pos, vec(60, 60));
+	that.checkStatus = ({ keys }) => {
+		console.log(keys.a)
+		if(keys.a.down || keys.d.down || keys.w.down){
+			that.fadeOut = true;
 		}
 	}
 
-	that.flyToTarget = () => {
-		if(that.target){
-			that.velocity = v.pipe(
-				v.sub(that.center, that.pos),
-				v.normalize,
-				v.reverse,
-			);
-			if(v.sub(that.target, that.pos).mag < 5)
-				that.velocity = vec(0, 0);
+	that.fade = ({ world: { remove } }) => {
+		if(!that.fadeOut && that.alpha < 0.9){
+			that.alpha += 0.015;
+			that.pos.x += 0.2;
+		}
+		else if(that.fadeOut){
+			that.alpha -= 0.015;
+			that.pos.x += 0.2;
+			if(that.alpha <= 0) remove(that);
 		}
 	}
 
-	that.animate = ({ world: { player } }) => {
-		if(player.center.x > that.center.x) that.facing.x = 1;
-		else that.facing.x = -1;
+	that.draw = (ctx, sprites) => {
+
+		ctx.globalAlpha = that.alpha;
+
+		text.white13("W", that.pos.x, that.pos.y, ctx);
+		text.white13("A  D", that.pos.x - 11, that.pos.y + 12, ctx);
+
+		ctx.globalAlpha = 1;
+
 	}
 
-	that.addMethods("flyToTarget", "animate");
+	that.addMethods("checkStatus", "fade");
 
 	return that;
 }

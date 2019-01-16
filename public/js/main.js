@@ -105,7 +105,7 @@ Promise.all([
 		},
 		state: undefined,
 		context: vec(0, 0),
-		currentLevel: 0,
+		currentLevel: ,
 		volume: 1,
 		saveProgress: true,
 	};
@@ -148,7 +148,9 @@ Promise.all([
 			}
 		}), "buttons", 15);
 
-		if(GAME.currentLevel === 0) GAME.world.add(helpers.boxText(vec(170, 50)), "text", 3);
+		if(GAME.currentLevel === 0){
+			GAME.world.add(helpers.boxText(vec(170, 50)), "text", 3);
+		}
 
 		GAME.levelCleared = false;
 
