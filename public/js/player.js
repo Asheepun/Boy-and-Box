@@ -94,8 +94,10 @@ const player = (pos) => {
 	that.land = ({ audio: { play } }) => {
 		that.landCounter = 10;
 		play("boy_land", {
-			volume: 0.1,
+			//volume: 0.25 * (that.lastFallVelocity / (that.maxFallVelocity * that.maxFallVelocity)),
+			volume: 0.07,
 		});
+
 	}
 
 	let obs;

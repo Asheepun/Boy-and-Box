@@ -55,14 +55,15 @@ Promise.all([
 		1,
 		1,
 		//sfx
-		"boy_jump",
 		"boy_jump1",
-		"boy_jump2",
 		"boy_land",
 		"pickup_point",
-		"point_pickup_jingle",
 		"level_cleared",
 		"blue",
+		"red0",
+		"red1",
+		"red2",
+		"giant",
 		"giant_land",
 		"menu_hover",
 		"menu_select",
@@ -113,7 +114,7 @@ Promise.all([
 	GAME.state = GAME.states.setupStartscreen;
 
 	//GAME.audio.setVolume(0);
-	//localStorage.currentLevel = GAME.currentLevel;
+	localStorage.currentLevel = GAME.currentLevel;
 	
 	if(storageAvailable()){
 		if(localStorage.currentLevel === undefined)
