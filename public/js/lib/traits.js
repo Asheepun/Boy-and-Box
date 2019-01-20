@@ -140,9 +140,12 @@ export const addLandingTrait = ({ velocity = 0 }) => (that) => {
 	that.addMethods("checkLanding")
 }
 
-export const addEntityTrait = ({ pos, size }) => (that) => {
+export const addEntityTrait = ({ pos, size, hitBox, hitBoxOffset }) => (that) => {
     that.pos = pos;
     that.size = size;
+	if(hitBox) that.hitBox = hitBox;
+	else that.hitBox = that.size;
+	that.hitBoxOffset = hitBoxOffset;
 
     that.fixCenter = () => {
         that.center = v.add(that.pos, v.half(that.size));

@@ -111,6 +111,7 @@ export const checkPixelCol = (entity, candidate, sprites) => {
 
 		c.width = difX * 50;
 		c.height = difY * 50;
+		c.crossOrigin = "";
 		ctx.webkitImageSmoothingEnabled = false;
 		ctx.mozImageSmoothingEnabled = false;    
 		ctx.imageSmoothingEnabled = false;

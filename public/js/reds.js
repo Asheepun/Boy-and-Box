@@ -353,7 +353,6 @@ export const blueTrans = (pos) => {
 			that.pos.x -= 0.5;
 			that.pos.y -= 1;
 			if(that.size.x >= 23){
-				console.log(that.pos.y)
 				remove(that);
 				remove(that.text);
 				add(red(vec(that.pos.x-1, that.pos.y)), "reds", 5);

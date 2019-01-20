@@ -2,6 +2,7 @@ export const loadSprites = (...urls) => new Promise((resolve, reject) => {
     let loadCounter = 0;
     const sprites = urls.reduce((sprites, url) => {
         const sprite = new Image();
+		sprite.crossOrigin = "";
         sprite.src = `/assets/sprites/${url}.png`;
         sprites[url] = sprite;
         sprite.addEventListener("load", (e) => {

@@ -114,7 +114,7 @@ Promise.all([
 	GAME.state = GAME.states.setupStartscreen;
 
 	//GAME.audio.setVolume(0);
-	localStorage.currentLevel = GAME.currentLevel;
+	//localStorage.currentLevel = GAME.currentLevel;
 	
 	if(storageAvailable()){
 		if(localStorage.currentLevel === undefined)

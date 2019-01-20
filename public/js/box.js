@@ -19,7 +19,7 @@ const box = (pos) => {
 
 	let newPos;
 	let lastPos = that.pos.copy();
-	that.checkPointer = ({ pointer, world: { obstacles, buttons } }) => {
+	that.checkPointer = ({ pointer, world: { obstacles, buttons }, audio: { play } }) => {
 		if(pointer.downed) that.waitedForDowned = true;
 		if(pointer.down && that.waitedForDowned){
 			newPos = v.pipe(

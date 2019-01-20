@@ -163,7 +163,7 @@ const player = (pos) => {
 	}
 
 	let hitCounter = 0;
-	that.handleHit = ({ transitionState, world: { add, remove } }) => {
+	that.handleHit = ({ transitionState, world: { add, remove }, audio: { play } }) => {
 		if(that.hit) hitCounter++;
 		else hitCounter = 0;
 		if(hitCounter > 2){

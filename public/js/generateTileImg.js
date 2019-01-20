@@ -39,7 +39,7 @@ const generateTileImg = (map, sprites, json) => {
 			if(left) side += "left"
 			if(right) side += "right"
 			
-			if(!up && !down && !left && !right || (up && down && left && right)) side = "middle";
+			//if(!up && !down && !left && !right || (up && down && left && right)) side = "middle";
 
 			//inside tiles
 			if(y > 0 && x > 0 && map[y-1][x-1] !== tile && map[y-1][x] === tile && map[y][x-1] === tile)
@@ -50,6 +50,8 @@ const generateTileImg = (map, sprites, json) => {
 				side = "insidedownleft";
 			if(y < map.length-1 && x < map[y].length-1 && map[y+1][x+1] !== tile && map[y+1][x] === tile && map[y][x+1] === tile)
 				side = "insidedownright";
+
+			if(side === undefined || side === "") side = "middle";
 
 			ctx.drawImage(sprites[sprite], json[side][0][0], json[side][0][1], 15, 15, pos.x, pos.y, 15, 15);
 
