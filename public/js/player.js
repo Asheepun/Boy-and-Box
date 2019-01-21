@@ -8,6 +8,8 @@ const player = (pos) => {
 	traits.addEntityTrait({
 		pos,
 		size: vec(12, 15),
+		hitBox: vec(10, 13),
+		hitBoxOffset: vec(1, 1),
 	})(that);
 
 	traits.addSpriteTrait({
@@ -169,6 +171,7 @@ const player = (pos) => {
 		if(hitCounter > 2){
 			transitionState("setupLevel");
 		}
+		that.hit = false;
 	}
 
 	that.handleOubX = (GAME) => {

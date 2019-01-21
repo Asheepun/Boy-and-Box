@@ -140,11 +140,12 @@ export const addLandingTrait = ({ velocity = 0 }) => (that) => {
 	that.addMethods("checkLanding")
 }
 
-export const addEntityTrait = ({ pos, size, hitBox, hitBoxOffset }) => (that) => {
+export const addEntityTrait = ({ pos, size, hitBox, hitBoxOffset = vec(0, 0) }) => (that) => {
     that.pos = pos;
     that.size = size;
+	that.originSize = size;
 	if(hitBox) that.hitBox = hitBox;
-	else that.hitBox = that.size;
+	else that.hitBox = that.size.copy();
 	that.hitBoxOffset = hitBoxOffset;
 
     that.fixCenter = () => {
@@ -256,6 +257,12 @@ export const addSpriteTrait = ({ color, img, alpha = 1, rotation = 0, visible = 
 			}
             ctx.globalApha = 1;
             ctx.restore();
+			/*
+			if(that.hitBox.x !== that.originSize.x){
+				ctx.fillStyle = "blue";
+				ctx.fillRect(that.pos.x + that.hitBoxOffset.x, that.pos.y + that.hitBoxOffset.y, that.hitBox.x, that.hitBox.y);
+			}
+			*/
         }
     }
 }

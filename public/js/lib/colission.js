@@ -14,6 +14,12 @@ export const checkSetCol = (entity, set) => {
     return false;
 }
 
+export const checkHitBoxCol = (entity, candidate) => 
+	entity.pos.x + entity.hitBoxOffset.x + entity.hitBox.x> candidate.pos.x + candidate.hitBoxOffset.x
+	&& entity.pos.x + entity.hitBoxOffset.x < candidate.pos.x + candidate.hitBoxOffset.x + candidate.hitBox.x
+	&& entity.pos.y + entity.hitBoxOffset.y + entity.hitBox.y> candidate.pos.y + candidate.hitBoxOffset.y
+	&& entity.pos.y + entity.hitBoxOffset.y < candidate.pos.y + candidate.hitBoxOffset.y + candidate.hitBox.y;
+
 export const checkPlatformCol = (entity, platform) => 
 	entity.pos.y + entity.size.y > platform.pos.y
 	&& entity.pos.y + entity.size.y <= platform.pos.y + platform.size.y

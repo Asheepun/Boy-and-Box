@@ -9,6 +9,8 @@ export const red = (pos) => {
 	traits.addEntityTrait({
 		pos,
 		size: vec(23, 21),
+		hitBox: vec(17, 18),
+		hitBoxOffset: vec(4, 2),
 	})(that);
 
 	traits.addSpriteTrait({
@@ -54,7 +56,7 @@ export const red = (pos) => {
 	that.facing.x = -1;
 
 	that.checkPlayerCol = ({ world: { player }, sprites }) => {
-		if(col.checkPixelCol(that, player, sprites)){
+		if(col.checkHitBoxCol(that, player)){
 			player.hit = true;
 		}
 	}
@@ -223,6 +225,12 @@ export const giant = (pos) => {
 	that.size.x = 23 * 6;
 	that.size.y = 21 * 6;
 
+	that.hitBox.x = that.size.x - 8 * 6;
+	that.hitBox.y = that.size.y - 2 * 6;
+
+	that.hitBoxOffset.x = 4 * 6;
+	that.hitBoxOffset.y = 2 * 6;
+
 	that.img = "red_giant";
 	that.imgSize = that.size.copy();
 
@@ -248,25 +256,9 @@ export const giant = (pos) => {
 		}
 	}
 
-	that.hitBox = {
-		pos: vec(0, 0),
-		size: vec(that.size.x - 8 * 6, that.size.y - 2 * 6),
-	};
-
-	that.handleHitBoxes = (GAME) => {
-		that.hitBox.pos.x = that.pos.x + 4 * 6;
-		that.hitBox.pos.y = that.pos.y + 2 * 6;
-	}
-
-	that.checkPlayerCol = ({ world: { player } }) => {
-		if(col.checkCol(that.hitBox, player)){
-			player.hit = true;
-		}
-	}
-
 	that.handleBoxCol = ({ world: { box } }) => {
-		if(that.hitBox.pos.x + that.hitBox.size.x + 4 >= box.pos.x//+4 for fix with stupid collission issue
-		&& that.hitBox.pos.x <= box.pos.x + box.size.x
+		if(that.pos.x + that.hitBoxOffset.x + that.hitBox.x + 4 >= box.pos.x//+4 for fix with stupid collission issue
+		&& that.pos.x + that.hitBoxOffset.x <= box.pos.x + box.size.x
 		&& that.pos.y + that.size.y >= box.pos.y
 		&& that.pos.y + that.size.y <= box.pos.y + that.velocity.y + 3
 		&& that.velocity.y >= 0){
@@ -280,8 +272,8 @@ export const giant = (pos) => {
 
     that.handleColY = (obstacle) => {
 		if(col.checkCol({
-			pos: that.hitBox.pos,
-			size: vec(that.hitBox.size.x, that.size.y)
+			pos: v.add(that.pos, that.hitBoxOffset),
+			size: vec(that.hitBox.x, that.size.y)
 		}, obstacle)){
 			if(that.velocity.y > 0){
 				that.onGround = true;
@@ -299,8 +291,6 @@ export const giant = (pos) => {
 
 	that.textCondition = ({ world: { player } }) =>
 		v.sub(that.center, player.center).mag < 120;
-
-	that.addMethods("handleHitBoxes");
 
 	return that;
 }
