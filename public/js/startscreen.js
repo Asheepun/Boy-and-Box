@@ -52,8 +52,12 @@ const setupStartscreen = (GAME) => {
 			size: 20,
 			pos: vec(GAME.width / 2 - 40, 130),
 			action(GAME){
-				if(storageAvailable()) localStorage.currentLevel = 0;
+				if(storageAvailable()){
+					localStorage.currentLevel = 0;
+					localStorage.deaths = 0;
+				}
 				GAME.currentLevel = 0;
+				GAME.deaths = 0;
 				GAME.fadeToState("setupLevel");
 			}
 		}), "buttons", 10);

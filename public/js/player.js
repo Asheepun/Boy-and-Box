@@ -164,11 +164,11 @@ const player = (pos) => {
 		if(levelCleared) that.oubArea[2] = width + that.size.x;
 	}
 
-	let hitCounter = 0;
+	that.hitCounter = 0;
 	that.handleHit = ({ transitionState, world: { add, remove }, audio: { play } }) => {
-		if(that.hit) hitCounter++;
-		else hitCounter = 0;
-		if(hitCounter > 2){
+		if(that.hit) that.hitCounter++;
+		else that.hitCounter = 0;
+		if(that.hitCounter > 2){
 			transitionState("setupLevel");
 		}
 		that.hit = false;

@@ -1,19 +1,28 @@
-const keys = (...keys) => {
+/*
+
+keyObject schema
+{
+	keyCode: number,
+	tag: name,
+}
+
+*/
+
+const keys = (...keyObjects) => {
 	const that = {};
 
-	keys.forEach((key) => {
-		that[key] = {
-			key,
+	keyObjects.forEach((ko) => {
+		that[ko.tag] = {
+			code: ko.code,
 			down: false,
 			downed: false,
 			upped: false,
-			isKey: true,
-		};
+		}
 	});
 
 	that.update = () => {
 		for(let key in that){
-			if(that[key].isKey){
+			if(that[key].code){
 				that[key].downed = false;
 				that[key].upped = false;
 			}
@@ -22,20 +31,24 @@ const keys = (...keys) => {
 
 	document.addEventListener("keydown", (e) => {
 		for(let key in that){
-			if(that[key].key && that[key].key === e.key && !that[key].down){
+			if(that[key].code
+			&& that[key].code === e.keyCode
+			&& !that[key].down){
 				that[key].down = true;
 				that[key].downed = true;
 			}
-		};
+		}
 	});
 
 	document.addEventListener("keyup", (e) => {
 		for(let key in that){
-			if(that[key].isKey && that[key].key === e.key && that[key].down){
+			if(that[key].code
+			&& that[key].code === e.keyCode
+			&& that[key].down){
 				that[key].down = false;
 				that[key].upped = true;
 			}
-		};
+		}
 	});
 
 	return that;

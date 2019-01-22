@@ -18,6 +18,7 @@ t: blue (talker)
 d: doctor
 =: sick blue
 T: trans blue
+D: death counter
 
 £: lamp
 µ: bookshelf
@@ -558,9 +559,9 @@ const levels = [
 			".............................####",
 			"..............................###",
 			"..............................###",
-			".............................t###",
-			".............................####",
-			".............................####",
+			".................D...........t###",
+			"...............####......t...####",
+			"..............######....##...####",
 		],
 		background: "sky",
 		texts: [
@@ -587,7 +588,18 @@ const levels = [
 					"In",
 					"developement."
 				]
-			]
+			],
+			[
+				[
+					"Credits",
+					"Programming, music & art",
+					"Gustav Almstrom",
+					"",
+					"Sound Effects",
+					"Fridolf Tofft Glans",
+					"& Gustav Almstrom"
+				]
+			],
 		]
 	}
 ];

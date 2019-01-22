@@ -109,6 +109,7 @@ Promise.all([
 		currentLevel: 0,
 		volume: 1,
 		saveProgress: true,
+		deaths: 0,
 	};
 
 	GAME.state = GAME.states.setupStartscreen;
@@ -119,17 +120,33 @@ Promise.all([
 	if(storageAvailable()){
 		if(localStorage.currentLevel === undefined)
 			localStorage.currentLevel = 0;
-
-		if(localStorage.currentLevel)
+		else
 			GAME.currentLevel = Number(localStorage.currentLevel);
+
+		if(localStorage.deaths === undefined)
+			localStorage.deaths = 0;
+		else
+			GAME.deaths = Number(localStorage.deaths);
 	}
 
 	GAME.keys = keys(
-		"a",
-		"d",
-		"w",
-		" ",
-	);
+		{
+			tag: "w",
+			code: 87,
+		},
+		{
+			tag: "a",
+			code: 65,
+		},
+		{
+			tag: "d",
+			code: 68,
+		},
+		{
+			tag: "space",
+			code: 32,
+		}
+	)
 
 	let musicHasStarted = false;
 
@@ -184,12 +201,18 @@ Promise.all([
 			GAME.world.player.dir = 1;
 		if(GAME.keys.a.down && GAME.keys.d.down || !GAME.keys.a.down && !GAME.keys.d.down)
 			GAME.world.player.dir = 0;
-		if(GAME.keys.w.down || GAME.keys[" "].down){
+		if(GAME.keys.w.down || GAME.keys.space.down){
 			GAME.world.player.jump(GAME);
 		}
-		if(!GAME.keys.w.down && !GAME.keys[" "].down) GAME.world.player.stopJump();
+		if(!GAME.keys.w.down && !GAME.keys.space.down) GAME.world.player.stopJump();
 
 		GAME.world.update(GAME);
+
+		if(GAME.world.player.hitCounter > 2){
+			GAME.deaths++;
+			if(storageAvailable())
+				localStorage.deaths = GAME.deaths;
+		}
 
 		GAME.transitionPosX += 20;
 		GAME.transitionFade -= 0.01;

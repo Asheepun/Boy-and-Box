@@ -158,6 +158,34 @@ export const blueDoc = (pos) => {
 	return that;
 }
 
+export const blueDeathcounter = (pos) => {
+	const that = blue(pos, [
+		["Hello"],
+	]);
+
+	that.checkDeaths = ({ deaths }) => {
+		that.texts = [[
+			"You only died",
+			deaths + " times!",
+		]];
+
+		if(deaths === 1)
+			that.texts = [[
+				"You only died once!",
+			]];
+
+		if(deaths === 0)
+			that.texts = [[
+				"Flawless Victory!",
+			]];
+
+	}
+
+	that.addMethods("checkDeaths");
+
+	return that;
+}
+
 export const blueLock = (pos) => {
 	const that = traitHolder();
 
