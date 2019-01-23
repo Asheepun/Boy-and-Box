@@ -178,8 +178,10 @@ export const blueThanker = (pos) => {
 		text: "@asheepun",
 		action(GAME){
 			window.open("https://vemfanbryrsig.herokuapp.com");
-			GAME.fullscreenBtn.isFullscreen = true;
-			GAME.fullscreenBtn.handleMouseDown();
+			if(GAME.fullscreenBtn){
+				GAME.fullscreenBtn.isFullscreen = true;
+				GAME.fullscreenBtn.handleMouseDown();
+			}
 		}
 	});
 	
