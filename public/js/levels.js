@@ -19,6 +19,7 @@ d: doctor
 =: sick blue
 T: trans blue
 D: death counter
+Y: blue thanker
 
 £: lamp
 µ: bookshelf
@@ -551,7 +552,7 @@ const levels = [
 			"##............................###",
 			"###...........................###",
 			"###............................##",
-			"##..............t..............##",
+			"##..............Y..............##",
 			"..............####.............##",
 			".............######............##",
 			".............######..........t.##",
@@ -565,17 +566,6 @@ const levels = [
 		],
 		background: "sky",
 		texts: [
-			[
-				[
-					"Thank you for playing",
-					"the demo of BoyandBox!",
-					"",
-					"The rest of the game is",
-					"currently being developed.",
-					"Follow the game's progress",
-					"on Twitter @asheepun."
-				]
-			],
 			[
 				[
 					"Work in",

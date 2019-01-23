@@ -60,7 +60,7 @@ export const clickableText = ({ pos, size, text, action }) => {
 	that.fontSize = size;
 
 	that.size.x = that.text.length * that.fontSize / 2 + that.fontSize / 2;
-	that.size.y = that.fontSize;
+	that.size.y = Number(that.fontSize);
 
 	that.draw = (ctx) => {
 		ctx.globalAlpha = that.alpha;
@@ -149,24 +149,28 @@ export const addFullscreenBtn = (pos) => {
 
 	that.playHoverSound;
 
-	btn.addEventListener("mousedown", () => {
+	that.isFullscreen = false;
+
+	that.handleMouseDown = (e) => {
 
 		that.playSound();
-		if(!isFullscreen){
+		if(!that.isFullscreen){
 			if(!browser) document.body.requestFullscreen();
 			else document.body[browser + "RequestFullscreen"]();
 
-			isFullscreen = true;
+			that.isFullscreen = true;
 			btn.innerHTML = "Fullscreen: on";
 		}else{
 			if(!browser) document.exitFullscreen();
 			else document[browser + "ExitFullscreen"]();
 
-			isFullscreen = false;
+			that.isFullscreen = false;
 			btn.innerHTML = "Fullscreen: off";
 		}
+	
+	}
 
-	});
+	btn.addEventListener("mousedown", that.handleMouseDown);
 
 	btn.addEventListener("mouseover", () => {
 		that.playHoverSound();
