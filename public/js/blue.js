@@ -159,46 +159,6 @@ export const blueDoc = (pos) => {
 	return that;
 }
 
-export const blueThanker = (pos) => {
-	const that = blue(pos, [
-		[
-			"Thank you for playing",
-			"the demo of BoyandBox!",
-			"",
-			"The rest of the game is",
-			"currently being developed.",
-			"Follow the game's progress",
-			"on Twitter          .",
-		]
-	]);
-
-	that.btn = buttons.clickableText({
-		pos: vec(that.pos.x + 14, that.pos.y - 12),
-		size: 9,
-		text: "@asheepun",
-		action(GAME){
-			window.open("https://vemfanbryrsig.herokuapp.com");
-			if(GAME.fullscreenBtn){
-				GAME.fullscreenBtn.isFullscreen = true;
-				GAME.fullscreenBtn.handleMouseDown();
-			}
-		}
-	});
-	
-	that.addLinkButton = ({ world, world: { add, remove, contains } }) => {
-		if(that.talking && !contains(that.btn, "buttons")){
-			add(that.btn, "buttons", 20);
-		}
-		if(!that.talking && contains(that.btn, "buttons")){
-			remove(that.btn, "buttons", 20);
-		}
-	}
-
-	that.addMethods("addLinkButton");
-
-	return that;
-}
-
 export const blueDeathcounter = (pos) => {
 	const that = blue(pos, [
 		["Hello"],

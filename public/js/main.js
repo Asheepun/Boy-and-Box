@@ -88,7 +88,6 @@ Promise.all([
 ]).then(([ { c, ctx, width, height, pointer }, sprites, audio, JSON ]) => {
 
 	document.getElementById("loading").style.display = "none";
-	loaded = true;
 	
 	const GAME = {
 		c,
@@ -323,6 +322,7 @@ Promise.all([
 
 });
 
+/*
 const loadingDots = document.createElement("h1");
 
 document.getElementById("loading").appendChild(loadingDots);
@@ -332,10 +332,11 @@ let loaded = false;
 const loadLoop = () => {
 	loadingDots.innerHTML += ".";
 	if(loadingDots.innerHTML.length > 3) loadingDots.innerHTML = ".";
-	if(!loaded) setTimeout(loadLoop, 500);
+	if(!loaded) setTimeout(loadLoop, 2000);
 }
 
 loadLoop();
+*/
 
 function storageAvailable(type) {
     try {
