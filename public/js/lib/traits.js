@@ -26,6 +26,7 @@ export default traitHolder;
 
 export const addOubTrait = ({ oubArea = [0, 0, 900, 600], bounce = false }) => (that) => {
     that.oubArea = oubArea;
+	that.oubBounce = bounce;
 
     that.handleOubX = () => {
         if(that.velocity.x > 0)
@@ -33,7 +34,7 @@ export const addOubTrait = ({ oubArea = [0, 0, 900, 600], bounce = false }) => (
 		else{
 			that.pos.x = that.oubArea[0];
 		}
-        if(bounce) that.velocity.x *= -1;
+        if(that.oubBounce) that.velocity.x *= -1;
 		else{
 			if(that.acceleration) that.acceleration.x = 0;
 			that.velocity.x = 0;
@@ -57,6 +58,7 @@ export const addOubTrait = ({ oubArea = [0, 0, 900, 600], bounce = false }) => (
 }
 
 export const addColTrait = ({ bounce = false, }) => (that) => {
+	that.colBounce = bounce;
 	that.handleColX = (obstacle) => {	
 		if(that.velocity.x > 0){
 			that.pos.x = obstacle.pos.x - that.size.x;
@@ -66,7 +68,7 @@ export const addColTrait = ({ bounce = false, }) => (that) => {
 			that.pos.x = obstacle.pos.x + obstacle.size.x;
 			that.onLeftWall = true;
 		}
-		if(bounce) that.velocity.x *= -1;
+		if(that.colBounce) that.velocity.x *= -1;
 		else{
 			that.velocity.x = 0;
 			if(that.acceleration) that.acceleration.x = 0;
@@ -80,7 +82,7 @@ export const addColTrait = ({ bounce = false, }) => (that) => {
 			that.onRoof = true;
 			that.pos.y = obstacle.pos.y + obstacle.size.y;
 		}
-		if(bounce) that.velocity.y *= -1;
+		if(that.colBounce) that.velocity.y *= -1;
 		else{
 			that.velocity.y = 0;
 			if(that.acceleration) that.acceleration.y = 0;

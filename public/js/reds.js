@@ -61,14 +61,15 @@ export const red = (pos) => {
 		}
 	}
 
+	that.bounceX = true;
 	that.handleColX = (obstacle) => {
-		that.facing.x *= -1;
+		if(that.bounceX) that.facing.x *= -1;
 		if(that.velocity.x > 0) that.pos.x = obstacle.pos.x - that.size.x;
 		else that.pos.x = obstacle.pos.x + obstacle.size.x;
 	}
 
 	that.handleOubX = () => {
-		that.facing.x *= -1;
+		if(that.bounceX) that.facing.x *= -1;
 		if(that.velocity.x > 0) that.pos.x = 32 * 15 - that.size.x;
 		else that.pos.x = 0;
 	}
@@ -101,8 +102,10 @@ export const red = (pos) => {
 		that.velocity.y = that.jumpVelocity;
 	}
 
+	that.speed = 0.5;
+
 	that.handleVelocity = () => {
-		if(!that.onGround) that.velocity.x = that.facing.x * 0.5;
+		if(!that.onGround) that.velocity.x = that.facing.x * that.speed;
 		else that.velocity.x = 0;
 	}
 
@@ -352,6 +355,28 @@ export const blueTrans = (pos) => {
 	}
 
 	that.addMethods("transform");
+
+	return that;
+}
+
+export const hunter = (pos) => {
+	const that = red(pos);
+
+	that.img = "red_hunter";
+
+	that.bounceX = false;
+
+	that.rechargeTime = 5;
+
+	that.speed = 1;
+
+	that.hunt = ({ world: { player } }) => {
+		console.log(that.velocity.x)
+		if(that.pos.x > player.center.x) that.facing.x = -1;
+		if(that.pos.x + that.size.x < player.center.x) that.facing.x = 1;
+	}
+
+	that.addMethods("hunt");
 
 	return that;
 }
