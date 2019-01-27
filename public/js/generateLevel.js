@@ -12,9 +12,9 @@ import generateShadowImg 		from "/js/generateShadowImg.js";
 import addClouds				from "/js/clouds.js";
 import addBirds 				from "/js/bird.js";
 import addFlowers				from "/js/flowers.js";
-import shadow					from "/js/shadow.js";
+import dynamicShadow			from "/js/shadow.js";
 
-const generateLevel = ({ template, time, background, texts }, { world, world: { add, remove }, sprites, JSON, width, height }) => {
+const generateLevel = ({ template, time, background, texts, shadow }, { world, world: { add, remove }, sprites, JSON, width, height }) => {
 	let pos;
 	const scl = 15;
 
@@ -25,6 +25,7 @@ const generateLevel = ({ template, time, background, texts }, { world, world: { 
 	add(tiles(sprites["backgrounds/" + background]), "background", 0, true);
 
 	if(background === "sky") addClouds({ world, width });
+	if(shadow) add(dynamicShadow(), "shadow", 20, true);
 
 	//inintialize points array
 	let x = {};
