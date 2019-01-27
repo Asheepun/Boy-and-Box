@@ -30,7 +30,7 @@ const box = (pos) => {
 			);
 
 			if(!col.checkPointCol(newPos, obstacles)
-			&& !col.checkPointCol(newPos, blockers)
+			&& (blockers && !col.checkPointCol(newPos, blockers) || !blockers)
 			&& !col.checkPointCol(pointer.pos, buttons)
 			&& !(lastPos.x === newPos.x && lastPos.y === newPos.y)){
 				lastPos = newPos.copy();
