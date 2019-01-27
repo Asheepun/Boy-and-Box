@@ -19,7 +19,7 @@ const box = (pos) => {
 
 	let newPos;
 	let lastPos = that.pos.copy();
-	that.checkPointer = ({ pointer, world: { obstacles, buttons }, audio: { play } }) => {
+	that.checkPointer = ({ pointer, world: { obstacles, buttons, blockers }, audio: { play } }) => {
 		if(pointer.downed) that.waitedForDowned = true;
 		if(pointer.down && that.waitedForDowned){
 			newPos = v.pipe(
@@ -30,6 +30,7 @@ const box = (pos) => {
 			);
 
 			if(!col.checkPointCol(newPos, obstacles)
+			&& !col.checkPointCol(newPos, blockers)
 			&& !col.checkPointCol(pointer.pos, buttons)
 			&& !(lastPos.x === newPos.x && lastPos.y === newPos.y)){
 				lastPos = newPos.copy();

@@ -20,10 +20,11 @@ const generateTileImg = (map, sprites, json) => {
 	map.forEach((row, y) => strEach(row, (tile, x) => {
 		pos = vec(x * 15, y * 15);
 
-		if(tile === "#" || tile === "¤"){
+		if(tile === "#" || tile === "¤" || tile === "%"){
 			sprite = "tiles/";
 			if(tile === "#") sprite += "grass_tiles";
-			if(tile === "¤") sprite += "plank_tiles";
+			if(tile === "¤" || tile === "%") sprite += "plank_tiles";
+			if(tile === "%" && Math.random() < 0.3) sprite += "_infected";
 
 			up = down = left = right = false;
 
