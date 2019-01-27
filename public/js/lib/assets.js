@@ -139,8 +139,6 @@ export const loadJSON = (...srcs) => new Promise((resolve, reject) => {
         jsonReq.onreadystatechange = function(){
             if(this.readyState === 4 && this.status === 200){
                 resJSON[srcs[i]] = JSON.parse(this.responseText);
-				document.getElementById("loading-json").innerHTML =
-					"Loading json data " + Math.floor(100 * (i + 1) / srcs.length) + "%";
                 if(Object.keys(resJSON).length === srcs.length) resolve(resJSON);
             }
         }
