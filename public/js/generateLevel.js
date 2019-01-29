@@ -13,6 +13,7 @@ import addClouds				from "/js/clouds.js";
 import addBirds 				from "/js/bird.js";
 import addFlowers				from "/js/flowers.js";
 import dynamicShadow			from "/js/shadow.js";
+import { door, doorButton }		from "/js/door.js";
 
 const generateLevel = ({ template, time, background, texts, shadow }, { world, world: { add, remove }, sprites, JSON, width, height }) => {
 	let pos;
@@ -72,6 +73,12 @@ const generateLevel = ({ template, time, background, texts, shadow }, { world, w
 			if(tile === "4") add(reds.giant(pos.copy()), "reds", 5);
 			if(tile === "5") add(reds.smallJumper(pos.copy()), "reds", 5);
 			if(tile === "6") add(reds.hunter(pos.copy()), "reds", 5);
+
+			if(tile === "|") add(door(pos.copy(), 0), "obstacles", 2);
+			if(tile === "I") add(door(pos.copy(), 1), "obstacles", 2)
+
+			if(tile === "-") add(doorButton(pos.copy(), 0), "door_buttons", 2);
+			if(tile === "_") add(doorButton(pos.copy(), 1), "door_buttons", 2);
 
 	}));
 	

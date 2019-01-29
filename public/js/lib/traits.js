@@ -239,6 +239,7 @@ export const addSpriteTrait = ({ color, img, alpha = 1, rotation = 0, visible = 
     that.visible = visible;
     that.imgPos = imgPos;
     that.imgSize = imgSize;
+	if(!imgSize) that.imgSize = that.size.copy();
 	that.facing = vec(1, 1);
 
     that.draw = (ctx, sprites) => {

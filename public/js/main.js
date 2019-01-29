@@ -55,6 +55,8 @@ Promise.all([
 		"lamp",
 		"lamp_light",
 		"bookshelf",
+		"door",
+		"door_button",
 		"settings_button",
 	),
 	loaders.loadAudio(
