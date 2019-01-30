@@ -45,7 +45,7 @@ export const loadAudio = (sfxVolume = 1, musicVolume = 1, ...urls) => new Promis
 			volume,
 		}
 		loop.soundNode = audio.ctx.createBufferSource();
-		loop.soundNode.buffer = audio.buffers[buffer]
+		loop.soundNode.buffer = audio.buffers[buffer];
 		loop.soundNode.loop = true;
 		loop.type = type;
 

@@ -5,17 +5,13 @@ import { blueLock }				from "/js/blue.js";
 export const door = (pos, index) => {
 	const that = blueLock(pos);
 
+	that.gravity = 0.005;
+
 	that.img = "door";
-	let counter = 0;
 
 	that.doorIndex = index;
 
-	that.checkButtonPressed = () => {
-
-	}
-
 	that.removeMethods("checkBlues");
-	that.addMethods("checkButtonPressed");
 
 	return that;
 }
@@ -26,9 +22,10 @@ export const doorButton = (pos, index) => {
 	that.buttonIndex = index;
 
 	traits.addEntityTrait({
-		pos,
-		size: vec(15, 15),
+		pos: v.add(pos, vec(1, 9)),
+		size: vec(13, 9),
 	})(that);
+
 
 	traits.addSpriteTrait({
 		img: "door_button",
@@ -41,28 +38,44 @@ export const doorButton = (pos, index) => {
 
 	that.touched = false;
 	that.hit = false;
+	that.touching = false;
 
 	that.playerCol = (player) => {
 		if(player.velocity.y > 3) that.touched = true;
 		if(that.touched && player.onGround) that.hit = true;
+		that.touching = true;
 	}
 
 	that.redsCol = (red) => {
 		if(red.velocity.y > 1) that.touched = true;
 		if(that.touched && red.onGround) that.hit = true;
+		that.touching = true;
 	}
 
 	that.handleHit = ({ world: { obstacles } }) => {
 		if(that.hit){
-			obstacles.forEach(obstacle => {
-				if(that.buttonIndex === obstacle.doorIndex){
-					obstacle.hit = true;
-				}
-			});
+			const doors = obstacles.filter(o => o.doorIndex === that.buttonIndex);
+			if(doors.length > 0){
+				const lowestDoor = doors.sort((x, y) => x - y)[doors.length-1];
+
+				obstacles[obstacles.indexOf(lowestDoor)].hit = true;
+			}
+
 		}
 	}
 
-	that.addMethods("handleHit");
+	that.animate = () => {
+		if(that.hit && that.imgPos.x < 13 * 4 + 3){
+			that.imgPos.x += 14;
+		}
+
+		if(that.touching && that.hit) that.imgPos.y = -1;
+		else that.imgPos.y = 0;
+
+		that.touching = false;
+	}
+
+	that.addMethods("handleHit", "animate");
 
 	return that;
 }
