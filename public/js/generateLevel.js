@@ -39,10 +39,11 @@ const generateLevel = ({ template, time, background, texts, shadow }, { world, w
 			if(tile === "@") add(player(pos.copy()), "player", 4, true);
 			if(tile === "#" || tile === "¤" || tile === "%") add(obstacle(pos.copy()), "obstacles", 1);
 
-			if(tile === ",") add(tileObject(pos.copy(), "box_blocker_flower"), "blockers", 1);
+			if(tile === ","
+			|| tile === "p") add(tileObject(pos.copy(), "box_blocker_flower"), "blockers", 1);
 
 			if(tile === "B") add(box(pos.copy()), "box", 1, true);
-			if(tile === "P") add(point(pos.copy()), "points", 3);
+			if(tile === "P" || tile === "p") add(point(pos.copy()), "points", 3);
 			if(tile === "0") add(vec(pos.x + 15, pos.y), "pointTarget", 0, true);
 			if(tile === "0" || tile === "O") add(shine(pos.copy()), "shine", 10);
 
