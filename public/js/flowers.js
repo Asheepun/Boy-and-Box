@@ -53,7 +53,8 @@ const addFlowers = (template, world) => {
 		|| tile === "2"
 		//|| tile === "3" has it's own flower
 		|| tile === "4"
-		|| tile === "5"){
+		|| tile === "5"
+		|| tile === "6"){
 			const f = flower(vec(x * 15 + Math.random() * (tile === "T" ? 10 : 25), y * 15))
 			
 			f.velocity.y = 15;

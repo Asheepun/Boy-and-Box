@@ -32,6 +32,7 @@ Promise.all([
 		"tiles/grass",
 		"tiles/grass_infected",
 		"tiles/shadow",
+		"thorn",
 		"shadows/60",
 		"shadows/120",
 		"shadows/100",
@@ -116,16 +117,16 @@ Promise.all([
 		},
 		state: undefined,
 		context: vec(0, 0),
-		currentLevel: 17,
+		currentLevel: 28,
 		volume: 1,
 		saveProgress: true,
 		deaths: 0,
 	};
 
-	GAME.state = GAME.states.setupStartscreen;
+	//GAME.state = GAME.states.setupStartscreen;
 
 	//GAME.audio.setVolume(0);
-	//localStorage.currentLevel = GAME.currentLevel;
+	localStorage.currentLevel = GAME.currentLevel;
 	
 	if(storageAvailable()){
 		if(localStorage.currentLevel === undefined)

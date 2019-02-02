@@ -5,6 +5,7 @@ import player					from "/js/player.js";
 import point					from "/js/points.js";
 import * as blues				from "/js/blue.js";
 import * as reds				from "/js/reds.js";
+import thorn					from "/js/thorn.js";
 import lamp						from "/js/lamp.js";
 import generateTileImg 			from "/js/generateTileImg.js";
 import generateWallsImg			from "/js/generateWalls.js";
@@ -74,6 +75,8 @@ const generateLevel = ({ template, time, background, texts, shadow }, { world, w
 			if(tile === "4") add(reds.giant(pos.copy()), "reds", 5);
 			if(tile === "5") add(reds.smallJumper(pos.copy()), "reds", 5);
 			if(tile === "6") add(reds.hunter(pos.copy()), "reds", 5);
+
+			if(tile === "x") add(thorn(pos.copy()), "reds", 2);
 
 			if(tile === "|") add(door(pos.copy(), 0), "obstacles", 2);
 			if(tile === "I") add(door(pos.copy(), 1), "obstacles", 2)
