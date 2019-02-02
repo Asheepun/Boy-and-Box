@@ -113,11 +113,13 @@ export const addBoxColTrait = ({ bounce = false }) => (that) => {
 
 export const addCheckColTrait = ({ sets = [], singles = [] }) => (that) => {
 	that.checkCol = (GAME) => {
-		sets.forEach(set => GAME.world[set].forEach((entity) => {
-			if(checkCol(that, entity)) that[set + "Col"](entity, GAME);
-		}));
+		sets.forEach(set => {
+			if(GAME.world[set]) GAME.world[set].forEach((entity) => {
+				if(checkCol(that, entity)) that[set + "Col"](entity, GAME);
+			}
+		)});
 		singles.forEach((single) => {
-			if(checkCol(that, GAME.world[single])) that[single + "Col"](GAME.world[single], GAME);
+			if(single && checkCol(that, GAME.world[single])) that[single + "Col"](GAME.world[single], GAME);
 		})
 	}
 
