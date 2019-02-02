@@ -13,8 +13,8 @@ const generateVineImg = (map, sprites) => {
 		&& tile !== "¤"
 		&& tile !== "%"
 		&& tile !== "&")
-		&& (map[y+1][x] === ","
-		|| map[y-1][x] === ",")){
+		&& (y !== map.length - 1 && map[y+1][x] === ","
+		|| y !== 0 && map[y-1][x] === ",")){
 			ctx.drawImage(sprites.box_blocker_flower, x * 15, y * 15, 15, 15);
 		}
 	}));

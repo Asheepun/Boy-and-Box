@@ -49,8 +49,8 @@ const generateLevel = ({ template, time, background, texts, shadow }, { world, w
 			&& tile !== "¤"
 			&& tile !== "%"
 			&& tile !== "&")
-			&& (template[y+1][x] === ","
-			|| template[y-1][x] === ",")){
+			&& (y !== template.length-1 && template[y+1][x] === ","
+			|| y !== 0 && template[y-1][x] === ",")){
 				add(obstacle(pos.copy()), "blockers", 0);
 			}
 
@@ -86,6 +86,7 @@ const generateLevel = ({ template, time, background, texts, shadow }, { world, w
 			if(tile === "4") add(reds.giant(pos.copy()), "reds", 5);
 			if(tile === "5") add(reds.smallJumper(pos.copy()), "reds", 5);
 			if(tile === "6") add(reds.hunter(pos.copy()), "reds", 5);
+			if(tile === "7") add(reds.redBird(pos.copy()), "reds", 5);
 
 			if(tile === "x") add(thorn(pos.copy()), "reds", 2);
 
@@ -104,9 +105,6 @@ const generateLevel = ({ template, time, background, texts, shadow }, { world, w
 	if(world.obstacles) world.obstacles = optimizeObstacles(world.obstacles);
 	
 	if(world.blockers) world.blockers = optimizeObstacles(world.blockers);
-
-	console.log("o: " + world.obstacles.length);
-	if(world.blockers) console.log("v: " + world.blockers.length);
 
 }
 

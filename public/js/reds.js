@@ -379,3 +379,87 @@ export const hunter = (pos) => {
 
 	return that;
 }
+
+export const redBird = (pos) => {
+	const that = traitHolder();
+
+	traits.addEntityTrait({
+		pos: v.add(pos, vec(5, 0)),
+		size: vec(19, 9),
+	})(that);
+
+	that.originPos = that.pos.copy();
+
+	traits.addSpriteTrait({
+		img: "red_bird",
+	})(that);
+
+	traits.addMoveTrait({
+		velocity: vec(0, 0),
+	})(that);
+	
+	traits.addPhysicsTrait({
+		acceleration: vec(0, 0.01),
+	})(that);
+
+	traits.addColTrait({})(that);
+
+	traits.addBoxColTrait({})(that);
+
+	that.onBoxCol = () => {
+		that.diving = false;
+	}
+
+	that.diving = false;
+
+	that.hover = () => {
+		if(!that.diving) that.acceleration.y = 0.01;
+		if(!that.diving
+		&& that.pos.y > that.originPos.y + 10){
+			that.velocity.y = -0.4;
+		}
+	}
+
+	that.checkPlayer = ({ world: { player } }) => {
+		if(player.pos.y > that.pos.y
+		&& player.center.x > that.pos.x
+		&& player.center.x < that.pos.x + that.size.x){
+			that.diving = true;
+		}
+
+		if(col.checkHitBoxCol(that, player)){
+			player.hit = true;
+			that.diving = false;
+			that.velocity.y = 0;
+			that.pos.x = player.pos.x - 3;
+			that.pos.y = player.pos.y - 5;
+		}
+	}
+
+	that.handleDiving = () => {
+		if(that.diving){
+			that.velocity.y = 10;
+		}
+	}
+
+	let counter = 0;
+	that.animate = ({ world: { player } }) => {
+		counter++;
+		if(counter >= 10) counter = 2;//dont want to big nums
+		if(counter % 2 === 0){
+			if(that.velocity.y < 0){
+				that.imgPos.x += 20;
+			}else that.imgPos.x -= 20;
+
+			if(that.imgPos.x > 80) that.imgPos.x = 80;
+			if(that.imgPos.x < 0) that.imgPos.x = 0;
+		}
+
+		if(player.center.x > that.center.x) that.facing.x = -1;
+		else that.facing.x = 1;
+	}
+
+	that.addMethods("checkPlayer", "handleDiving", "hover", "animate");
+
+	return that;
+}

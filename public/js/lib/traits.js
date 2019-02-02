@@ -58,15 +58,21 @@ export const addOubTrait = ({ oubArea = [0, 0, 900, 600], bounce = false }) => (
 }
 
 export const addColTrait = ({ bounce = false, }) => (that) => {
+	that.onColDown = () => {};
+	that.onColUp = () => {};
+	that.onColLeft = () => {};
+	that.onColRight = () => {};
 	that.colBounce = bounce;
 	that.handleColX = (obstacle) => {	
 		if(that.velocity.x > 0){
 			that.pos.x = obstacle.pos.x - that.size.x;
 			that.onRightWall = true;
+			that.onColRight();
 		}
 		else{
 			that.pos.x = obstacle.pos.x + obstacle.size.x;
 			that.onLeftWall = true;
+			that.onColLeft();
 		}
 		if(that.colBounce) that.velocity.x *= -1;
 		else{
@@ -78,9 +84,11 @@ export const addColTrait = ({ bounce = false, }) => (that) => {
 		if(that.velocity.y > 0){
 			that.onGround = true;
 			that.pos.y = obstacle.pos.y - that.size.y;
+			that.onColDown();
 		}else{
 			that.onRoof = true;
 			that.pos.y = obstacle.pos.y + obstacle.size.y;
+			that.onColUp();
 		}
 		if(that.colBounce) that.velocity.y *= -1;
 		else{
@@ -91,6 +99,7 @@ export const addColTrait = ({ bounce = false, }) => (that) => {
 }
 
 export const addBoxColTrait = ({ bounce = false }) => (that) => {
+	that.onBoxCol = () => {};
 	that.handleBoxCol = ({ world: { box } }) => {
 		if(that.pos.x + that.size.x >= box.pos.x
 		&& that.pos.x <= box.pos.x + box.size.x
@@ -100,6 +109,7 @@ export const addBoxColTrait = ({ bounce = false }) => (that) => {
 			that.pos.y = box.pos.y - that.size.y;
 			that.fixCenter();
 			that.onGround = true;
+			that.onBoxCol();
 			if(bounce) that.velocity.y *= -1;
 			else {
 				that.velocity.y = 0;
