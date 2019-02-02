@@ -371,7 +371,6 @@ export const hunter = (pos) => {
 	that.speed = 1;
 
 	that.hunt = ({ world: { player } }) => {
-		console.log(that.velocity.x)
 		if(that.pos.x > player.center.x) that.facing.x = -1;
 		if(that.pos.x + that.size.x < player.center.x) that.facing.x = 1;
 	}

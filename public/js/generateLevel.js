@@ -10,6 +10,7 @@ import lamp						from "/js/lamp.js";
 import generateTileImg 			from "/js/generateTileImg.js";
 import generateWallsImg			from "/js/generateWalls.js";
 import generateShadowImg 		from "/js/generateShadowImg.js";
+import generateVineImg			from "/js/generateVineImg.js";
 import addClouds				from "/js/clouds.js";
 import addBirds 				from "/js/bird.js";
 import addFlowers				from "/js/flowers.js";
@@ -23,6 +24,8 @@ const generateLevel = ({ template, time, background, texts, shadow }, { world, w
 	let textCounter = 0;
 
 	add(tiles(generateTileImg(template, sprites, JSON["grass_tiles"])), "tiles", 8);
+
+	add(tiles(generateVineImg(template, sprites)), "tiles", 1)
 
 	add(tiles(sprites["backgrounds/" + background]), "background", 0, true);
 
@@ -41,10 +44,18 @@ const generateLevel = ({ template, time, background, texts, shadow }, { world, w
 			if(tile === "#" || tile === "¤" || tile === "%" || tile === "&") add(obstacle(pos.copy()), "obstacles", 1);
 
 			if(tile === ","
-			|| tile === "p") add(tileObject(pos.copy(), "box_blocker_flower"), "blockers", 1);
+			||(tile !== "."
+			&& tile !== "#"
+			&& tile !== "¤"
+			&& tile !== "%"
+			&& tile !== "&")
+			&& (template[y+1][x] === ","
+			|| template[y-1][x] === ",")){
+				add(obstacle(pos.copy()), "blockers", 0);
+			}
 
 			if(tile === "B") add(box(pos.copy()), "box", 1, true);
-			if(tile === "P" || tile === "p") add(point(pos.copy()), "points", 3);
+			if(tile === "P") add(point(pos.copy()), "points", 3);
 			if(tile === "0") add(vec(pos.x + 15, pos.y), "pointTarget", 0, true);
 			if(tile === "0" || tile === "O") add(shine(pos.copy()), "shine", 10);
 
@@ -90,34 +101,44 @@ const generateLevel = ({ template, time, background, texts, shadow }, { world, w
 	
 	addFlowers(template, world);
 
-	//optimize obstacles
-	for(let i = 0; i < world.obstacles.length; i++){
-		const o1 = world.obstacles[i];
+	if(world.obstacles) world.obstacles = optimizeObstacles(world.obstacles);
+	
+	if(world.blockers) world.blockers = optimizeObstacles(world.blockers);
 
-		for(let j = 0; j < world.obstacles.length; j++){
-			const o2 = world.obstacles[j];
+	console.log("o: " + world.obstacles.length);
+	if(world.blockers) console.log("v: " + world.blockers.length);
+
+}
+
+const optimizeObstacles = (obstacles) => {
+	for(let i = 0; i < obstacles.length; i++){
+		const o1 = obstacles[i];
+
+		for(let j = 0; j < obstacles.length; j++){
+			const o2 = obstacles[j];
 
 			if(o1.pos.x + o1.size.x === o2.pos.x && o1.pos.y === o2.pos.y && !o1.img && !o2.img){
 				o1.size.x += o2.size.x;
-				world.obstacles.splice(j, 1);
+				obstacles.splice(j, 1);
 				j--;
 			}
 		}
 	}
 
-	for(let i = 0; i < world.obstacles.length; i++){
-		const o1 = world.obstacles[i];
+	for(let i = 0; i < obstacles.length; i++){
+		const o1 = obstacles[i];
 		
-		for(let j = 0; j < world.obstacles.length; j++){
-			const o2 = world.obstacles[j]
+		for(let j = 0; j < obstacles.length; j++){
+			const o2 = obstacles[j]
 			if(o1.pos.y + o1.size.y === o2.pos.y && o1.pos.x === o2.pos.x && o1.size.x === o2.size.x && !o1.img && !o2.img){
 				o1.size.y += o2.size.y;
-				world.obstacles.splice(j, 1);
+				obstacles.splice(j, 1);
 				j--;
 			}
 		}
 	}
 
+	return obstacles;
 }
 
 export const obstacle = (pos) => {
