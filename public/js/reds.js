@@ -384,7 +384,7 @@ export const redBird = (pos) => {
 	const that = traitHolder();
 
 	traits.addEntityTrait({
-		pos: v.add(pos, vec(5, 0)),
+		pos: v.add(pos, vec(-2, 0)),
 		size: vec(19, 9),
 	})(that);
 
@@ -392,6 +392,12 @@ export const redBird = (pos) => {
 
 	traits.addSpriteTrait({
 		img: "red_bird",
+	})(that);
+	
+	traits.addFrameTrait({
+		delay: 2,
+		frames: "red_bird_frames",
+		initState: "flap-down",
 	})(that);
 
 	traits.addMoveTrait({
@@ -402,29 +408,38 @@ export const redBird = (pos) => {
 		acceleration: vec(0, 0.01),
 	})(that);
 
+	traits.addOubTrait({
+		oubArea: [0, 0, 15 * 32, 15 * 18],
+	})(that);
+
 	traits.addColTrait({})(that);
 
 	traits.addBoxColTrait({})(that);
 
-	that.onBoxCol = () => {
+	that.onBoxCol = that.onColDown = that.onOubDown = () => {
 		that.diving = false;
+		that.frameState = "hovering";
 	}
 
 	that.diving = false;
+	that.recharged = true;
 
 	that.hover = () => {
-		if(!that.diving) that.acceleration.y = 0.01;
+		if(!that.diving) that.acceleration.y = 0.005;
 		if(!that.diving
-		&& that.pos.y > that.originPos.y + 10){
-			that.velocity.y = -0.4;
+		&& that.pos.y > that.originPos.y + 15){
+			that.velocity.y = -0.3;
 		}
+		if(that.pos.y < that.originPos.y + 10) that.recharged = true;
 	}
 
 	that.checkPlayer = ({ world: { player } }) => {
-		if(player.pos.y > that.pos.y
+		if(that.recharged
+		&& player.pos.y > that.pos.y
 		&& player.center.x > that.pos.x
 		&& player.center.x < that.pos.x + that.size.x){
 			that.diving = true;
+			that.recharged = false;
 		}
 
 		if(col.checkHitBoxCol(that, player)){
@@ -438,22 +453,16 @@ export const redBird = (pos) => {
 
 	that.handleDiving = () => {
 		if(that.diving){
-			that.velocity.y = 10;
+			that.velocity.y = 12;
 		}
 	}
 
 	let counter = 0;
 	that.animate = ({ world: { player } }) => {
-		counter++;
-		if(counter >= 10) counter = 2;//dont want to big nums
-		if(counter % 2 === 0){
-			if(that.velocity.y < 0){
-				that.imgPos.x += 20;
-			}else that.imgPos.x -= 20;
-
-			if(that.imgPos.x > 80) that.imgPos.x = 80;
-			if(that.imgPos.x < 0) that.imgPos.x = 0;
-		}
+		if(that.velocity.y > 0) that.frameState = "flap-up";
+		else that.frameState = "flap-down";
+		if(that.velocity.y < 0 && !that.recharged
+		|| that.velocity.y === 0) that.frameState = "hovering";
 
 		if(player.center.x > that.center.x) that.facing.x = -1;
 		else that.facing.x = 1;

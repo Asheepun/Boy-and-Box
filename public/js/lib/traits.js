@@ -25,14 +25,20 @@ const traitHolder = (startSpecs = {}) => {
 export default traitHolder;
 
 export const addOubTrait = ({ oubArea = [0, 0, 900, 600], bounce = false }) => (that) => {
+	that.onOubDown = () => {};
+	that.onOubUp = () => {};
+	that.onOubLeft = () => {};
+	that.onOubRight = () => {};
     that.oubArea = oubArea;
 	that.oubBounce = bounce;
 
     that.handleOubX = () => {
-        if(that.velocity.x > 0)
+        if(that.velocity.x > 0){
             that.pos.x = that.oubArea[0] + that.oubArea[2] - that.size.x;
-		else{
+			that.onOubRight();
+		}else{
 			that.pos.x = that.oubArea[0];
+			that.onOubLeft();
 		}
         if(that.oubBounce) that.velocity.x *= -1;
 		else{
@@ -44,9 +50,11 @@ export const addOubTrait = ({ oubArea = [0, 0, 900, 600], bounce = false }) => (
         if(that.velocity.y > 0){
             that.onGround = true;
             that.pos.y = oubArea[1] + oubArea[3] - that.size.y;
+			that.onOubDown();
         }else{
 			that.onRoof = true;
             that.pos.y = oubArea[1];
+			that.onOubUp();
 		}
         if(bounce) that.velocity.y *= -1;
 		else{
@@ -288,10 +296,18 @@ export const addFrameTrait = ({ delay, frames, initState = "still" }) => (that) 
 	that.frameDelay = delay;
 
 	let frameCounter = 0;
+	let lastState = that.frameState;
 	that.handleFrames = ({ JSON }) => {
 		frameCounter += 1;
 
+		if(lastState !== that.frameState) frameCounter = 0;
+		lastState = that.frameState;
+
 		if(Math.floor(frameCounter/that.frameDelay) >= JSON[that.frames][that.frameState].length) frameCounter = 0;
+
+		if(JSON[that.frames][that.frameState][Math.floor(frameCounter/that.frameDelay)][0] === "break"){
+			frameCounter -= that.frameDelay * JSON[that.frames][that.frameState][Math.floor(frameCounter/that.frameDelay)][1];
+		}
 
 		that.imgPos.x = JSON[that.frames][that.frameState][Math.floor(frameCounter/that.frameDelay)][0];
 		that.imgPos.y = JSON[that.frames][that.frameState][Math.floor(frameCounter/that.frameDelay)][1];
