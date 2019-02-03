@@ -22,8 +22,8 @@ export const doorButton = (pos, index) => {
 	that.buttonIndex = index;
 
 	traits.addEntityTrait({
-		pos: v.add(pos, vec(1, 9)),
-		size: vec(13, 9),
+		pos: v.add(pos, vec(1, 3)),
+		size: vec(13, 12),//big enough for red birds speed
 	})(that);
 
 

@@ -429,6 +429,7 @@ export const redBird = (pos) => {
 		if(!that.diving
 		&& that.pos.y > that.originPos.y + 15){
 			that.velocity.y = -0.3;
+			if(!that.recharged) that.velocity.y = -0.7;
 		}
 		if(that.pos.y < that.originPos.y + 10) that.recharged = true;
 	}
@@ -445,15 +446,16 @@ export const redBird = (pos) => {
 		if(col.checkHitBoxCol(that, player)){
 			player.hit = true;
 			that.diving = false;
-			that.velocity.y = 0;
 			that.pos.x = player.pos.x - 3;
 			that.pos.y = player.pos.y - 5;
+			player.canMove = false;
+			that.canMove = false;
 		}
 	}
 
 	that.handleDiving = () => {
 		if(that.diving){
-			that.velocity.y = 12;
+			that.velocity.y = 10;
 		}
 	}
 
@@ -468,7 +470,7 @@ export const redBird = (pos) => {
 		else that.facing.x = 1;
 	}
 
-	that.addMethods("checkPlayer", "handleDiving", "hover", "animate");
+	that.addMethods("handleDiving", "checkPlayer", "hover", "animate");
 
 	return that;
 }
