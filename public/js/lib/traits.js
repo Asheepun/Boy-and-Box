@@ -259,6 +259,9 @@ export const addSpriteTrait = ({ color, img, alpha = 1, rotation = 0, visible = 
     that.visible = visible;
     that.imgPos = imgPos;
     that.imgSize = imgSize;
+	if(drawSize) that.drawSize = drawSize;
+	else that.drawSize = that.size.copy();
+	that.drawOffset = drawOffset
 	if(!imgSize) that.imgSize = that.size.copy();
 	that.facing = vec(1, 1);
 

@@ -384,8 +384,10 @@ export const redBird = (pos) => {
 	const that = traitHolder();
 
 	traits.addEntityTrait({
-		pos: v.add(pos, vec(-2, 0)),
-		size: vec(19, 9),
+		pos: v.add(pos, vec(3, 0)),
+		size: vec(9, 9),
+		hitBox: vec(19, 9),
+		hitBoxOffset: vec(-5, 0),
 	})(that);
 
 	that.originPos = that.pos.copy();
@@ -429,16 +431,19 @@ export const redBird = (pos) => {
 		if(!that.diving
 		&& that.pos.y > that.originPos.y + 15){
 			that.velocity.y = -0.3;
-			if(!that.recharged) that.velocity.y = -0.7;
+			if(!that.recharged) that.velocity.y = -0.9;
 		}
 		if(that.pos.y < that.originPos.y + 10) that.recharged = true;
+
+		//console.log(Math.floor(that.originPos.y - that.pos.y))
+		if(that.pos.y < that.originPos.y && that.velocity.y < 0) that.velocity.y *= 0.9;
 	}
 
 	that.checkPlayer = ({ world: { player } }) => {
 		if(that.recharged
-		&& player.pos.y > that.pos.y
-		&& player.center.x > that.pos.x
-		&& player.center.x < that.pos.x + that.size.x){
+		&& player.pos.y > that.pos.y + that.hitBoxOffset.y
+		&& player.center.x > that.pos.x + that.hitBoxOffset.x
+		&& player.center.x < that.pos.x + that.hitBoxOffset.x + that.hitBox.x){
 			that.diving = true;
 			that.recharged = false;
 		}
@@ -468,6 +473,26 @@ export const redBird = (pos) => {
 
 		if(player.center.x > that.center.x) that.facing.x = -1;
 		else that.facing.x = 1;
+	}
+
+	that.draw = (ctx, sprites) => {
+		/*
+		ctx.fillStyle = "blue";
+		ctx.globalAlpha = 0.5;
+		ctx.fillRect(that.pos.x + that.hitBoxOffset.x, that.pos.y + that.hitBoxOffset.y, that.hitBox.x, that.hitBox.y);
+		ctx.fillStyle = "red";
+		ctx.fillRect(that.pos.x, that.pos.y, that.size.x, that.size.y);
+		ctx.globalAlpha = 1;
+		*/
+		ctx.save();
+		ctx.translate(Math.round(that.center.x), Math.round(that.center.y));
+		ctx.scale(that.facing.x, that.facing.y);
+		ctx.drawImage(
+			sprites[that.img],
+			that.imgPos.x, that.imgPos.y, 19, that.imgSize.y,
+			Math.floor(-that.size.x / 2 - 5), Math.floor(-that.size.y / 2), 19, that.size.y
+		);
+		ctx.restore()
 	}
 
 	that.addMethods("handleDiving", "checkPlayer", "hover", "animate");
