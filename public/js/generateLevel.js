@@ -27,7 +27,7 @@ const generateLevel = ({ template, time, background, texts, shadow }, { world, w
 
 	add(tiles(generateVineImg(template, sprites)), "tiles", 1)
 
-	add(tiles(sprites["backgrounds/" + background]), "background", 0, true);
+	add(tiles(sprites["backgrounds/" + background], background), "background", 0, true);
 
 	if(background === "sky") addClouds({ world, width });
 	if(shadow) add(dynamicShadow(), "shadow", 20, true);
@@ -151,10 +151,11 @@ export const obstacle = (pos) => {
 	return that;
 }
 
-export const tiles = (img) => {
+export const tiles = (img, imgName) => {
 	const that = traitHolder();
 
 	that.img = img;
+	that.imgName = imgName;
 
 	that.draw = (ctx) => {
 		ctx.drawImage(that.img, 0, 0, 15 * 32, 15 * 18);

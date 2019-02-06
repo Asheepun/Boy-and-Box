@@ -7,11 +7,20 @@ export const door = (pos, index) => {
 
 	that.gravity = 0.005;
 
-	that.img = "door";
+	//that.img = "door";
 
 	that.doorIndex = index;
 
+	that.checkBackground = ({ world: { background: { imgName } } }) => {
+		if(imgName === "planks") that.img = "door";
+		if(imgName === "sky") that.img = "door_sky";
+
+		that.removeMethods("checkBackground");
+	}
+
 	that.removeMethods("checkBlues");
+
+	that.addMethods("checkBackground");
 
 	return that;
 }

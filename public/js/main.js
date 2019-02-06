@@ -60,6 +60,7 @@ Promise.all([
 		"lamp_light",
 		"bookshelf",
 		"door",
+		"door_sky",
 		"door_button",
 		"settings_button",
 	),
@@ -120,16 +121,16 @@ Promise.all([
 		},
 		state: undefined,
 		context: vec(0, 0),
-		currentLevel: 28,
+		currentLevel: 17,
 		volume: 1,
 		saveProgress: true,
 		deaths: 0,
 	};
 
-	//GAME.state = GAME.states.setupStartscreen;
+	GAME.state = GAME.states.setupStartscreen;
 
 	//GAME.audio.setVolume(0);
-	localStorage.currentLevel = GAME.currentLevel;
+	//localStorage.currentLevel = GAME.currentLevel;
 	
 	if(storageAvailable()){
 		if(localStorage.currentLevel === undefined)

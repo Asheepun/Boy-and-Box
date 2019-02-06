@@ -683,7 +683,7 @@ const levels = [
 			"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
 			"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
 			"%%%.......%%%%%%%%%%%%%%%%%%%%%%",
-			"..........%%%%%%%%%%%%%%%....%%%",
+			"..........%%%%%%%%%%%%%%.....%%%",
 			"..........................P6.%%%",
 			"@............................%%%",
 			"%%%%%....%%%%%%%%%%%%%%%%%%%%%%%",
@@ -804,6 +804,18 @@ const levels = [
 		texts: [
 			[
 				[
+					"We've been",
+					"hiding here for",
+					"weeks now.",
+				],
+				[
+					"We've managed to",
+					"keep the most badly",
+					"infected out.",
+				],
+			],
+			[
+				[
 					"This is all the",
 					"making of the old",
 					"biologist."
@@ -815,21 +827,6 @@ const levels = [
 				]
 			],
 			[
-				[
-					"My dad...",
-				],
-				[
-					"We'll have to throw",
-					"him out when he",
-					"gets to infected...",
-				],
-			],
-			[
-				[
-					"Bob... How I",
-					"miss my",
-					"big friend.",
-				],
 				[
 					"Someone needs to",
 					"do something about",
