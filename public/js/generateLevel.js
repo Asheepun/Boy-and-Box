@@ -2,7 +2,7 @@ import vec, * as v 				from "/js/lib/vector.js";
 import traitHolder, * as traits from "/js/lib/traits.js";
 import box						from "/js/box.js";
 import player					from "/js/player.js";
-import point					from "/js/points.js";
+import {jumpingPoint, point}	from "/js/points.js";
 import * as blues				from "/js/blue.js";
 import * as reds				from "/js/reds.js";
 import thorn					from "/js/thorn.js";
@@ -56,6 +56,7 @@ const generateLevel = ({ template, time, background, texts, shadow }, { world, w
 
 			if(tile === "B") add(box(pos.copy()), "box", 1, true);
 			if(tile === "P") add(point(pos.copy()), "points", 3);
+			if(tile === "p") add(jumpingPoint(pos.copy()), "points", 3);
 			if(tile === "0") add(vec(pos.x + 15, pos.y), "pointTarget", 0, true);
 			if(tile === "0" || tile === "O") add(shine(pos.copy()), "shine", 10);
 

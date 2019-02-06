@@ -96,6 +96,7 @@ Promise.all([
 		"red_bird_frames",
 		"red_spawner_flower_frames",
 		"red_giant_frames",
+		"jumping_point_frames",
 		"grass_tiles",
 	),
 ]).then(([ { c, ctx, width, height, pointer }, sprites, audio, JSON ]) => {
@@ -119,7 +120,7 @@ Promise.all([
 		},
 		state: undefined,
 		context: vec(0, 0),
-		currentLevel: 31,
+		currentLevel: 28,
 		volume: 1,
 		saveProgress: true,
 		deaths: 0,

@@ -2,7 +2,7 @@ import traitHolder, * as traits from "/js/lib/traits.js";
 import vec, * as v				from "/js/lib/vector.js";
 import * as particles			from "/js/particles.js";
 
-const point = (pos) => {
+export const point = (pos) => {
 	const that = traitHolder();
 
 	traits.addEntityTrait({
@@ -71,20 +71,76 @@ const point = (pos) => {
 			play("pickup_point", {
 				volume: 0.5,
 			});
-			//play("point_pickup_jingle", {
-				//volume: 0.2,
-			//});
 			that.acceleration = v.pipe(
 				v.sub(that.center, pointTarget),
 				v.normalize,
 				x => v.mul(x, 0.7),
 			);
+			that.gravity = 0;
 			that.removeMethods("hover", "checkhit");
+			if(that.handleVelocity) that.removeMethods("handleVelocity", "handleJump", "animate", "handleFrames");
+			that.handleColX = that.handleColY = that.handleOubX = that.handleOubY = that.handleBoxCol = undefined;
 			that.addMethods("open");
 		}
 	}
 
 	that.addMethods("hover", "checkPlayer", "checkHit");
+
+	return that;
+}
+
+export const jumpingPoint = (pos) => {
+	const that = point(pos);
+
+	that.velocity = vec(0, 0);
+
+	that.gravity = 0.004;
+
+	that.facing.x = -1;
+
+	traits.addColTrait({})(that);
+
+	traits.addBoxColTrait({})(that);
+
+	traits.addOubTrait({
+		oubArea: [0, 0, 32 * 15, 18 * 15],
+	})(that);
+
+	traits.addFrameTrait({
+		frames: "jumping_point_frames",
+		delay: 60,
+		initState: "offGround",
+	})(that);
+
+	that.onColLeft = that.onColRight = that.onOubLeft = that.onOubRight = () => that.facing.x *= -1;
+
+	that.handleOubY = () => {};
+
+	that.handleVelocity = () => {
+		if(that.onGround) that.velocity.x = 0;
+		else that.velocity.x = that.facing.x * 0.43;
+	}
+
+	that.jump = () => {
+		that.velocity.y = -0.8;
+	}
+
+	let counter = 10;
+	that.handleJump = () => {
+		if(that.onGround){
+			counter--;
+			if(counter === 0) that.jump();
+		}else counter = 10;
+	}
+
+	that.animate = () => {
+		if(that.onGround) that.frameState = "onGround";
+		else that.frameState = "offGround";
+	}
+
+	that.removeMethods("hover");
+
+	that.addMethods("handleJump", "handleVelocity", "animate");
 
 	return that;
 }
