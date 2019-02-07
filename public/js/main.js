@@ -121,7 +121,7 @@ Promise.all([
 		},
 		state: undefined,
 		context: vec(0, 0),
-		currentLevel: 24,
+		currentLevel: 28,
 		volume: 1,
 		saveProgress: true,
 		deaths: 0,
