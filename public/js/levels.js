@@ -39,6 +39,9 @@ D: death counter
 */
 
 const levels = [
+	
+	//grass
+
 	//1
 	{
 		template: [
@@ -235,6 +238,9 @@ const levels = [
 			],
 		]
 	},
+
+	//Blues Town
+
 	//8
 	{
 		template: [
@@ -306,6 +312,9 @@ const levels = [
 			],
 		]
 	},
+
+	//red grass
+
 	//10
 	{
 		template: [
@@ -552,6 +561,9 @@ const levels = [
 			]
 		]
 	},
+
+	//infected town
+
 	//19
 	{
 		template: [
@@ -835,6 +847,9 @@ const levels = [
 			],
 		]
 	},
+
+	//infected grass
+
 	//29
 	{
 		template: [

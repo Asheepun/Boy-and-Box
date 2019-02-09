@@ -115,14 +115,24 @@ export const bouncer = (pos, texts) => {
 		
 	}
 
-	that.handleOubX = ({ world: { remove } }) => {
-		if(that.velocity.x < 0) that.pos.x = 0;
-		else remove(that);
+	that.onOubRight = that.onOubDown = () => {
+		that.hit = true;
 	}
 
-	that.handleOubY = () => {
-		if(that.velocity.y > 0) that.hit = true;
-		else that.pos.y = 0;
+	that.handleHit = ({ world: { remove, add } }) => {
+		if(that.hit){
+			remove(that);
+			/*
+			for(let i = 0; i < 5; i++){
+				add(particles.confetti({
+					pos: that.center.copy(),
+					img: "blue_particle",
+					velocity: vec(Math.random() - 0.5, -2 - Math.random() * 0.5),
+					gravity: 0.003,
+				}), "particles", 2);
+			}
+			*/
+		}
 	}
 
 	let o;
@@ -138,11 +148,9 @@ export const bouncer = (pos, texts) => {
 				break;
 			}else that.openingLock = false;
 		}
-		obstacles.forEach(o => {
-		});
 	}
 
-	that.addMethods("checkLocks", "handleVelocity", "handleJumpSaveCounter", "bounce", "checkOub");
+	that.addMethods("checkLocks", "handleVelocity", "handleJumpSaveCounter", "bounce", "checkOub", "handleHit");
 
 	return that;
 }

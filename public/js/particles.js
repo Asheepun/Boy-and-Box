@@ -59,6 +59,28 @@ export const dust = (pos, velocity) => {
 	return that;
 }
 
+export const confetti = ({ pos, img, velocity, gravity }) => {
+	const that = particle({
+		pos,
+		velocity,
+		img,
+		size: vec(4, 4),
+		imgSize: vec(4, 4),
+	});
+
+	traits.addPhysicsTrait({
+		gravity,
+	})(that);
+
+	that.pointRotation = () => {
+		that.rotation += Math.random() * 0.3 - 0.3;
+	}
+
+	that.addMethods("pointRotation")
+
+	return that;
+}
+
 const dustParticles = [];
 
 for(let i = 0; i < 100; i++){

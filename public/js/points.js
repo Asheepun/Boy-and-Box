@@ -78,7 +78,10 @@ export const point = (pos) => {
 			);
 			that.gravity = 0;
 			that.removeMethods("hover", "checkhit");
-			if(that.handleVelocity) that.removeMethods("handleVelocity", "handleJump", "animate", "handleFrames");
+			if(that.handleVelocity){
+				that.removeMethods("handleVelocity", "handleJump", "animate", "handleFrames", "talk", "checkTextCondition");
+				remove(that.text);
+			}
 			that.handleColX = that.handleColY = that.handleOubX = that.handleOubY = that.handleBoxCol = undefined;
 			that.addMethods("open");
 		}
@@ -103,7 +106,22 @@ export const jumpingPoint = (pos) => {
 	traits.addBoxColTrait({})(that);
 
 	traits.addOubTrait({
-		oubArea: [0, 0, 32 * 15, 18 * 15],
+		oubArea: [0, 0, 32 * 15, 18 * 15 + 45],
+	})(that);
+
+	traits.addTalkTrait({
+		texts: [
+			["Leave me alone!"],
+			["Go away!"],
+			["don't pick on me!"],
+		],
+		size: 9,
+		Yoffset: 7,
+		condition: ({ world: { player } }) => v.sub(that.center, player.center).mag < 45,
+		sound: false,
+		soundSpec: {
+		
+		},
 	})(that);
 
 	traits.addFrameTrait({
@@ -115,6 +133,12 @@ export const jumpingPoint = (pos) => {
 	that.onColLeft = that.onColRight = that.onOubLeft = that.onOubRight = () => that.facing.x *= -1;
 
 	that.handleOubY = () => {};
+
+	that.onOubDown = () => {
+		console.log("CHECK")
+		that.pos = vec(-100, -100);
+		that.canMove = false;
+	}
 
 	that.handleVelocity = () => {
 		if(that.onGround) that.velocity.x = 0;
