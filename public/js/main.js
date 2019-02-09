@@ -21,6 +21,7 @@ Promise.all([
 		"boy",
 		"boy_hit",
 		"box",
+		"box_helper",
 		"backgrounds/sky",
 		"backgrounds/planks",
 		"backgrounds/startscreen",
@@ -122,7 +123,7 @@ Promise.all([
 		},
 		state: undefined,
 		context: vec(0, 0),
-		currentLevel: 17,
+		currentLevel: 0,
 		volume: 1,
 		saveProgress: true,
 		deaths: 0,
@@ -184,6 +185,7 @@ Promise.all([
 
 		if(GAME.currentLevel === 0){
 			GAME.world.add(helpers.boxText(vec(170, 50)), "text", 3);
+			//GAME.world.add(helpers.boxHelper(vec(205, 50)), "particles", 1);
 		}
 
 		GAME.levelCleared = false;
