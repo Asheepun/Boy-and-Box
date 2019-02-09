@@ -189,11 +189,12 @@ const player = (pos) => {
 	let savePosX;
 	that.onOubDown = () => {
 		that.hit = true;
+		that.onGround = false;
 		//that.canMove = false;
 		//that.pos.y += 5;
 		//if(!savePosX) savePosX = that.pos.x;
 		//that.pos.x = savePosX;
-		that.pos = vec(that.pos.x, 1000);
+		//that.pos = vec(that.pos.x, 1000);
 	}
 
 	/*

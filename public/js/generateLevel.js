@@ -80,6 +80,9 @@ const generateLevel = ({ template, time, background, texts, shadow }, { world, w
 
 			if(tile === "{") add(blues.blueLock(vec(pos.x + 15, pos.y)), "obstacles", 1);
 
+			if(tile === "[") add(tileObject(pos.copy(), "lab_shelf", vec(30, 15)), "furniture", 1);
+			if(tile === "~") add(tileObject(pos.copy(), "lab_table", vec(45, 30)), "furniture", 1);
+
 			//reds
 			if(tile === "T") add(reds.blueTrans(pos.copy()), "reds", 5);
 			if(tile === "1") add(reds.red(pos.copy()), "reds", 5);
@@ -90,7 +93,7 @@ const generateLevel = ({ template, time, background, texts, shadow }, { world, w
 			if(tile === "6") add(reds.hunter(pos.copy()), "reds", 5);
 			if(tile === "7") add(reds.redBird(pos.copy()), "reds", 5);
 
-			if(tile === "x") add(thorn(pos.copy()), "reds", 2);
+			if(tile === "x") add(thorn(pos.copy(), template), "thorns", 2);
 
 			if(tile === "|") add(door(pos.copy(), 0), "obstacles", 2);
 			if(tile === "I") add(door(pos.copy(), 1), "obstacles", 2)
@@ -141,12 +144,12 @@ const optimizeObstacles = (obstacles) => {
 	return obstacles;
 }
 
-export const obstacle = (pos) => {
+export const obstacle = (pos, size = vec(15, 15)) => {
 	const that = traitHolder();
 
 	traits.addEntityTrait({
 		pos,
-		size: vec(15, 15),
+		size,
 	})(that);
 
 	return that;
@@ -165,8 +168,8 @@ export const tiles = (img, imgName) => {
 	return that;
 }
 
-export const tileObject = (pos, img) => {
-	const that = obstacle(pos);
+export const tileObject = (pos, img, size = vec(15, 15)) => {
+	const that = obstacle(pos, size);
 
 	that.img = img;
 

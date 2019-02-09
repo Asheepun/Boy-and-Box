@@ -26,7 +26,7 @@ const generateTileImg = (map, sprites, json) => {
 			if(tile === "¤" || tile === "%") sprite += "plank_tiles";
 			if(tile === "/") sprite += "lab_tiles";
 			
-			if(tile === "/" && Math.random() < 0.3) sprite += "_infected"
+			if(tile === "/" && Math.random() < 0.2) sprite += "_infected"
 			if(tile === "%" && Math.random() < 0.3) sprite += "_infected";
 			if(tile === "&" && Math.random() < 0.5) sprite += "_infected";
 
