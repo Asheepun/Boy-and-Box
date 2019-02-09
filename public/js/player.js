@@ -45,17 +45,16 @@ const player = (pos) => {
 		if(that.pos.y + that.size.y <= obstacle.pos.y + 3){
 			that.pos.y = obstacle.pos.y - that.size.y;
 		}else{
-		
-		if(that.velocity.x > 0){
-			that.pos.x = obstacle.pos.x - that.size.x;
-			that.onRightWall = true;
-		}
-		else{
-			that.pos.x = obstacle.pos.x + obstacle.size.x;
-			that.onLeftWall = true;
-		}
-		that.velocity.x = 0;
-		that.acceleration.x = 0;
+			if(that.velocity.x > 0){
+				that.pos.x = obstacle.pos.x - that.size.x;
+				that.onRightWall = true;
+			}
+			else{
+				that.pos.x = obstacle.pos.x + obstacle.size.x;
+				that.onLeftWall = true;
+			}
+			that.velocity.x = 0;
+			that.acceleration.x = 0;
 		}
 	}
 
@@ -187,6 +186,17 @@ const player = (pos) => {
 		that.acceleration.x = 0;
 	}
 
+	let savePosX;
+	that.onOubDown = () => {
+		that.hit = true;
+		//that.canMove = false;
+		//that.pos.y += 5;
+		//if(!savePosX) savePosX = that.pos.x;
+		//that.pos.x = savePosX;
+		that.pos = vec(that.pos.x, 1000);
+	}
+
+	/*
 	that.handleOubY = ({ transitionState }) => {
 		if(that.velocity.y < 0){
 			that.onRoof = true;
@@ -197,6 +207,7 @@ const player = (pos) => {
 		that.velocity.y = 0;
 		that.acceleration.y = 0;
 	}
+	*/
 
 	that.addMethods("handleVelocity", "animate", "handleDust", "checkLevelCleared", "handleHit", "handleJumpSaveCounter");
 
