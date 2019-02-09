@@ -97,7 +97,14 @@ const bird = (pos) => {
 		}
 	}
 
-	that.addMethods("jump", "checkToFly", "handleOub", "animate", "flap");
+	that.checkIfInfected = ({ currentLevel }) => {
+		if(currentLevel > 25){
+			that.img = "blue_bird_infected";
+			that.removeMethods("checkIfInfected");
+		}
+	}
+
+	that.addMethods("jump", "checkToFly", "handleOub", "animate", "flap", "checkIfInfected");
 
 	return that;
 }

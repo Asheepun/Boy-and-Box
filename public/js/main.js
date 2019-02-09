@@ -43,6 +43,7 @@ Promise.all([
 		"blue",
 		"blue_doc",
 		"blue_bird",
+		"blue_bird_infected",
 		"sick_blue",
 		"blue_lock",
 		"blue_trans",
@@ -85,7 +86,6 @@ Promise.all([
 		"the-beginning",
 		"east-village",
 		"enemies",
-		"blue_bird_flap",
 	),
 	loaders.loadJSON(
 		"boy_frames",
@@ -121,16 +121,16 @@ Promise.all([
 		},
 		state: undefined,
 		context: vec(0, 0),
-		currentLevel: 17,
+		currentLevel: 28,
 		volume: 1,
 		saveProgress: true,
 		deaths: 0,
 	};
 
-	GAME.state = GAME.states.setupStartscreen;
+	//GAME.state = GAME.states.setupStartscreen;
 
 	//GAME.audio.setVolume(0);
-	//localStorage.currentLevel = GAME.currentLevel;
+	localStorage.currentLevel = GAME.currentLevel;
 	
 	if(storageAvailable()){
 		if(localStorage.currentLevel === undefined)
