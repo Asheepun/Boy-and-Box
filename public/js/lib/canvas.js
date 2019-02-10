@@ -14,7 +14,7 @@ const createCanvas = (width = 800, height = 600, element = document.body) => new
     const reSize  = () => {
         c.width = Math.floor(window.innerWidth-10);
         c.height = c.width*dif;
-        while(c.height > window.innerHeight){
+        while(c.height > window.innerHeight || c.width > window.innerWIdth){
             c.width -= 2;
             c.height = Math.floor(c.width*dif);
         }
