@@ -59,7 +59,12 @@ const generateLevel = ({ template, time, background, texts, shadow }, { world, w
 			if(tile === "P") add(point(pos.copy()), "points", 3);
 			if(tile === "p") add(jumpingPoint(pos.copy()), "points", 3);
 			if(tile === "0") add(vec(pos.x + 15, pos.y), "pointTarget", 0, true);
-			if(tile === "0" || tile === "O") add(shine(pos.copy()), "shine", 10);
+			if(tile !== "#"
+			&& tile !== "¤"
+			&& tile !== "%"
+			&& tile !== "&"
+			&& tile !== "/"
+			&& x === template[0].length-1) add(shine(pos.copy()), "shine", 10);
 
 			if(tile === "b"){
 				add(blues.bouncer(pos.copy(), texts[textCounter]), "blues", 3)
@@ -93,7 +98,7 @@ const generateLevel = ({ template, time, background, texts, shadow }, { world, w
 			if(tile === "6") add(reds.hunter(pos.copy()), "reds", 5);
 			if(tile === "7") add(reds.redBird(pos.copy()), "reds", 5);
 
-			if(tile === "x") add(thorn(pos.copy(), template), "thorns", 2);
+			if(tile === "x") add(thorn(pos.copy(), template), "thorns", 5);
 
 			if(tile === "|") add(door(pos.copy(), 0), "obstacles", 2);
 			if(tile === "I") add(door(pos.copy(), 1), "obstacles", 2)
