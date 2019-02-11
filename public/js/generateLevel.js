@@ -98,7 +98,14 @@ const generateLevel = ({ template, time, background, texts, shadow }, { world, w
 			if(tile === "6") add(reds.hunter(pos.copy()), "reds", 5);
 			if(tile === "7") add(reds.redBird(pos.copy()), "reds", 5);
 
-			if(tile === "x") add(thorn(pos.copy(), template), "thorns", 5);
+			if(tile === "x"
+			|| (tile === "-"
+			|| tile === "_"
+			|| tile === "|"
+			|| tile === "I"
+			|| tile === "6")
+			&& (template[y][x-1] === "x"
+			|| template[y][x+1] === "x")) add(thorn(pos.copy(), template), "thorns", 5);
 
 			if(tile === "|") add(door(pos.copy(), 0), "obstacles", 2);
 			if(tile === "I") add(door(pos.copy(), 1), "obstacles", 2)
