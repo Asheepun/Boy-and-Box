@@ -13,7 +13,7 @@ export const door = (pos, index) => {
 
 	that.checkBackground = ({ world: { background: { imgName } } }) => {
 		if(imgName === "planks") that.img = "door";
-		if(imgName === "sky") that.img = "door_sky";
+		if(imgName === "sky" || imgName === "lab") that.img = "door_sky";
 
 		that.removeMethods("checkBackground");
 	}
