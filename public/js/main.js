@@ -170,6 +170,10 @@ Promise.all([
 		{
 			tag: "space",
 			code: 32,
+		},
+		{
+			tag: "r",
+			code: 82,
 		}
 	)
 
@@ -219,7 +223,12 @@ Promise.all([
 
 	if(!GAME.state) GAME.state = GAME.states.setupLevel;
 
+	let restartCounter = 0;
+
 	GAME.states.level = () => {
+
+
+		if(GAME.keys.r.down) GAME.world.player.hit = true;
 
 		if(GAME.keys.a.down)
 			GAME.world.player.dir = -1;
