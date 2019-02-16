@@ -387,7 +387,7 @@ export const redBird = (pos) => {
 		pos: v.add(pos, vec(3, 0)),
 		size: vec(9, 9),
 		hitBox: vec(19, 9),
-		hitBoxOffset: vec(-5, 0),
+		hitBoxOffset: vec(-5, -2),
 	})(that);
 
 	that.originPos = that.pos.copy();
