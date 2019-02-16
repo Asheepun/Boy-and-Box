@@ -76,6 +76,7 @@ const generateLevel = ({ template, time, background, texts, shadow }, { world, w
 			}
 			if(tile === "d") add(blues.blueDoc(pos.copy()), "blues", 3)
 			if(tile === "D") add(blues.blueDeathcounter(pos.copy()), "blues", 3);
+			if(tile === "Y") add(blues.biologist(pos.copy()), "blues", 3);
 
 			if(tile === "£") add(lamp(pos.copy()), "lamps", 6);
 

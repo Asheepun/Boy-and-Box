@@ -167,6 +167,20 @@ export const blueDoc = (pos) => {
 	return that;
 }
 
+export const biologist = (pos) => {
+	const that = blue(pos, [
+		["Who are you?!"],
+		["My experiments have", "sort of spiraled out", " of control..."],
+		["I'm sorry..."],
+	]);
+
+	that.img = "blue_biologist";
+
+	//that.removeMethods("animate");
+
+	return that;
+}
+
 export const blueDeathcounter = (pos) => {
 	const that = blue(pos, [
 		["Hello"],

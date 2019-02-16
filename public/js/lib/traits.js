@@ -319,7 +319,7 @@ export const addFrameTrait = ({ delay, frames, initState = "still" }) => (that) 
 	that.addMethods("handleFrames");
 }
 
-export const addTalkTrait = ({ texts, size, Yoffset, condition, sound = false, soundSpec = {} }) => (that) => {
+export const addTalkTrait = ({ texts, size, Yoffset, condition, sound = false, soundSpec = {}, }) => (that) => {
 	that.texts = texts;
 	that.textYoffset = Yoffset;
 	that.textCondition = condition;
@@ -329,7 +329,8 @@ export const addTalkTrait = ({ texts, size, Yoffset, condition, sound = false, s
 	that.hasTalked = false;
 
 	that.currentText = 0;
-	let lastCurrentText;
+	//let lastCurrentText;
+	let lastTexts = [];
 
 	that.text = textEntity({
 		pos: vec(0, 0),
@@ -357,8 +358,13 @@ export const addTalkTrait = ({ texts, size, Yoffset, condition, sound = false, s
 			that.addedText = true;
 
 			if(that.texts.length > 1){
-				lastCurrentText = that.currentText;
-				while(that.currentText === lastCurrentText){
+
+				lastTexts.push(that.currentText);
+
+				if(lastTexts.length === that.texts.length)
+					lastTexts.splice(0, lastTexts.length-2);
+
+				while(lastTexts.includes(that.currentText)){
 					that.currentText = Math.floor(Math.random()*that.texts.length);
 				}
 			}
