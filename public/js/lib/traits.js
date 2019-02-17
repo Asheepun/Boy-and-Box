@@ -361,8 +361,11 @@ export const addTalkTrait = ({ texts, size, Yoffset, condition, sound = false, s
 
 				lastTexts.push(that.currentText);
 
-				if(lastTexts.length === that.texts.length)
-					lastTexts.splice(0, lastTexts.length-2);
+				if(lastTexts.length === that.texts.length){
+					while(lastTexts.length > 1){
+						lastTexts.splice(0, 1);
+					}
+				}
 
 				while(lastTexts.includes(that.currentText)){
 					that.currentText = Math.floor(Math.random()*that.texts.length);
