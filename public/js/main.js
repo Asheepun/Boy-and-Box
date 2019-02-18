@@ -145,7 +145,7 @@ Promise.all([
 	
 	if(storageAvailable()){
 		if(localStorage.currentLevel === undefined)
-			localStorage.currentLevel = 17;
+			localStorage.currentLevel = 0;
 		else
 			GAME.currentLevel = Number(localStorage.currentLevel);
 
