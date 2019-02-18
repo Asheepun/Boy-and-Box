@@ -92,13 +92,22 @@ const player = (pos) => {
 
 	that.landCounter = 0;
 
-	that.land = ({ audio: { play } }) => {
+	let landDirVel = 1;
+	that.land = ({ world: { add }, audio: { play } }) => {
 		that.landCounter = 10;
 		play("boy_land", {
 			//volume: 0.25 * (that.lastFallVelocity / (that.maxFallVelocity * that.maxFallVelocity)),
 			volume: 0.07,
 		});
-
+		if(that.velocity.x !== 0) landDirVel = that.velocity.x;
+		for(let i = 0; i < 2 + Math.random() * 2; i++){
+			let side = 0.5 + Math.random() * 0.2;
+			if(landDirVel > 0) side *= -1;
+			add(particles.dust(
+				vec(that.center.x + (side > 0 ? 1 : -6), that.pos.y + that.size.y - 5),
+				vec(side, -0.1 + Math.random() * -0.1),
+			), "particles", 3)
+		}
 	}
 
 	let obs;
