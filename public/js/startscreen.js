@@ -4,6 +4,25 @@ import * as buttons				from "/js/lib/button.js";
 import * as objects				from "/js/generateLevel.js";
 import addBirds 				from "/js/bird.js";
 
+const optionsAction = (GAME) => {
+	GAME.world.clear("buttons", "birds");
+	GAME.state = setupOptions;
+}
+
+const setupLevelAction = (GAME) => {
+	GAME.fadeToState("setupLevel");
+}
+
+const newGameAction = (GAME) => {
+	if(storageAvailable()){
+		localStorage.currentLevel = 0;
+		localStorage.deaths = 0;
+	}
+	GAME.currentLevel = 0;
+	GAME.deaths = 0;
+	GAME.fadeToState("setupLevel");
+}
+
 const setupStartscreen = (GAME) => {
 
 	GAME.world.add(objects.tiles(GAME.sprites["backgrounds/startscreen"]), "background", 0, true);
@@ -22,44 +41,29 @@ const setupStartscreen = (GAME) => {
 		text: "Options",
 		size: 20,
 		pos: vec(GAME.width / 2 - 35, 160),
-		action(GAME){
-			GAME.world.clear("buttons", "birds");
-			GAME.state = setupOptions;
-		}
+		action: optionsAction,
 	}), "buttons", 10);
 
 	//start contine newGame buttons
-	if(Number(GAME.currentLevel) === 0){
+	if(GAME.currentLevel === 0){
 		GAME.world.add(buttons.clickableText({
 			text: "Start",
 			size: 20,
 			pos: vec(GAME.width / 2 - 24, 100),
-			action(GAME){
-				GAME.fadeToState("setupLevel");
-			}
+			action: setupLevelAction,
 		}), "buttons", 10);
 	}else{
 		GAME.world.add(buttons.clickableText({
 			text: "Continue",
 			size: 20,
 			pos: vec(GAME.width / 2 - 40, 100),
-			action(GAME){
-				GAME.fadeToState("setupLevel");
-			}
+			action: setupLevelAction,
 		}), "buttons", 10);
 		GAME.world.add(buttons.clickableText({
 			text: "New game",
 			size: 20,
 			pos: vec(GAME.width / 2 - 40, 130),
-			action(GAME){
-				if(storageAvailable()){
-					localStorage.currentLevel = 0;
-					localStorage.deaths = 0;
-				}
-				GAME.currentLevel = 0;
-				GAME.deaths = 0;
-				GAME.fadeToState("setupLevel");
-			}
+			action: newGameAction,
 		}), "buttons", 10);
 	}
 

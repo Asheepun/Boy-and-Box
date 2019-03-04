@@ -22,6 +22,15 @@ export const door = (pos, index) => {
 
 	that.addMethods("checkBackground");
 
+
+	return that;
+}
+
+export const bossDoor = (pos, index) => {
+	const that = door(pos, index);
+
+	that.gravity = 0;
+
 	return that;
 }
 
