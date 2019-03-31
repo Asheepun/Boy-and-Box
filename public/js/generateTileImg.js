@@ -1,6 +1,6 @@
 import vec, * as v from "/js/lib/vector.js";
 
-const generateTileImg = (map, sprites, json) => {
+const generateTileImg = (map, sprites, json, size = vec(15 * 32, 15 * 18)) => {
 	let pos;
 	let side;
 
@@ -12,8 +12,8 @@ const generateTileImg = (map, sprites, json) => {
 	const imgCanvas = document.createElement("canvas");
 	const ctx = imgCanvas.getContext("2d");
 	
-	imgCanvas.width = 15 * 32;
-	imgCanvas.height = 15 * 18;
+	imgCanvas.width = size.x;
+	imgCanvas.height = size.y;
 
 	let sprite;
 

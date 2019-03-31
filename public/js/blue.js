@@ -244,6 +244,7 @@ export const blueLock = (pos) => {
 	}
 
 	let playedSound = false;
+	that.fadeRate = 0.145;
 	that.checkHit = ({ world: { remove }, audio: { play } }) => {
 		if(that.hit){
 			if(!playedSound){
@@ -252,7 +253,7 @@ export const blueLock = (pos) => {
 					volume: 0.15,
 				});
 			}
-			that.alpha -= 0.145;
+			that.alpha -= that.fadeRate;
 			if(that.alpha <= 0) remove(that);
 		}
 	}

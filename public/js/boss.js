@@ -2,9 +2,10 @@ import traitHolder, * as traits from "/js/lib/traits.js";
 import vec, * as v				from "/js/lib/vector.js";
 import * as col					from "/js/lib/colission.js";
 import * as particles			from "/js/particles.js";
-import { bossDoor }				from "/js/door.js";
+import { bossDoor, doorButton }	from "/js/door.js";
 import { thorn, thornImg  }		from "/js/thorn.js";
 import generateVineImg			from "/js/generateVineImg.js";
+import generateTileImg			from "/js/generateTileImg.js";
 import * as reds				from "/js/reds.js";
 
 const boss = (pos) => {
@@ -17,6 +18,16 @@ const boss = (pos) => {
 
 	traits.addSpriteTrait({
 		color: "red",
+	})(that);
+
+	traits.addMoveTrait({
+		velocity: vec(0, 0),
+	})(that);
+
+	traits.addColTrait({})(that);
+
+	traits.addPhysicsTrait({
+		gravity: 0.007,
 	})(that);
 
 	that.setupStage = ({ world: { add } }) => {
@@ -34,28 +45,41 @@ const boss = (pos) => {
 
 	that.attacking = true;
 
+	that.lives = 4;
+
 	that.attackCounter = () => {
 
 	}
 
-	let attackTemplateCounter = 0;
-
-	that.handleAttacking = ({ world: { add } }) => {
+	that.handleAttacking = ({ world: { add }, sprites, JSON }) => {
 		if(that.attacking){
 
-			strEach(attacks[that.currentAttack].template[attackTemplateCounter], (tile, x) => {
-				let pos = vec(x * 15 + 30, attackTemplateCounter * 15);
+			attacks[that.currentAttack].template.forEach((row, y) => strEach(row, (tile, x) => {
+				let pos = vec(x * 15 + 30, y * 15);
 
 				if(tile === ","){
 					add(obstacle(pos.copy()), "blockers", 0);
 				}
-			});
+				if(tile === "/"){
+					add(obstacle(pos.copy()), "obstacles", 0);
+				}
+				if(tile === "-"){
+					add(doorButton(pos.copy(), 4-that.lives), "door_buttons", 1);
+				}
 
-			attackTemplateCounter++;
-			if(attackTemplateCounter === 18){
-				attackTemplateCounter = 0;
-				that.attacking = false;
-			}
+				
+			}));
+
+			const vineImg = generateVineImg(attacks[that.currentAttack].template, sprites, vec(15 * 17, 15 * 18));
+
+			add(attackSprite(vec(30, 0), vineImg), "attackSprites", 0);
+
+			const obstacleImg = generateTileImg(attacks[that.currentAttack].template, sprites, JSON.grass_tiles, vec(15 * 17, 15 * 18));
+
+
+			add(attackSprite(vec(30, 0), obstacleImg), "attackSprites", 0);
+
+			that.attacking = false;
 		}
 	}
 
@@ -77,14 +101,15 @@ const obstacle = (pos) => {
 	return that;
 }
 
-const sliceSprite = (pos, img) => {
+const attackSprite = (pos, img) => {
 	const that = obstacle(pos);
 
-	that.size.x = 15 * 10;
+	that.size.x = 15 * 17;
+	that.size.y = 15 * 18;
 
-	traits.addSpriteTrait({
-		img,
-	})(that);
+	that.draw = (ctx) => {
+		ctx.drawImage(img, 0, 0, that.size.x, that.size.y, that.pos.x, that.pos.y, that.size.x, that.size.y)
+	}
 
 	return that;
 }
@@ -92,24 +117,24 @@ const sliceSprite = (pos, img) => {
 const attacks = [
 	{
 		template: [
-			".................",
-			".................",
-			".......,...,.....",
-			".......,...,.....",
-			".................",
-			".....,.......,...",
-			".....,.......,...",
-			".....,.......,...",
-			".....,,,,,,,,,...",
-			".................",
-			".................",
-			".................",
-			".................",
-			".................",
-			".................",
-			".................",
-			".................",
-			".................",
+			",,,,,,,,,,,,,,,,,",
+			",,,,,,,,,,,,,,,,,",
+			",,,,,,,,,,,,,,,,,",
+			",,............,,,",
+			",,.,,,,,,,,,,,,,,",
+			",,.,,,,,,,,,,-,,,",
+			",,.,,,,,,,,,,//,,",
+			",,.,,,,,,,,,,//,,",
+			",,.,,,,,,,,,,,,,,",
+			",,.,,,,,,,,,,,,,,",
+			",,.,,,,,,,,,,,,,,",
+			",,.,,,,,,,,,,,,,,",
+			",,.,,,,,,,,,,,,,,",
+			",,.,,,,,,,,,,,,,,",
+			",,.,,,,,,,,,,,,,,",
+			",,,,,,,,,,,,,,,,,",
+			",,,,,,,,,,,,,,,,,",
+			",,,,,,,,,,,,,,,,,",
 		],
 	},
 ];

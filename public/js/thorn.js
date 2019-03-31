@@ -26,8 +26,8 @@ export const thorn = (pos, template) => {
 		that.hitBoxOffset = vec(1, 0);
 	}
 	if(y !== template.length-1 && template[y+1][x] === "/"){
-		that.hitBox = vec(13, 7);
-		that.hitBoxOffset = vec(1, 8);
+		that.hitBox = vec(17, 6);
+		that.hitBoxOffset = vec(-1, 9);
 	}
 
 	that.checkPlayer = ({ world: { player } }) => {

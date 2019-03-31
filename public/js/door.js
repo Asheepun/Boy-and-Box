@@ -31,6 +31,8 @@ export const bossDoor = (pos, index) => {
 
 	that.gravity = 0;
 
+	that.fadeRate = 0.5;
+
 	return that;
 }
 
@@ -38,6 +40,7 @@ export const doorButton = (pos, index) => {
 	const that = traitHolder();
 
 	that.buttonIndex = index;
+	console.log(index)
 
 	traits.addEntityTrait({
 		pos: v.add(pos, vec(1, 3)),

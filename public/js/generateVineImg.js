@@ -1,9 +1,10 @@
 import vec, * as v from "/js/lib/vector.js";
 
-const generateVineImg = (map, sprites) => {
+const generateVineImg = (map, sprites, size = vec(15 * 32, 15 * 18)) => {
+
 	const imgCanvas = document.createElement("canvas");
-	imgCanvas.width = 15 * 32;
-	imgCanvas.height = 15 * 18;
+	imgCanvas.width = size.x;
+	imgCanvas.height = size.y;
 	const ctx = imgCanvas.getContext("2d");
 
 	map.forEach((row, y) => strEach(row, (tile, x) => {
