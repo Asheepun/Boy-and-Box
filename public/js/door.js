@@ -40,7 +40,6 @@ export const doorButton = (pos, index) => {
 	const that = traitHolder();
 
 	that.buttonIndex = index;
-	console.log(index)
 
 	traits.addEntityTrait({
 		pos: v.add(pos, vec(1, 3)),

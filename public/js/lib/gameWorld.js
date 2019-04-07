@@ -30,6 +30,19 @@ const gameWorld = () => {
         }else delete that[entity.type];
     }
 
+	that.setRemoveIf = (condition, ...types) => {
+		types.forEach(type => {
+			if(that[type]){
+				for(let i = 0; i < that[type].length; i++){
+					if(condition(that[type][i])){
+						that.remove(that[type][i]);
+						i--;
+					}
+				}
+			}
+		})
+	}
+
     that.clear = (...types) => {
         types.forEach(type => {
             that.layers.forEach(layer => {
