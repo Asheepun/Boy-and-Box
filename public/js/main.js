@@ -14,6 +14,7 @@ import addBirds 				from "/js/bird.js";
 import levels					from "/js/levels.js";
 import setupSettings			from "/js/settings.js";
 import setupStartscreen 		from "/js/startscreen.js";
+import * as progUtils			from "/js/progress.js";
 
 Promise.all([
 	createCanvas(15 * 32, 15 * 18),
@@ -134,26 +135,22 @@ Promise.all([
 		context: vec(0, 0),
 		currentLevel: 55,
 		volume: 1,
-		saveProgress: true,
 		deaths: 0,
+		progress: {},
+		getProgress: progUtils.getProgress,
+		saveProgress: progUtils.saveProgress,
 	};
 
-	//GAME.state = GAME.states.setupStartscreen;
+	GAME.state = GAME.states.setupStartscreen;
 
 	GAME.audio.setVolume(0);
-	localStorage.currentLevel = GAME.currentLevel;
-	
-	if(storageAvailable()){
-		if(localStorage.currentLevel === undefined)
-			localStorage.currentLevel = 0;
-		else
-			GAME.currentLevel = Number(localStorage.currentLevel);
 
-		if(localStorage.deaths === undefined)
-			localStorage.deaths = 0;
-		else
-			GAME.deaths = Number(localStorage.deaths);
-	}
+	//localStorage.currentLevel = GAME.currentLevel;
+	
+	const prog = GAME.getProgress();
+
+	GAME.currentLevel = prog.currentLevel;
+	GAME.deaths = prog.deaths;
 
 	GAME.keys = keys(
 		{
@@ -218,6 +215,11 @@ Promise.all([
 			});
 		}
 
+		//save progress
+		GAME.progress.currentLevel = GAME.currentLevel;
+		GAME.progress.deaths = GAME.deaths;
+		GAME.saveProgress(GAME.progress);
+
 		GAME.state = GAME.states.level;
 
 	}
@@ -246,8 +248,6 @@ Promise.all([
 
 		if(GAME.world.player.hitCounter > 2){
 			GAME.deaths++;
-			if(storageAvailable())
-				localStorage.deaths = GAME.deaths;
 		}
 
 		GAME.transitionPosX += 20;
@@ -306,8 +306,6 @@ Promise.all([
 	GAME.transitionToNextLevel = (GAME) => {
 		delay = 5;
 		GAME.currentLevel++;
-		if(GAME.saveProgress && storageAvailable())
-			localStorage.currentLevel = GAME.currentLevel;
 		if(GAME.levels[GAME.currentLevel-1].music
 		&& GAME.levels[GAME.currentLevel-1].music !== GAME.levels[GAME.currentLevel].music){
 			GAME.audio.fadeOutLoop(GAME.levels[GAME.currentLevel-1].music, 0.005);

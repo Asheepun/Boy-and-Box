@@ -14,10 +14,8 @@ const setupLevelAction = (GAME) => {
 }
 
 const newGameAction = (GAME) => {
-	if(storageAvailable()){
-		localStorage.currentLevel = 0;
-		localStorage.deaths = 0;
-	}
+	GAME.progress.currentLevel = 0;
+	GAME.progress.deaths = 0;
 	GAME.currentLevel = 0;
 	GAME.deaths = 0;
 	GAME.fadeToState("setupLevel");
