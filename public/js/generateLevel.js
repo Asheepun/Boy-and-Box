@@ -132,7 +132,7 @@ const generateLevel = ({ template, time, background, texts, shadow }, { world, w
 
 }
 
-const optimizeObstacles = (obstacles) => {
+export const optimizeObstacles = (obstacles) => {
 	for(let i = 0; i < obstacles.length; i++){
 		const o1 = obstacles[i];
 

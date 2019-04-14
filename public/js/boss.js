@@ -7,6 +7,7 @@ import { thorn, thornImg  }		from "/js/thorn.js";
 import generateVineImg			from "/js/generateVineImg.js";
 import generateTileImg			from "/js/generateTileImg.js";
 import * as reds				from "/js/reds.js";
+import { optimizeObstacles }	from "/js/generateLevel.js";
 
 const boss = (pos) => {
 	const that = traitHolder();
@@ -46,7 +47,7 @@ const boss = (pos) => {
 	}
 
 	that.checkStartTrigger = ({ world: { player } }) => {
-		if(player.pos.x > 10 * 15 && player.pos.x < 12 * 15 && player.pos.y === 12 * 15 && player.onGround){
+		if(player.pos.x > 10 * 14 && player.pos.x < 12 * 15 && player.pos.y === 12 * 15 && player.onGround){
 			that.start();
 			that.removeMethods("checkStartTrigger");
 		}
@@ -56,7 +57,7 @@ const boss = (pos) => {
 		that.waitCounter = 60 * 2;
 	}
 
-	that.currentAttack = 0;
+	that.currentAttack = 2;
 
 	that.attacking = false;
 
@@ -89,7 +90,7 @@ const boss = (pos) => {
 
 	}
 
-	that.checkDoorBtns = ({ world: { door_buttons } }) => {
+	that.checkDoorBtns = ({ world: { door_buttons, blockers } }) => {
 		if(door_buttons) door_buttons.forEach(btn => {
 			if(btn.partOfAttack && btn.hit && that.waitCounter < -180){
 				that.attackCounter = -1;
@@ -101,19 +102,26 @@ const boss = (pos) => {
 		});
 	}
 
+	let obstacles = [];
+	let vines = [];
+
 	that.attack = (attack, { add, sprites, JSON }) => {
+
+		obstacles.splice(0, obstacles.length);
+		vines.splice(0, vines.length);
+
 		attack.template.forEach((row, y) => strEach(row, (tile, x) => {
 			let pos = vec(x * 15 + 30, y * 15);
 
 			if(tile === ","){
 				const o = obstacle(pos.copy());
 				o.partOfAttack = true;
-				add(o, "blockers", 0);
+				vines.push(o);
 			}
 			if(tile === "/"){
 				const o = obstacle(pos.copy());
 				o.partOfAttack = true;
-				add(o, "obstacles", 0);
+				obstacles.push(o)
 			}
 			if(tile === "-"){
 				const o = doorButton(pos.copy(), 4 - that.lives);
@@ -121,8 +129,21 @@ const boss = (pos) => {
 				add(o, "door_buttons", 1);
 			}
 
+			if(tile === "1") add(reds.red(pos.copy()), "reds", 5);
+			if(tile === "2") add(reds.jumper(pos.copy()), "reds", 5);
+			if(tile === "3") add(reds.spawner(pos.copy()), "reds", 5);
+			if(tile === "4") add(reds.giant(pos.copy()), "reds", 5);
+			if(tile === "5") add(reds.smallJumper(pos.copy()), "reds", 5);
+			if(tile === "6") add(reds.hunter(pos.copy()), "reds", 5);
+			if(tile === "7") add(reds.redBird(pos.copy()), "reds", 5);
 			
 		}));
+
+		obstacles = optimizeObstacles(obstacles);
+		vines = optimizeObstacles(vines);
+
+		obstacles.forEach(o => add(o, "obstacles", 0));
+		vines.forEach(v => add(v, "blockers", 0));
 
 		const vineImg = generateVineImg(attack.template, sprites, vec(15 * 17, 15 * 18));
 
@@ -133,14 +154,13 @@ const boss = (pos) => {
 
 		add(attackSprite(vec(30, 0), obstacleImg), "attackSprites", 0);
 
-	
 	}
 
 	that.cleanUpAttack = ({ clear, setRemoveIf, box }) => {
 
 		setRemoveIf((x) => x.partOfAttack, "obstacles", "blockers", "door_buttons");
 
-		clear("attackSprites");
+		clear("reds", "attackSprites");
 
 		box.pos = vec(-100, -100)
 	}
@@ -178,6 +198,7 @@ const attackSprite = (pos, img) => {
 
 //x: 17 y: 18
 const attacks = [
+	//1
 	{
 		template: [
 			",,,,,,,,,,,,,,,,,",
@@ -186,8 +207,8 @@ const attacks = [
 			",,............,,,",
 			",,.,,,,,,,,,,,,,,",
 			",,.,,,,,,,,,,-,,,",
-			",,.,,,,,,,,,,//,,",
-			",,.,,,,,,,,,,//,,",
+			",,.,,,,,,,,,,//,,",//
+			",,.,,,,,,,,,,//,,",//
 			",,.,,,,,,,,,,,,,,",
 			",,.,,,,,,,,,,,,,,",
 			",,.,,,,,,,,,,,,,,",
@@ -201,25 +222,50 @@ const attacks = [
 		],
 		duration: 7 * 60,
 	},
+	//2
+	{
+		template: [
+			",,,,,,,,,,,,,,,,,",
+			",,,,,,,,,,,,,,,,,",
+			",,,,,,,,,,,7,,,,,",
+			",,,,,,,,,,,.,,,,,",
+			",,,,,,,,,7,.,,,,,",
+			",,,,,,,,,.,,,,,,,",
+			",,,,,,,7,.,,,//,,",
+			",,,,,,,.,,,,,//,,",
+			",,,,,,,.,,,,,,,,,",
+			",,,,,,,,,,,,,,,,,",
+			",,,,,,,,,,,,,,,,,",
+			",,,,,,,,,,,,,,,,,",
+			",,,,,,,,,,,,,,,,,",
+			",,-,,,,,,,,,,,,,,",
+			",//,,,,,,,,,,,,,,",
+			",//,,..,,,,,,,,,,",
+			",,,,,..,,,,,,,,,,",
+			",,,,,..,,,,,,,,,,",
+		],
+		duration: 7 * 60,
+	},
+	//3
 	{
 		template: [
 			",,,,,,,,,,,,,,,,,",
 			",,,,,,,,,,,,,,,,,",
 			",,,,,,,,,,,,,,,,,",
-			",,,,,,,,,,,,,,,,,",
-			",,,,,,,,,,,,,,.,,",
-			",,,,,,,,,,,,,,.,,",
-			",,,,,,,,,,,,,,.,,",
-			",,,,,,,,,,,,,,.,,",
-			",,,,,,,,,,,,,,.,,",
-			",,,,,,,,,,,,,,.,,",
+			",6,,,,,,,,,,,-,,,",
+			",,,,,,,......//,,",
+			",//....//....//,,",
+			",//....//..,,,,,,",
 			",,,,,,,,,,,,,,,,,",
 			",,,,,,,,,,,,,,,,,",
 			",,,,,,,,,,,,,,,,,",
 			",,,,,,,,,,,,,,,,,",
-			",,,/////,,,,,,,,,",
-			",,,/////,,,,,,,,,",
 			",,,,,,,,,,,,,,,,,",
+			",,,,,,,,,,,,,,,,,",
+			",,,,,,,,,,,,,,,,,",
+			",//,,,,,,,,,,,//,",
+			",//,,,//,,,.,,//,",
+			",,,,,,//,,,,,,,,,",
 			",,,,,,,,,,,,,,,,,",
 		],
 		duration: 7 * 60,

@@ -141,11 +141,11 @@ Promise.all([
 		saveProgress: progUtils.saveProgress,
 	};
 
-	GAME.state = GAME.states.setupStartscreen;
+	//GAME.state = GAME.states.setupStartscreen;
 
 	GAME.audio.setVolume(0);
 
-	//localStorage.currentLevel = GAME.currentLevel;
+	localStorage.currentLevel = GAME.currentLevel;
 	
 	const prog = GAME.getProgress();
 
