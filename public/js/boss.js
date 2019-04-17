@@ -67,6 +67,8 @@ const boss = (pos) => {
 
 	that.waitCounter = 0;
 
+	that.attacks = firstStageAttacks;
+
 	that.handleAttacking = ({ world, world: { add }, sprites, JSON }) => {
 		that.waitCounter--;
 		that.attackCounter--;
@@ -75,9 +77,9 @@ const boss = (pos) => {
 
 			that.cleanUpAttack(world);
 
-			that.attack(attacks[that.currentAttack], { add, sprites, JSON });
+			that.attack(that.attacks[that.currentAttack], { add, sprites, JSON });
 
-			that.attackCounter = attacks[that.currentAttack].duration;
+			that.attackCounter = that.attacks[that.currentAttack].duration;
 
 			that.currentAttack++;
 		}
@@ -197,7 +199,7 @@ const attackSprite = (pos, img) => {
 }
 
 //x: 17 y: 18
-const attacks = [
+const firstStageAttacks = [
 	//1
 	{
 		template: [
@@ -254,8 +256,8 @@ const attacks = [
 			",,,,,,,,,,,,,,,,,",
 			",6,,,,,,,,,,,,-,,",
 			",,,,,,,......//,,",
-			",//....//....//,,",
-			",//....//..,,,,,,",
+			",//....//..,,//,,",
+			",//,,,,//,,,,,,,,",
 			",,,,,,,,,,,,,,,,,",
 			",,,,,,,,,,,,,,,,,",
 			",,,,,,,,,,,,,,,,,",
@@ -263,7 +265,7 @@ const attacks = [
 			",,,,,,,,,,,,,,,,,",
 			",,,,,,,,,,,,,,,,,",
 			",,,,,,,,,,,,,,,,,",
-			",..,,,,,,,,,,,//,",
+			",,,,,,,,,,,,,,//,",
 			",//,,,//,,,.,,//,",
 			",//,,,//,,,,,,,,,",
 			",,,,,,,,,,,,,,,,,",
@@ -280,7 +282,7 @@ const attacks = [
 			",//,,,,,......,,,",
 			",//,,,,,,,,,,.,,,",
 			",,,,,,,,,,,,,.,,,",
-			",,,,,,7,,,7,,.,,,",
+			",,,,,,7,,,,7,.,,,",
 			",,,,,,,,,,,,,.,,,",
 			",,............,,,",
 			",,.,,,,,,,,,,,,,,",
