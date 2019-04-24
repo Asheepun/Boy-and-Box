@@ -111,6 +111,10 @@ const boss = (pos) => {
 
 	that.attack = (attack, { add, sprites, JSON }) => {
 
+		console.log(attack)
+		console.log(that.attacks)
+		console.log(that.currentAttack)
+
 		obstacles.splice(0, obstacles.length);
 		vines.splice(0, vines.length);
 
@@ -186,6 +190,8 @@ const boss = (pos) => {
 				}), "texts", 20);
 
 				setupWait--;
+
+				that.waitCounter = 60 * 2;
 
 				if(setupWait === 0)
 					that.setupSwitchToStageTwo(GAME);
