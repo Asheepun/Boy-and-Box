@@ -171,13 +171,23 @@ const boss = (pos) => {
 
 	that.stage = 0;
 
+	let setupWait = 1.5 * 60;
+
 	that.handleSwitchStage = (GAME) => {
 		if(that.lives === 0){
 			if(that.stage === 0 && that.pos.y > GAME.height + 200){
 
 				GAME.world.clear("door_buttons");
 
-				if(!setupSwitchToStageTwoDone)
+				GAME.world.add(traits.textEntity({
+					pos: vec(that.center.x, 100),
+					size: 20,
+					text: ["1 UP"],
+				}), "texts", 20);
+
+				setupWait--;
+
+				if(setupWait === 0)
 					that.setupSwitchToStageTwo(GAME);
 
 			}
@@ -185,7 +195,7 @@ const boss = (pos) => {
 	}
 
 	let setupSwitchToStageTwoDone = false;
-	that.setupSwitchToStageTwo = ({ world: { add } }) => {
+	that.setupSwitchToStageTwo = ({ world: { add, clear } }) => {
 		that.size.x -= 30;
 		that.size.y -= 30;
 		that.pos.x += 15;
@@ -202,6 +212,8 @@ const boss = (pos) => {
 		that.attackDelay = 60;
 
 		that.attacks = secondStageAttacks;
+
+		clear("texts");
 
 		for(let y = 0; y < that.lives; y++){
 			for(let x = 0; x < 10; x++){
