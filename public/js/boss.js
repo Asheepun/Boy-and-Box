@@ -222,7 +222,7 @@ const boss = (pos) => {
 
 		that.waitCounter = 60 * 2;
 
-		that.attackDelay = 60;
+		that.attackDelay = 1.5 * 60;
 
 		that.attacks = secondStageAttacks;
 
@@ -384,7 +384,7 @@ const firstStageAttacks = [
 			",,.,,,,,,,,,,,,,,",
 			",,.,,,,,,,,,,,//,",
 			",,.,,,,..,,,,,//,",
-			",,,,,,,..,,,,,,,,",
+			",,.,,,,..,,,,,,,,",
 			",,,,,,,,,,,,,,,,,",
 		],
 		duration: 11 * 60,
