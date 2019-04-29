@@ -111,10 +111,6 @@ const boss = (pos) => {
 
 	that.attack = (attack, { add, sprites, JSON }) => {
 
-		console.log(attack)
-		console.log(that.attacks)
-		console.log(that.currentAttack)
-
 		obstacles.splice(0, obstacles.length);
 		vines.splice(0, vines.length);
 
@@ -197,6 +193,17 @@ const boss = (pos) => {
 					that.setupSwitchToStageTwo(GAME);
 
 			}
+			if(that.stage === 1){
+
+				if(!setupSwitchToStageThreeDone && that.pos.y > GAME.height + 200)
+					that.setupSwitchToStageThree(GAME);
+
+				if(GAME.world.attackSprites[3]){
+					GAME.world.attackSprites[3].pos.y -= 1;
+					GAME.world.attackSprites[3].fixCenter();
+					console.log(GAME.world.attackSprites[3]);
+				}
+			}
 		}
 	}
 
@@ -230,10 +237,30 @@ const boss = (pos) => {
 
 		setupSwitchToStageTwoDone = true;
 	}
+	
+	let setupSwitchToStageThreeDone = false;
+	that.setupSwitchToStageThree = ({ world, world: { add, points, attackSprites }, sprites, JSON, height }) => {
+		that.cleanUpAttack(world);
+		that.attack(setupStageThreeAttack, { add, sprites, JSON });
+
+		that.attack(lastAttack, { add, sprites, JSON });
+
+		//console.log(attackSprites[2])
+
+		that.gravity = 0;
+		that.acceleration.y = 0;
+		that.velocity.y = -10;
+
+		points[0].initPos = vec(195, 60);
+		points[0].pos = v.add(points[0].initPos, vec(0, 1));
+
+		setupSwitchToStageThreeDone = true;
+	}
 
 	that.isBoss = true;
 
 	that.addMethods("setupStage", "checkStartTrigger", "handleAttacking", "checkDoorBtns", "handleSwitchStage");
+			//that.removeMethods("checkStartTrigger");
 
 	return that;
 }
@@ -252,11 +279,13 @@ const obstacle = (pos) => {
 const attackSprite = (pos, img) => {
 	const that = obstacle(pos);
 
+	that.img = img;
+
 	that.size.x = 15 * 17;
 	that.size.y = 15 * 18;
 
 	that.draw = (ctx) => {
-		ctx.drawImage(img, 0, 0, that.size.x, that.size.y, that.pos.x, that.pos.y, that.size.x, that.size.y)
+		ctx.drawImage(that.img, 0, 0, that.size.x, that.size.y, that.pos.x, that.pos.y, that.size.x, that.size.y)
 	}
 
 	return that;
@@ -295,20 +324,20 @@ const firstStageAttacks = [
 			",,,,,,,,,,,,,,,,,",
 			",,,,,,,,,,,7,,,,,",
 			",,,,,,,,,,,.,,,,,",
-			",,,,,,,,,7,.,,,,,",
-			",,,,,,,,,.,,,,,,,",
-			",,,,,,,7,.,,,//,,",
-			",,,,,,,.,,,,,//,,",
-			",,,,,,,.,,,,,,,,,",
+			",,,,,,,,,,,.,,,,,",
+			",,,,,,,,7,,,,,,,,",
+			",,,,,,,,.,,,,//,,",
+			",,,,,,,,.,,,,//,,",
+			",,,,,,,,,,,,,,,,,",
 			",,,,,,,,,,,,,,,,,",
 			",,,,,,,,,,,,,,,,,",
 			",,,,,,,,,,,,,,,,,",
 			",,,,,,,,,,,,,,,,,",
 			",,,,,,,,,,,,,,,,,",
 			",,-,,,,,,,,,,,,,,",
-			",//,...,,,,,,,,,,",
-			",//,...,,,,,,,,,,",
-			",,,,...,,,,,,,,,,",
+			",//,,,,,,,,,,,,,,",
+			",//,..,,,,,,,,,,,",
+			",,,,..,,,,,,,,,,,",
 		],
 		duration: 3 * 60,
 	},
@@ -353,8 +382,8 @@ const firstStageAttacks = [
 			",,.,,,,,,,,,,,,,,",
 			",,.,,,,,,,,,,,,,,",
 			",,.,,,,,,,,,,,,,,",
-			",,............//,",
-			",,............//,",
+			",,.,,,,..,,,,,//,",
+			",,.,,,,..,,,,,//,",
 			",,,,,,,,,,,,,,,,,",
 			",,,,,,,,,,,,,,,,,",
 		],
@@ -586,6 +615,29 @@ const secondStageAttacks = [
 	},
 ];
 
+const setupStageThreeAttack = {
+	template: [
+		",,,,,,,,,,,,,,,,,",
+		",,,,,,,,,,,,,,,,,",
+		",,,,,,,,,,,,,,,,,",
+		",,,,,,,,,,,,,,,,,",
+		",,,,,,,,,,,,,,,,,",
+		",,,,,,,,,,,,,,,,,",
+		",,,,,,,,,,,,,,,,,",
+		",,,,,,,,,,,,,,,,,",
+		",,,,,,,.,,,,,,,,,",
+		",,,,,,,,,,,,,,,,,",
+		",,.,,,,,,,,,,,,,,",
+		",,,,,,,,,,,,,,//,",
+		",,,,,,,,,,,,,,//,",
+		",,,,,,,.,,,,,,,,,",
+		",,,,,,,,,,,,,,,,,",
+		",,,,,,,,,,,,,,,,,",
+		",,,,,,,,,,,,,,,,,",
+		",,,,,,,,,,,,,,,,,",
+	],
+};
+
 const setupAttack = {
 	template: [
 		".................",
@@ -606,6 +658,47 @@ const setupAttack = {
 		".................",
 		".................",
 		".................",
+	]
+};
+
+const lastAttack = {
+	template: [
+		".................",
+		".................",
+		".................",
+		".................",
+		".................",
+		".................",
+		".................",
+		".................",
+		".................",
+		".................",
+		".................",
+		".................",
+		".................",
+		".................",
+		".................",
+		".................",
+		".................",
+		".................",
+		"/////////////////",
+		"/////////////////",
+		"/////////////////",
+		"/////////////////",
+		"/////////////////",
+		"/////////////////",
+		"/////////////////",
+		"/////////////////",
+		"/////////////////",
+		"/////////////////",
+		"/////////////////",
+		"/////////////////",
+		"/////////////////",
+		"/////////////////",
+		"/////////////////",
+		"/////////////////",
+		"/////////////////",
+		"/////////////////",
 	]
 }
 
@@ -630,6 +723,20 @@ const failAttack = {
 		",,,,,,,,,,,,,,,,,",
 		",,,,,,,,,,,,,,,,,",
 	],
+};
+
+const lastAttackEnemy = () => {
+	const that = traitHolder();
+
+	that.img = document.createElement("canvas");
+
+	k
+
+	that.draw = () => {
+	
+	}
+
+	return that;
 }
 
 const attackCountdownSprite = (pos) => {
