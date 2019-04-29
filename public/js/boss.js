@@ -466,7 +466,7 @@ const secondStageAttacks = [
 			",,,,,,,,,,,,,//,,",
 			",,,,,,,,,,,,,,,,,",
 		],
-		duration: 4 * 60,
+		duration: 5 * 60,
 	},
 	//3
 	{
