@@ -8,6 +8,7 @@ import generateVineImg			from "/js/generateVineImg.js";
 import generateTileImg			from "/js/generateTileImg.js";
 import * as reds				from "/js/reds.js";
 import { optimizeObstacles }	from "/js/generateLevel.js";
+import * as cpö					from "/js/lib/colission.js";
 
 const boss = (pos) => {
 	const that = traitHolder();
@@ -61,7 +62,7 @@ const boss = (pos) => {
 
 	that.attacking = false;
 
-	that.lives = 4;
+	that.lives = 0;
 
 	that.attackCounter = 0;
 
@@ -169,7 +170,7 @@ const boss = (pos) => {
 		box.pos = vec(-100, -100)
 	}
 
-	that.stage = 0;
+	that.stage = 1;
 
 	let setupWait = 1.5 * 60;
 
@@ -198,11 +199,6 @@ const boss = (pos) => {
 				if(!setupSwitchToStageThreeDone && that.pos.y > GAME.height + 200)
 					that.setupSwitchToStageThree(GAME);
 
-				if(GAME.world.attackSprites[3]){
-					GAME.world.attackSprites[3].pos.y -= 1;
-					GAME.world.attackSprites[3].fixCenter();
-					console.log(GAME.world.attackSprites[3]);
-				}
 			}
 		}
 	}
@@ -243,9 +239,8 @@ const boss = (pos) => {
 		that.cleanUpAttack(world);
 		that.attack(setupStageThreeAttack, { add, sprites, JSON });
 
-		that.attack(lastAttack, { add, sprites, JSON });
+		add(lastAttackEnemy(vec(30, height + 30 * 1.5)), "enemies", 7);
 
-		//console.log(attackSprites[2])
 
 		that.gravity = 0;
 		that.acceleration.y = 0;
@@ -259,8 +254,14 @@ const boss = (pos) => {
 
 	that.isBoss = true;
 
-	that.addMethods("setupStage", "checkStartTrigger", "handleAttacking", "checkDoorBtns", "handleSwitchStage");
-			//that.removeMethods("checkStartTrigger");
+	that.checkPlayer = ({ world: { player } }) => {
+		if(col.checkHitBoxCol(that, player)){
+			player.hit = true;
+		}
+	}
+
+	that.addMethods("setupStage", "checkStartTrigger", "handleAttacking", "checkDoorBtns", "handleSwitchStage", "checkPlayer");
+	that.removeMethods("checkStartTrigger");
 
 	return that;
 }
@@ -725,16 +726,35 @@ const failAttack = {
 	],
 };
 
-const lastAttackEnemy = () => {
+const lastAttackEnemy = (pos) => {
 	const that = traitHolder();
 
-	that.img = document.createElement("canvas");
+	traits.addEntityTrait({
+		pos,
+		size: vec(17 * 15, 100 * 15),
+	})(that);
 
-	k
+	traits.addSpriteTrait({
+		color: "red",
+	})(that);
 
-	that.draw = () => {
-	
+	traits.addMoveTrait({
+		velocity: vec(0, -0.5),
+	})(that);
+
+	that.checkOver = ({ world: { points } }) => {
+		if(points[0].hit){
+			that.velocity.y = 2.5;
+		}
 	}
+
+	that.checkPlayer = ({ world: { player } }) => {
+		if(col.checkHitBoxCol(that, player)){
+			player.hit = true;
+		}
+	}
+
+	that.addMethods("checkOver", "checkPlayer");
 
 	return that;
 }
