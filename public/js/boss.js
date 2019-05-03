@@ -62,7 +62,7 @@ const boss = (pos) => {
 
 	that.attacking = false;
 
-	that.lives = 0;
+	that.lives = 4;
 
 	that.attackCounter = 0;
 
@@ -76,7 +76,7 @@ const boss = (pos) => {
 		that.waitCounter--;
 		that.attackCounter--;
 		
-		if(that.waitCounter === 0){
+		if(that.waitCounter === 0 && that.lives > 0){
 
 			that.cleanUpAttack(world);
 
@@ -87,7 +87,7 @@ const boss = (pos) => {
 			that.currentAttack++;
 		}
 
-		if(that.attackCounter === 0){
+		if(that.attackCounter === 0 && that.lives > 0){
 			that.cleanUpAttack(world);
 
 			that.attack(failAttack, { add, sprites, JSON });
@@ -170,7 +170,7 @@ const boss = (pos) => {
 		box.pos = vec(-100, -100)
 	}
 
-	that.stage = 1;
+	that.stage = 0;
 
 	let setupWait = 1.5 * 60;
 
@@ -261,7 +261,7 @@ const boss = (pos) => {
 	}
 
 	that.addMethods("setupStage", "checkStartTrigger", "handleAttacking", "checkDoorBtns", "handleSwitchStage", "checkPlayer");
-	that.removeMethods("checkStartTrigger");
+	//that.removeMethods("checkStartTrigger");
 
 	return that;
 }
