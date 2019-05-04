@@ -76,6 +76,7 @@ Promise.all([
 		"blue_particle",
 		"lab_shelf",
 		"lab_table",
+		"boss",
 	),
 	loaders.loadAudio(
 		1,

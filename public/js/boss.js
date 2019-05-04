@@ -19,7 +19,8 @@ const boss = (pos) => {
 	})(that);
 
 	traits.addSpriteTrait({
-		color: "red",
+		//color: "red",
+		img: "boss",
 	})(that);
 
 	traits.addMoveTrait({
@@ -628,7 +629,7 @@ const setupStageThreeAttack = {
 		",,,,,,,,,,,,,,,,,",
 		",,,,,,,.,,,,,,,,,",
 		",,,,,,,,,,,,,,,,,",
-		",,.,,,,,,,,,,,,,,",
+		",,,.,,,,,,,,,,,,,",
 		",,,,,,,,,,,,,,//,",
 		",,,,,,,,,,,,,,//,",
 		",,,,,,,.,,,,,,,,,",
