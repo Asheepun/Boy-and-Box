@@ -33,6 +33,11 @@ const boss = (pos) => {
 		gravity: 0.007,
 	})(that);
 
+	traits.addFrameTrait({
+		delay: 6,
+		frames: "boss_frames",
+	})(that);
+
 	that.setupStage = ({ world: { add }, sprites, JSON }) => {
 
 		for(let y = 0; y < that.lives; y++){

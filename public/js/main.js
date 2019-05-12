@@ -111,6 +111,7 @@ Promise.all([
 		"red_spawner_flower_frames",
 		"red_giant_frames",
 		"jumping_point_frames",
+		"boss_frames",
 		"grass_tiles",
 	),
 ]).then(([ { c, ctx, width, height, pointer }, sprites, audio, JSON ]) => {
