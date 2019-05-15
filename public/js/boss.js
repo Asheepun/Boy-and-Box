@@ -15,7 +15,7 @@ const boss = (pos) => {
 
 	traits.addEntityTrait({
 		pos: v.add(pos, vec(0, 0)),
-		size: vec(150, 150),
+		size: vec(120, 120),
 	})(that);
 
 	traits.addSpriteTrait({
@@ -42,11 +42,11 @@ const boss = (pos) => {
 
 		for(let y = 0; y < that.lives; y++){
 			for(let x = 0; x < 10; x++){
-				add(bossDoor(vec(that.pos.x + x * 15, that.pos.y + that.size.y + y * 15), y), "obstacles", 2);
+				add(bossDoor(vec(that.pos.x + x * 15 - 15, that.pos.y + that.size.y + y * 15), y), "obstacles", 2);
 			}
 		}
 
-		add(attackCountdownSprite(vec(that.pos.x - 20, that.pos.y - 10)), "attackCountdown", 10, true);
+		add(attackCountdownSprite(vec(that.pos.x - 35, that.pos.y - 10)), "attackCountdown", 10, true);
 
 		that.attack(setupAttack, { add, sprites, JSON })
 
@@ -81,6 +81,12 @@ const boss = (pos) => {
 	that.handleAttacking = ({ world, world: { add }, sprites, JSON }) => {
 		that.waitCounter--;
 		that.attackCounter--;
+
+		if(that.waitCounter === /*(that.stage === 0 ? 20 : 10)*/ 15 && that.lives > 0){{
+			that.runAnimation("attack", JSON);
+		}
+		
+		}
 		
 		if(that.waitCounter === 0 && that.lives > 0){
 
@@ -211,9 +217,9 @@ const boss = (pos) => {
 
 	let setupSwitchToStageTwoDone = false;
 	that.setupSwitchToStageTwo = ({ world: { add, clear } }) => {
-		that.size.x -= 30;
-		that.size.y -= 30;
-		that.pos.x += 15;
+		//that.size.x -= 30;
+		//that.size.y -= 30;
+		//that.pos.x += 15;
 		that.pos.y = 30;
 
 		that.stage++;
@@ -594,7 +600,7 @@ const secondStageAttacks = [
 			",,,,,,,,,,,,,,,,,",
 			",,,,,,,,,,,,,,,,,",
 		],
-		duration: 4 * 60,
+		duration: 5 * 60,
 	},
 	//8
 	{

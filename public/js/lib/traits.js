@@ -298,6 +298,10 @@ export const addFrameTrait = ({ delay, frames, initState = "still" }) => (that) 
 	that.frames = frames;
 	that.frameDelay = delay;
 
+	that.runningState;
+	that.runningStateCounter = -2;
+	let lastStateBeforeRun;
+
 	let frameCounter = 0;
 	let lastState = that.frameState;
 	that.handleFrames = ({ JSON }) => {
@@ -312,8 +316,25 @@ export const addFrameTrait = ({ delay, frames, initState = "still" }) => (that) 
 			frameCounter -= that.frameDelay * JSON[that.frames][that.frameState][Math.floor(frameCounter/that.frameDelay)][1];
 		}
 
+		if(that.runningStateCounter >= 0){
+			that.frameState = that.runningState;
+		console.log(that.frameState)
+		}else if(that.runningStateCounter === -1){
+			that.frameState = lastStateBeforeRun;
+			console.log("CHECK")
+		}
+
+		that.runningStateCounter--;
+
 		that.imgPos.x = JSON[that.frames][that.frameState][Math.floor(frameCounter/that.frameDelay)][0];
 		that.imgPos.y = JSON[that.frames][that.frameState][Math.floor(frameCounter/that.frameDelay)][1];
+	}
+
+	that.runAnimation = (state, JSON) => {
+		that.runningState = state;
+		lastStateBeforeRun = that.frameState;
+		frameCounter = 0;
+		that.runningStateCounter = JSON[that.frames][state].length - 1;
 	}
 
 	that.addMethods("handleFrames");
