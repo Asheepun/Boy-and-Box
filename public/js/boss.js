@@ -175,9 +175,17 @@ const boss = (pos) => {
 
 	}
 
-	that.cleanUpAttack = ({ clear, setRemoveIf, box }) => {
+	that.cleanUpAttack = ({ reds, clear, setRemoveIf, box, add }) => {
+
+		if(reds) reds.forEach(red => {
+			for(let i = 0; i < 4 + Math.random()*2; i++){
+				add(particles.dust(v.add(red.center, vec(-2.5, -2.5)), vec(Math.random()-0.5, Math.random()-0.5), false), "particles", 7);
+			}
+		});
 
 		setRemoveIf((x) => x.partOfAttack, "obstacles", "blockers", "door_buttons");
+
+
 
 		clear("reds", "attackSprites");
 

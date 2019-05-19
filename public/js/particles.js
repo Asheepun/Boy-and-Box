@@ -22,7 +22,7 @@ const particle = ({ pos, size, img, imgSize, velocity }) => {
 	return that;
 }
 
-export const dust = (pos, velocity) => {
+export const dust = (pos, velocity, haveCol = true) => {
 	const that = particle({
 		pos,
 		velocity,
@@ -31,13 +31,15 @@ export const dust = (pos, velocity) => {
 		imgSize: vec(5, 5),
 	});
 
-	traits.addColTrait({
-		bounce: true,
-	})(that);
+	if(haveCol){
+		traits.addColTrait({
+			bounce: true,
+		})(that);
 
-	traits.addBoxColTrait({
-		bounce: true,
-	})(that);
+		traits.addBoxColTrait({
+			bounce: true,
+		})(that);
+	}
 
 	let shrinkage;
 	that.shrink = ({ world: { remove } }) => {

@@ -253,8 +253,8 @@ export const giant = (pos) => {
 		for(let i = 0; i < 7 + Math.random() * 4; i++){
 			posX = that.pos.x + Math.random() * that.size.x;
 			add(particles.getDustParticle(
-				vec(posX, that.pos.y + that.size.y - 5),
-				vec((posX > that.center.x) ? Math.random() + 0.5 : -Math.random() - 0.5, Math.random()),
+				vec(posX, that.pos.y + that.size.y - 6),
+				vec((posX > that.center.x) ? Math.random() + 0.5 : -Math.random() - 0.5, 0.3 + Math.random()),
 			), "particles", 5);
 		}
 	}
