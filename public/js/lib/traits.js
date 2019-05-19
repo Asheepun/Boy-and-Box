@@ -318,12 +318,13 @@ export const addFrameTrait = ({ delay, frames, initState = "still" }) => (that) 
 
 		if(that.runningStateCounter >= 0){
 			that.frameState = that.runningState;
-		console.log(that.frameState)
+		//console.log(that.frameState)
 		}else if(that.runningStateCounter === -1){
 			that.frameState = lastStateBeforeRun;
-			console.log("CHECK")
+			frameCounter = 0;
 		}
 
+		if(that.frameState === "attack")console.log(frameCounter)
 		that.runningStateCounter--;
 
 		that.imgPos.x = JSON[that.frames][that.frameState][Math.floor(frameCounter/that.frameDelay)][0];
@@ -334,7 +335,8 @@ export const addFrameTrait = ({ delay, frames, initState = "still" }) => (that) 
 		that.runningState = state;
 		lastStateBeforeRun = that.frameState;
 		frameCounter = 0;
-		that.runningStateCounter = JSON[that.frames][state].length - 1;
+		that.runningStateCounter = that.frameDelay * (JSON[that.frames][state].length - 1);
+		console.log(JSON[that.frames][state]);
 	}
 
 	that.addMethods("handleFrames");

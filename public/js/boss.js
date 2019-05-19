@@ -82,6 +82,8 @@ const boss = (pos) => {
 		that.waitCounter--;
 		that.attackCounter--;
 
+		//console.log(that.imgPos.x);
+
 		if(that.waitCounter === /*(that.stage === 0 ? 20 : 10)*/ 15 && that.lives > 0){{
 			that.runAnimation("attack", JSON);
 		}
