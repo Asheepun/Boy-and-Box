@@ -166,12 +166,11 @@ const boss = (pos) => {
 
 		const vineImg = generateVineImg(attack.template, sprites, vec(15 * 17, 15 * 18));
 
-		add(attackSprite(vec(30, 0), vineImg), "attackSprites", 0);
+		add(attackSprite(vec(30, 0), vineImg, true, (that.currentAttack === 0 && that.stage === 0) ? true : false), "attackSprites", 0);
 
 		const obstacleImg = generateTileImg(attack.template, sprites, JSON.grass_tiles, vec(15 * 17, 15 * 18));
 
-
-		add(attackSprite(vec(30, 0), obstacleImg), "attackSprites", 0);
+		add(attackSprite(vec(30, 0), obstacleImg, false, false), "attackSprites", 0);
 
 	}
 
@@ -314,13 +313,33 @@ const obstacle = (pos) => {
 	return that;
 }
 
-const attackSprite = (pos, img) => {
+const attackSprite = (pos, img, willFadeOut = true, willFadeIn = false) => {
 	const that = obstacle(pos);
 
 	that.img = img;
 
 	that.size.x = 15 * 17;
 	that.size.y = 15 * 18;
+
+	const startImgs = [];
+	const startImgCtxs = [];
+	for(let i = 0; i < 2; i++){
+		startImgs[i] = document.createElement("canvas");
+		startImgs[i].width = that.size.x;
+		startImgs[i].height = that.size.y;
+		startImgCtxs[i] = startImgs[i].getContext("2d");
+		startImgCtxs[i].drawImage(that.img, 0, 0);
+	}
+
+	for(let x = 0; x < that.size.x / 15; x++){
+		for(let y = 0; y < that.size.y / 15; y++){
+			startImgCtxs[0].clearRect(x * 15 - 5, 0, 10, that.size.y);
+			startImgCtxs[0].clearRect(0, y * 15 - 5, that.size.x, 10);
+
+			startImgCtxs[1].clearRect(x * 15 - 2, 0, 4, that.size.y);
+			startImgCtxs[1].clearRect(0, y * 15 - 2, that.size.x, 4);
+		}
+	}
 
 	that.fadeOut = false;
 
@@ -336,25 +355,47 @@ const attackSprite = (pos, img) => {
 
 	let fadeAmount = 10;
 
+	let fadeCounter = 12;
 	that.fade = ({ world: { remove } }) => {
 		if(that.fadeOut){
-			that.alpha -= fadeAmount;
-			//fadeAmount *= 2;
+			currentImg = startImgs[1];
+			if(fadeCounter <= 8) currentImg = startImgs[0];
+			fadeCounter--;
+			if(fadeCounter === 0 || !willFadeOut) remove(that);
 		}
-		if(that.alpha <= 0){
-			remove(that);
-		}
-		if(that.alpha > 1){
-			that.alpha = 1;
+		if(willFadeIn && that.imgSize.y < that.size.y){
+			that.drawSize.y += 15;
+			that.imgSize.y += 15;
 		}
 	}
+	if(willFadeIn){
+		that.drawSize.y = 0;
+		that.imgSize.y = 0;
+	}
 
+	let frameCount = 0;
+	let currentImg = that.img;
+	//if(willFadeIn) currentImg = startImgs[0];
 	that.draw = (ctx) => {
+		/*
+		if(willFadeIn){
+			if(frameCount === 3) currentImg = that.img;
+		}
+		*/
+		frameCount++;
 		ctx.globalAlpha = that.alpha;
-		ctx.drawImage(that.img,
+		ctx.drawImage(currentImg,
 			that.imgPos.x, that.imgPos.y, that.imgSize.x, that.imgSize.y,
 			that.pos.x, that.pos.y, that.drawSize.x, that.drawSize.y
 		);
+		/*
+		if(willFadeIn){
+			ctx.drawImage(currentImg,
+				that.imgPos.x, that.size.y - frameCount * 15, that.imgSize.x, that.imgSize.y,
+				that.pos.x, that.pos.y + that.size.y - frameCount * 15, that.drawSize.x, that.drawSize.y
+			);
+		}
+		*/
 		ctx.globalAlpha = 1;
 	}
 
