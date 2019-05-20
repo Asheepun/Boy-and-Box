@@ -175,19 +175,34 @@ const boss = (pos) => {
 
 	}
 
-	that.cleanUpAttack = ({ reds, clear, setRemoveIf, box, add }) => {
+	that.cleanUpAttack = ({ reds, obstacles, clear, setRemoveIf, box, player, add, attackSprites }) => {
 
 		if(reds) reds.forEach(red => {
-			for(let i = 0; i < 4 + Math.random()*2; i++){
-				add(particles.dust(v.add(red.center, vec(-2.5, -2.5)), vec(Math.random()-0.5, Math.random()-0.5), false), "particles", 7);
+			for(let i = 0; i < 3 + Math.random()*2; i++){
+				add(particles.dust(v.add(red.center, vec(-2.5, -2.5)), vec(Math.random()-0.5, Math.random()-0.5), false), "particles", 8);
+			}
+		});
+		let pos;
+		let velocity;
+		if(obstacles) obstacles.forEach(obstacle => {
+			if(obstacle.partOfAttack && v.sub(obstacle.pos, player.pos).mag > 35){
+				for(let x = 0; x < obstacle.size.x / 15; x++){
+					for(let y = 0; y < obstacle.size.y / 15; y++){
+						pos = v.add(obstacle.pos.copy(), vec(Math.random() * (obstacle.size.x - 10), Math.random() * (obstacle.size.y - 10)));
+						velocity = vec(Math.random(), Math.random());
+						if(pos.x + 4 < obstacle.center.x) velocity.x *= -1;
+						if(pos.y + 4 < obstacle.center.y) velocity.y *= -1;
+						add(particles.debri(pos, velocity), "particles", 7);
+					}
+				}
 			}
 		});
 
 		setRemoveIf((x) => x.partOfAttack, "obstacles", "blockers", "door_buttons");
 
+		attackSprites.forEach(x => x.remove())
 
-
-		clear("reds", "attackSprites");
+		clear("reds", /*"attackSprites"*/);
 
 		box.pos = vec(-100, -100)
 	}
@@ -307,9 +322,43 @@ const attackSprite = (pos, img) => {
 	that.size.x = 15 * 17;
 	that.size.y = 15 * 18;
 
-	that.draw = (ctx) => {
-		ctx.drawImage(that.img, 0, 0, that.size.x, that.size.y, that.pos.x, that.pos.y, that.size.x, that.size.y)
+	that.fadeOut = false;
+
+	that.alpha = 1;
+
+	that.drawSize = that.size.copy();
+	that.imgPos = vec(0, 0);
+	that.imgSize = that.size.copy();
+
+	that.remove = () => {
+		that.fadeOut = true;
+	};
+
+	let fadeAmount = 10;
+
+	that.fade = ({ world: { remove } }) => {
+		if(that.fadeOut){
+			that.alpha -= fadeAmount;
+			//fadeAmount *= 2;
+		}
+		if(that.alpha <= 0){
+			remove(that);
+		}
+		if(that.alpha > 1){
+			that.alpha = 1;
+		}
 	}
+
+	that.draw = (ctx) => {
+		ctx.globalAlpha = that.alpha;
+		ctx.drawImage(that.img,
+			that.imgPos.x, that.imgPos.y, that.imgSize.x, that.imgSize.y,
+			that.pos.x, that.pos.y, that.drawSize.x, that.drawSize.y
+		);
+		ctx.globalAlpha = 1;
+	}
+
+	that.addMethods("fade")
 
 	return that;
 }

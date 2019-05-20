@@ -83,6 +83,36 @@ export const confetti = ({ pos, img, velocity, gravity }) => {
 	return that;
 }
 
+export const debri = (pos, velocity) => {
+	const that = particle({
+		pos,
+		velocity,
+		img: "tiles/lab_tiles",
+		size: vec(8 + Math.random() * 2, 8 + Math.random() * 2),
+		imgPos: vec(16, 16),
+	});
+
+	//that.rotation = Math.random() * 10;
+	that.alpha = 0.7;
+
+	traits.addPhysicsTrait({
+		gravity: 0.00,
+	})(that);
+
+	that.fade = ({ world: { remove } }) => {
+		that.size.x -= 0.5;
+		that.size.y -= 0.5;
+		that.drawSize = that.size.copy();
+		if(that.size.x <= 0) remove(that);
+		//that.alpha -= 0.05;
+		if(that.alpha < 0) that.alpha = 0;
+	}
+
+	that.addMethods("fade");
+
+	return that;
+}
+
 const dustParticles = [];
 
 for(let i = 0; i < 100; i++){
