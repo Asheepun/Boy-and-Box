@@ -93,15 +93,15 @@ export const debri = (pos, velocity) => {
 	});
 
 	//that.rotation = Math.random() * 10;
-	that.alpha = 0.7;
+	that.alpha = 0.9;
 
 	traits.addPhysicsTrait({
-		gravity: 0.00,
+		gravity: 0.03,
 	})(that);
 
 	that.fade = ({ world: { remove } }) => {
-		that.size.x -= 0.5;
-		that.size.y -= 0.5;
+		that.size.x -= 0.2;
+		that.size.y -= 0.2;
 		that.drawSize = that.size.copy();
 		if(that.size.x <= 0) remove(that);
 		//that.alpha -= 0.05;

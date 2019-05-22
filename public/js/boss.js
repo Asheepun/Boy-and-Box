@@ -19,7 +19,6 @@ const boss = (pos) => {
 	})(that);
 
 	traits.addSpriteTrait({
-		//color: "red",
 		img: "boss",
 	})(that);
 
@@ -38,7 +37,7 @@ const boss = (pos) => {
 		frames: "boss_frames",
 	})(that);
 
-	that.setupStage = ({ world: { add }, sprites, JSON }) => {
+	that.setupStage = ({ world, world: { add }, sprites, JSON }) => {
 
 		for(let y = 0; y < that.lives; y++){
 			for(let x = 0; x < 10; x++){
@@ -48,7 +47,7 @@ const boss = (pos) => {
 
 		add(attackCountdownSprite(vec(that.pos.x - 35, that.pos.y - 10)), "attackCountdown", 10, true);
 
-		that.attack(setupAttack, { add, sprites, JSON })
+		that.attack(setupAttack, { world, sprites, JSON })
 
 		that.removeMethods("setupStage");
 	}
@@ -78,14 +77,13 @@ const boss = (pos) => {
 
 	that.attacks = firstStageAttacks;
 
-	that.handleAttacking = ({ world, world: { add }, sprites, JSON }) => {
+	that.handleAttacking = ({ world, world: { add }, sprites, JSON, context }) => {
 		that.waitCounter--;
 		that.attackCounter--;
 
-		//console.log(that.imgPos.x);
-
 		if(that.waitCounter === /*(that.stage === 0 ? 20 : 10)*/ 15 && that.lives > 0){{
 			that.runAnimation("attack", JSON);
+			//context.y = Math.pow(0.9, 1 / 15) * 15;
 		}
 		
 		}
@@ -94,7 +92,7 @@ const boss = (pos) => {
 
 			that.cleanUpAttack(world);
 
-			that.attack(that.attacks[that.currentAttack], { add, sprites, JSON });
+			that.attack(that.attacks[that.currentAttack], { world, sprites, JSON });
 
 			that.attackCounter = that.attacks[that.currentAttack].duration;
 
@@ -104,7 +102,7 @@ const boss = (pos) => {
 		if(that.attackCounter === 0 && that.lives > 0){
 			that.cleanUpAttack(world);
 
-			that.attack(failAttack, { add, sprites, JSON });
+			that.attack(failAttack, { world, sprites, JSON });
 		}
 
 	}
@@ -124,7 +122,7 @@ const boss = (pos) => {
 	let obstacles = [];
 	let vines = [];
 
-	that.attack = (attack, { add, sprites, JSON }) => {
+	that.attack = (attack, { world, world: { add, player }, sprites, JSON }) => {
 
 		obstacles.splice(0, obstacles.length);
 		vines.splice(0, vines.length);
@@ -166,11 +164,27 @@ const boss = (pos) => {
 
 		const vineImg = generateVineImg(attack.template, sprites, vec(15 * 17, 15 * 18));
 
-		add(attackSprite(vec(30, 0), vineImg, true, (that.currentAttack === 0 && that.stage === 0) ? true : false), "attackSprites", 0);
+		add(attackSprite(vec(30, 0), vineImg, true, (that.currentAttack === 0 && that.stage === 0) ? true : false, false), "attackSprites", 0);
 
 		const obstacleImg = generateTileImg(attack.template, sprites, JSON.grass_tiles, vec(15 * 17, 15 * 18));
 
-		add(attackSprite(vec(30, 0), obstacleImg, false, false), "attackSprites", 0);
+		add(attackSprite(vec(30, 0), obstacleImg, false, false, true), "attackSprites", 0);
+
+		//staying obstacle
+		const sO = obstacles.find(o => v.sub(o.pos, player.pos).mag < 30);
+
+		if(sO){
+			const sOImg = generateTileImg(attack.template, sprites, JSON.grass_tiles, vec(15 * 17, 15 * 18));
+
+			const sOCtx = sOImg.getContext("2d");
+			sOCtx.clearRect(0, 0, sO.pos.x - 30, 15 * 18);
+			sOCtx.clearRect(0, 0, 15 * 17, sO.pos.y);
+			sOCtx.clearRect(0, sO.pos.y + sO.size.y, 15 * 17, 15 * 18);
+			sOCtx.clearRect(sO.pos.x + sO.size.x, 0, 15 * 17, 15 * 18);
+			
+			world.clear("stayingAttackObstacleSprite");
+			add(attackSprite(vec(30, 0), sOImg, false, false, false), "stayingAttackObstacleSprite", 1, true);
+		}
 
 	}
 
@@ -313,7 +327,7 @@ const obstacle = (pos) => {
 	return that;
 }
 
-const attackSprite = (pos, img, willFadeOut = true, willFadeIn = false) => {
+const attackSprite = (pos, img, willFadeOut = true, willFallIn = false, willFadeIn = false) => {
 	const that = obstacle(pos);
 
 	that.img = img;
@@ -323,7 +337,7 @@ const attackSprite = (pos, img, willFadeOut = true, willFadeIn = false) => {
 
 	const startImgs = [];
 	const startImgCtxs = [];
-	for(let i = 0; i < 2; i++){
+	for(let i = 0; i < 6; i++){
 		startImgs[i] = document.createElement("canvas");
 		startImgs[i].width = that.size.x;
 		startImgs[i].height = that.size.y;
@@ -338,6 +352,15 @@ const attackSprite = (pos, img, willFadeOut = true, willFadeIn = false) => {
 
 			startImgCtxs[1].clearRect(x * 15 - 2, 0, 4, that.size.y);
 			startImgCtxs[1].clearRect(0, y * 15 - 2, that.size.x, 4);
+
+			startImgCtxs[2].clearRect(x * 15 + 7, 0, 8, that.size.y);
+			startImgCtxs[2].clearRect(0, y * 15 + 7, that.size.x, 8);
+
+			startImgCtxs[3].clearRect(x * 15 + 7, 0, 8, that.size.y);
+			startImgCtxs[3].clearRect(0, y * 15, that.size.x, 7);
+
+			startImgCtxs[4].clearRect(x * 15, 0, 7, that.size.y);
+			startImgCtxs[4].clearRect(0, y * 15 + 7, that.size.x, 8);
 		}
 	}
 
@@ -358,44 +381,49 @@ const attackSprite = (pos, img, willFadeOut = true, willFadeIn = false) => {
 	let fadeCounter = 12;
 	that.fade = ({ world: { remove } }) => {
 		if(that.fadeOut){
-			currentImg = startImgs[1];
-			if(fadeCounter <= 8) currentImg = startImgs[0];
+			that.currentImg = startImgs[1];
+			if(fadeCounter <= 8) that.currentImg = startImgs[0];
 			fadeCounter--;
 			if(fadeCounter === 0 || !willFadeOut) remove(that);
 		}
-		if(willFadeIn && that.imgSize.y < that.size.y){
+		if(willFallIn && that.imgSize.y < that.size.y){
 			that.drawSize.y += 15;
 			that.imgSize.y += 15;
 		}
 	}
-	if(willFadeIn){
+	if(willFallIn || willFadeIn){
 		that.drawSize.y = 0;
 		that.imgSize.y = 0;
 	}
 
 	let frameCount = 0;
-	let currentImg = that.img;
-	//if(willFadeIn) currentImg = startImgs[0];
+	that.currentImg = that.img;
 	that.draw = (ctx) => {
-		/*
-		if(willFadeIn){
-			if(frameCount === 3) currentImg = that.img;
-		}
-		*/
+
 		frameCount++;
 		ctx.globalAlpha = that.alpha;
-		ctx.drawImage(currentImg,
+		ctx.drawImage(that.currentImg,
 			that.imgPos.x, that.imgPos.y, that.imgSize.x, that.imgSize.y,
 			that.pos.x, that.pos.y, that.drawSize.x, that.drawSize.y
 		);
-		/*
 		if(willFadeIn){
-			ctx.drawImage(currentImg,
-				that.imgPos.x, that.size.y - frameCount * 15, that.imgSize.x, that.imgSize.y,
-				that.pos.x, that.pos.y + that.size.y - frameCount * 15, that.drawSize.x, that.drawSize.y
+			ctx.drawImage(startImgs[3],
+				0, 0, that.size.x, that.size.y,
+				that.pos.x, that.pos.y, that.size.x, that.size.y,
 			);
+			if(frameCount >= 4) ctx.drawImage(startImgs[4],
+				0, 0, that.size.x, that.size.y,
+				that.pos.x, that.pos.y, that.size.x, that.size.y,
+			);
+			if(frameCount >= 8) ctx.drawImage(startImgs[5],
+				0, 0, that.size.x, that.size.y,
+				that.pos.x, that.pos.y, that.size.x, that.size.y,
+			);
+			if(frameCount >= 12){
+				that.imgSize.x = that.drawSize.x = that.size.x;
+				that.imgSize.y = that.drawSize.y = that.size.y;
+			}
 		}
-		*/
 		ctx.globalAlpha = 1;
 	}
 
