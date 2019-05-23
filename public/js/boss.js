@@ -77,15 +77,17 @@ const boss = (pos) => {
 
 	that.attacks = firstStageAttacks;
 
-	that.handleAttacking = ({ world, world: { add }, sprites, JSON, context }) => {
+	that.handleAttacking = ({ world, world: { add, screenShaker }, sprites, JSON, context }) => {
 		that.waitCounter--;
 		that.attackCounter--;
 
-		if(that.waitCounter === /*(that.stage === 0 ? 20 : 10)*/ 15 && that.lives > 0){{
+		if(that.waitCounter === /*(that.stage === 0 ? 20 : 10)*/ 15 && that.lives > 0){
 			that.runAnimation("attack", JSON);
 			//context.y = Math.pow(0.9, 1 / 15) * 15;
 		}
-		
+
+		if(that.waitCounter === 15 && that.lives > 0){
+			screenShaker.shake(vec(0, -10), 12);
 		}
 		
 		if(that.waitCounter === 0 && that.lives > 0){
@@ -287,7 +289,7 @@ const boss = (pos) => {
 	let setupSwitchToStageThreeDone = false;
 	that.setupSwitchToStageThree = ({ world, world: { add, points, attackSprites }, sprites, JSON, height }) => {
 		that.cleanUpAttack(world);
-		that.attack(setupStageThreeAttack, { add, sprites, JSON });
+		that.attack(setupStageThreeAttack, { world, sprites, JSON });
 
 		add(lastAttackEnemy(vec(30, height + 30 * 1.5)), "enemies", 7);
 

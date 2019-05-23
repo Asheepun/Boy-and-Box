@@ -15,6 +15,7 @@ import levels					from "/js/levels.js";
 import setupSettings			from "/js/settings.js";
 import setupStartscreen 		from "/js/startscreen.js";
 import * as progUtils			from "/js/progress.js";
+import screenShaker				from "/js/screenShaker.js";
 
 Promise.all([
 	createCanvas(15 * 32, 15 * 18),
@@ -175,7 +176,7 @@ Promise.all([
 			tag: "r",
 			code: 82,
 		}
-	)
+	);
 
 	let musicHasStarted = false;
 
@@ -199,6 +200,8 @@ Promise.all([
 			GAME.world.add(helpers.boxText(vec(170, 50)), "text", 3);
 			//GAME.world.add(helpers.boxHelper(vec(205, 50)), "particles", 1);
 		}
+
+		GAME.world.add(screenShaker(), "screenShaker", 0, true);
 
 		GAME.levelCleared = false;
 
@@ -261,7 +264,7 @@ Promise.all([
 		}
 
 		//handleScreenShake
-		GAME.context = v.mul(GAME.context, 0.5);
+		//GAME.context = v.mul(GAME.context, 0.5);
 		
 	}
 

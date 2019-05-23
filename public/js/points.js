@@ -31,7 +31,7 @@ export const point = (pos) => {
 
 	let spawner = 0;
 
-	that.open = ({ world: { pointTarget, remove, add }, width, context, audio: { play } }) => {
+	that.open = ({ world: { pointTarget, remove, add, screenShaker }, width, context, audio: { play } }) => {
 		that.acceleration = v.add(that.acceleration, v.pipe(
 			v.sub(that.center, pointTarget),
 			v.normalize,
@@ -51,7 +51,8 @@ export const point = (pos) => {
 			for(let i = 0; i < 7 + Math.random() * 3; i++){
 				add(particles.dust(vec(width-5, that.pos.y + Math.random()*that.size.y), vec(-Math.random()*2-1, Math.random()*2-1)), "particles", 5);
 			}
-			context.x += 5 * 2;
+			//context.x += 5 * 2;
+			screenShaker.shake(vec(5 * 4, 0), 1)
 
 			play("level_cleared", {
 				volume: 0.5,
