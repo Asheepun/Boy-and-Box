@@ -52,7 +52,7 @@ export const point = (pos) => {
 				add(particles.dust(vec(width-5, that.pos.y + Math.random()*that.size.y), vec(-Math.random()*2-1, Math.random()*2-1)), "particles", 5);
 			}
 			//context.x += 5 * 2;
-			screenShaker.shake(vec(5 * 4, 0), 1)
+			screenShaker.shake(vec(5 * 4, 0), 0.5, 1)
 
 			play("level_cleared", {
 				volume: 0.5,

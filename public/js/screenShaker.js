@@ -7,10 +7,14 @@ const screenShaker = () => {
 	that.context = vec(0, 0);
 
 	that.dir;
+	that.coefficient = 1;
+	that.callback = () => {};
 	let counter = 0;
-	that.shake = (dir, duration) => {
+	that.shake = (dir, coefficient, duration, callback = () => {}) => {
 		that.dir = dir.copy();
+		that.coefficient = coefficient;
 		counter = duration;
+		that.callback = callback;
 	}
 
 	that.handleContext = (GAME) => {
@@ -19,7 +23,17 @@ const screenShaker = () => {
 			that.context = v.add(that.context, that.dir);
 		}
 
-		that.context = v.mul(that.context, 0.5);
+		that.context = v.mul(that.context, that.coefficient);
+
+
+		if(Math.round(that.context.x) === 0
+		&& Math.round(that.context.y) === 0
+		&& (that.context.x !== 0
+		|| that.context.y !== 0)){
+			console.log("CHECK")
+			that.context = v.floor(that.context);
+			that.callback(GAME);
+		}
 
 		GAME.context = that.context.copy();
 	}

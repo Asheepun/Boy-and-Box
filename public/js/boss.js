@@ -87,7 +87,9 @@ const boss = (pos) => {
 		}
 
 		if(that.waitCounter === 15 && that.lives > 0){
-			screenShaker.shake(vec(0, -10), 12);
+			screenShaker.shake(vec(0, -20), 0.3, 15, () => {
+				screenShaker.shake(vec(0, 10), 0.7, 2);
+			});
 		}
 		
 		if(that.waitCounter === 0 && that.lives > 0){

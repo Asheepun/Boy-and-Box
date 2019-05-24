@@ -246,7 +246,7 @@ export const giant = (pos) => {
 	let posX;
 	that.land = ({ context, world: { add, screenShaker }, audio: { play } }) => {
 		//context.y = 15;
-		screenShaker.shake(vec(0, 30), 1);
+		screenShaker.shake(vec(0, 30), 0.5, 1);
 		play("giant_land", {
 			volume: 0.5 + Math.random() * 0.1,
 		});
