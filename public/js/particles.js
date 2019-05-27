@@ -88,7 +88,7 @@ export const debri = (pos, velocity) => {
 		pos,
 		velocity,
 		img: "tiles/lab_tiles",
-		size: vec(8 + Math.random() * 2, 8 + Math.random() * 2),
+		size: vec(8 + Math.random() * 4, 8 + Math.random() * 4),
 		imgPos: vec(16, 16),
 	});
 
@@ -109,6 +109,25 @@ export const debri = (pos, velocity) => {
 	}
 
 	that.addMethods("fade");
+
+	return that;
+}
+
+export const oneUp = (pos) => {
+	const that = traitHolder();
+
+	traits.addEntityTrait({
+		pos,
+		size: vec(32, 32),
+	})(that);
+
+	traits.addSpriteTrait({
+		img: "1up",
+	})(that);
+
+	traits.addMoveTrait({
+		velocity: vec(0, -0.7),
+	})(that);
 
 	return that;
 }

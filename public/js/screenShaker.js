@@ -30,7 +30,6 @@ const screenShaker = () => {
 		&& Math.round(that.context.y) === 0
 		&& (that.context.x !== 0
 		|| that.context.y !== 0)){
-			console.log("CHECK")
 			that.context = v.floor(that.context);
 			that.callback(GAME);
 		}

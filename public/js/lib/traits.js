@@ -410,14 +410,19 @@ export const addTalkTrait = ({ texts, size, Yoffset, condition, sound = false, s
 	that.addMethods("checkTextCondition", "talk");
 }
 
-export const textEntity = ({ pos, size, text }) => {
+export const textEntity = ({ pos, size, text, velocity = vec(0, 0) }) => {
 	const that = traitHolder();
 
 	that.pos = pos;
+	that.velocity = velocity;
 	that.size = size;
 	that.text = text;
 
 	let offsetX;
+
+	that.update = () => {
+		that.pos = v.add(that.pos, that.velocity);
+	}
 	
 	that.draw = (ctx, sprites, GAME) => {
 		ctx.globalAlpha = 1;
@@ -430,7 +435,6 @@ export const textEntity = ({ pos, size, text }) => {
 		}
 		ctx.globalAlpha = 1;
 	}
-
 
 	return that;
 }

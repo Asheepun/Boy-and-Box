@@ -45,7 +45,7 @@ const boss = (pos) => {
 			}
 		}
 
-		add(attackCountdownSprite(vec(that.pos.x - 35, that.pos.y - 10)), "attackCountdown", 10, true);
+		add(attackCountdownSprite(vec(158, 120)), "attackCountdown", 10, true);
 
 		that.attack(setupAttack, { world, sprites, JSON })
 
@@ -88,7 +88,7 @@ const boss = (pos) => {
 
 		if(that.waitCounter === 15 && that.lives > 0){
 			screenShaker.shake(vec(0, -20), 0.3, 15, () => {
-				screenShaker.shake(vec(0, 10), 0.7, 2);
+				screenShaker.shake(vec(0, 10), 0.75, 2);
 			});
 		}
 		
@@ -195,7 +195,7 @@ const boss = (pos) => {
 	that.cleanUpAttack = ({ reds, obstacles, clear, setRemoveIf, box, player, add, attackSprites }) => {
 
 		if(reds) reds.forEach(red => {
-			for(let i = 0; i < 3 + Math.random()*2; i++){
+			for(let i = 0; i < 3 + Math.random()*3; i++){
 				add(particles.dust(v.add(red.center, vec(-2.5, -2.5)), vec(Math.random()-0.5, Math.random()-0.5), false), "particles", 8);
 			}
 		});
@@ -226,25 +226,52 @@ const boss = (pos) => {
 
 	that.stage = 0;
 
-	let setupWait = 1.5 * 60;
+	const setupWait = 4.5 * 60;
+	let setupWaitCounter = setupWait;
+	let newDoorPos = vec(0, -1);
+
+	let addedOneUpText = false;
+	let oneUp;
 
 	that.handleSwitchStage = (GAME) => {
 		if(that.lives === 0){
 			if(that.stage === 0 && that.pos.y > GAME.height + 200){
 
-				GAME.world.clear("door_buttons");
+				if(setupWaitCounter === setupWait - 1 * 60){
+					GAME.world.clear("door_buttons");
+				
+					GAME.world.add(traits.textEntity({
+						pos: vec(that.center.x, 110),
+						size: 20,
+						text: ["1 UP"],
+						velocity: vec(0, -0.7),
+					}), "texts", 10);
 
-				GAME.world.add(traits.textEntity({
-					pos: vec(that.center.x, 100),
-					size: 20,
-					text: ["1 UP"],
-				}), "texts", 20);
+					oneUp = particles.oneUp(vec(that.center.x - 16, 115));
+					GAME.world.add(oneUp, "particles", 10);
+				}
+				if(setupWaitCounter === setupWait - 2 * 60){
+					GAME.world.remove(GAME.world.texts[GAME.world.texts.length-1]);
+					GAME.world.remove(oneUp);
+				}
 
-				setupWait--;
+				setupWaitCounter--;
 
 				that.waitCounter = 60 * 2;
 
-				if(setupWait === 0)
+				//new doors
+				if(setupWaitCounter <= setupWait - 2.5 * 60){
+					if(newDoorPos.y >= -8)
+						GAME.world.add(bossDoor(vec(that.pos.x + newDoorPos.x * 15 - 15, 270 + newDoorPos.y * 15), 8 + newDoorPos.y), "obstacles", 2);
+
+					newDoorPos.x += 1;
+					if(newDoorPos.x === 10){
+						newDoorPos.x = 0;
+						newDoorPos.y -= 1;
+					}
+				}
+
+				if(setupWaitCounter === 0)
 					that.setupSwitchToStageTwo(GAME);
 
 			}
@@ -263,6 +290,9 @@ const boss = (pos) => {
 		//that.size.y -= 30;
 		//that.pos.x += 15;
 		that.pos.y = 30;
+		//that.pos.x = 100;
+		that.velocity.y = 0;
+		console.log(that.pos.y);
 
 		that.stage++;
 
@@ -276,11 +306,13 @@ const boss = (pos) => {
 
 		that.attacks = secondStageAttacks;
 
+
+
 		clear("texts");
 
 		for(let y = 0; y < that.lives; y++){
 			for(let x = 0; x < 10; x++){
-				add(bossDoor(vec(that.pos.x + x * 15 - 15, that.pos.y + that.size.y + y * 15), y), "obstacles", 2);
+				//add(bossDoor(vec(that.pos.x + x * 15 - 15, that.pos.y + that.size.y + y * 15), y), "obstacles", 2);
 				
 			}
 		}
@@ -908,15 +940,37 @@ const attackCountdownSprite = (pos) => {
 
 	that.pos = pos;
 
+	let poofed = false;
+	that.poof = ({ world: { boss, door_buttons, add } }) => {
+		if(door_buttons
+		&& door_buttons[0]
+		&& door_buttons[0].hit
+		&& !poofed){
+			for(let i = 0; i < 4 + Math.random() * 3; i++){
+				add(particles.dust(v.add(that.pos, vec(4, -5)), vec(Math.random()-0.5, Math.random()-0.5)), "particles", 7);
+			}
+			poofed = true;
+		}
+		if(boss.attackCounter > 120) poofed = false;
+	}
+
 	that.draw = (ctx, sprites, { world: { boss } }) => {
 
 		if(boss.attackCounter > 0){
-			ctx.fillStyle = "white";
+			ctx.globalAlpha = 1;
+			ctx.fillStyle = "white";//"#C64C3B";
+			//ctx.fillStyle = "#FBEE52";
+			//ctx.strokeStyle = "#8B4243"
+			ctx.strokeWidth = 1;
 			ctx.font = "20px game";
 			ctx.fillText(Math.floor(boss.attackCounter / 60) + 1, that.pos.x, that.pos.y);
+
+			ctx.globalAlpha = 1;
 		}
 
 	}
+
+	//that.addMethods("poof");
 
 	return that;
 }

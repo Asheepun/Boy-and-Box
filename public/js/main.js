@@ -78,6 +78,7 @@ Promise.all([
 		"lab_shelf",
 		"lab_table",
 		"boss",
+		"1up",
 	),
 	loaders.loadAudio(
 		1,
