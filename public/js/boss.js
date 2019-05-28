@@ -16,6 +16,7 @@ const boss = (pos) => {
 	traits.addEntityTrait({
 		pos: v.add(pos, vec(0, 0)),
 		size: vec(120, 120),
+		drawSize: vec(120, 121),
 	})(that);
 
 	traits.addSpriteTrait({
@@ -35,6 +36,7 @@ const boss = (pos) => {
 	traits.addFrameTrait({
 		delay: 6,
 		frames: "boss_frames",
+		initState: "init",
 	})(that);
 
 	that.setupStage = ({ world, world: { add }, sprites, JSON }) => {
@@ -52,14 +54,19 @@ const boss = (pos) => {
 		that.removeMethods("setupStage");
 	}
 
-	that.checkStartTrigger = ({ world: { player } }) => {
+	that.checkStartTrigger = ({ world: { player }, JSON }) => {
 		if(player.pos.x > 10 * 14 && player.pos.x < 12 * 15 && player.pos.y === 12 * 15 && player.onGround){
-			that.start();
+			that.start({ JSON });
 			that.removeMethods("checkStartTrigger");
 		}
 	}
 
-	that.start = () => {
+	that.start = ({ JSON }) => {
+
+		that.frameState = "still";
+
+		that.runAnimation("growing", JSON);
+
 		that.waitCounter = 60 * 1;
 	}
 
@@ -241,13 +248,13 @@ const boss = (pos) => {
 					GAME.world.clear("door_buttons");
 				
 					GAME.world.add(traits.textEntity({
-						pos: vec(that.center.x, 110),
+						pos: vec(that.center.x, 120),
 						size: 20,
 						text: ["1 UP"],
 						velocity: vec(0, -0.7),
 					}), "texts", 10);
 
-					oneUp = particles.oneUp(vec(that.center.x - 16, 115));
+					oneUp = particles.oneUp(vec(that.center.x - 16, 125));
 					GAME.world.add(oneUp, "particles", 10);
 				}
 				if(setupWaitCounter === setupWait - 2 * 60){
