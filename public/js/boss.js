@@ -8,7 +8,8 @@ import generateVineImg			from "/js/generateVineImg.js";
 import generateTileImg			from "/js/generateTileImg.js";
 import * as reds				from "/js/reds.js";
 import { optimizeObstacles }	from "/js/generateLevel.js";
-import * as cpö					from "/js/lib/colission.js";
+
+let firstAttempt = true;
 
 const boss = (pos) => {
 	const that = traitHolder();
@@ -36,8 +37,9 @@ const boss = (pos) => {
 	traits.addFrameTrait({
 		delay: 6,
 		frames: "boss_frames",
-		initState: "init",
+		initState: "still",
 	})(that);
+	if(firstAttempt) that.frameState = "init";
 
 	that.setupStage = ({ world, world: { add }, sprites, JSON }) => {
 
@@ -65,9 +67,15 @@ const boss = (pos) => {
 
 		that.frameState = "still";
 
-		that.runAnimation("growing", JSON);
+		that.waitCounter = 1 * 60;
 
-		that.waitCounter = 60 * 1;
+		if(firstAttempt){
+			that.waitCounter = 60 * 5;
+
+			that.runAnimation("growing", JSON);
+		}
+
+		firstAttempt = false;
 	}
 
 	that.currentAttack = 0;
@@ -84,7 +92,14 @@ const boss = (pos) => {
 
 	that.attacks = firstStageAttacks;
 
-	that.handleAttacking = ({ world, world: { add, screenShaker }, sprites, JSON, context }) => {
+	let doneFinalAttack = false;
+	let finalAttackCounter = 0;
+
+	that.handleAttacking = ({ world, height, world: { add, screenShaker, reds, points }, sprites, JSON, context }) => {
+
+		//console.log("vel: " + (that.velocity.y) + ", acc: " + (that.acceleration.y));
+		//console.log(that.pos.y, that.velocity.y);
+
 		that.waitCounter--;
 		that.attackCounter--;
 
@@ -114,6 +129,30 @@ const boss = (pos) => {
 			that.cleanUpAttack(world);
 
 			that.attack(failAttack, { world, sprites, JSON });
+		}
+
+		if(that.stage === 2){
+			if(reds) reds.forEach(r => {
+				if(r.isCarryingRaven) that.pos.y = r.pos.y - that.size.y + 3;
+			});
+
+			if(that.pos.y + that.size.y < 150 && !doneFinalAttack){
+				
+				finalAttackCounter = 60;
+
+				doneFinalAttack = true;
+			}
+			if(!doneFinalAttack) that.pos.y += 7;
+
+			finalAttackCounter--;
+
+			if(finalAttackCounter === 0){
+				add(lastAttackEnemy(vec(30, height + 15 * 2.5)), "enemies", 7);
+
+				points[0].initPos = vec(195, 60);
+				points[0].pos = v.add(points[0].initPos, vec(0, 1));
+			
+			}
 		}
 
 	}
@@ -151,6 +190,11 @@ const boss = (pos) => {
 				o.partOfAttack = true;
 				obstacles.push(o)
 			}
+			if(tile === "#"){
+				const o = obstacle(pos.copy());
+				o.parOfNextAttack = true;
+				obstacles.push(o);
+			}
 			if(tile === "-"){
 				const o = doorButton(pos.copy(), 4 + that.stage * 4 - that.lives);
 				o.partOfAttack = true;
@@ -181,9 +225,11 @@ const boss = (pos) => {
 
 		add(attackSprite(vec(30, 0), obstacleImg, false, false, true), "attackSprites", 0);
 
+		/*
 		//staying obstacle
-		const sO = obstacles.find(o => v.sub(o.pos, player.pos).mag < 30);
+		//const sO = obstacles.find(o => v.sub(o.pos, player.pos).mag < 30);
 
+		
 		if(sO){
 			const sOImg = generateTileImg(attack.template, sprites, JSON.grass_tiles, vec(15 * 17, 15 * 18));
 
@@ -196,6 +242,7 @@ const boss = (pos) => {
 			world.clear("stayingAttackObstacleSprite");
 			add(attackSprite(vec(30, 0), sOImg, false, false, false), "stayingAttackObstacleSprite", 1, true);
 		}
+		*/
 
 	}
 
@@ -270,6 +317,7 @@ const boss = (pos) => {
 				if(setupWaitCounter <= setupWait - 2.5 * 60){
 					if(newDoorPos.y >= -8)
 						GAME.world.add(bossDoor(vec(that.pos.x + newDoorPos.x * 15 - 15, 270 + newDoorPos.y * 15), 8 + newDoorPos.y), "obstacles", 2);
+					else that.setupSwitchToStageTwo(GAME);
 
 					newDoorPos.x += 1;
 					if(newDoorPos.x === 10){
@@ -278,51 +326,38 @@ const boss = (pos) => {
 					}
 				}
 
-				if(setupWaitCounter === 0)
-					that.setupSwitchToStageTwo(GAME);
-
 			}
+
 			if(that.stage === 1){
 
 				if(!setupSwitchToStageThreeDone && that.pos.y > GAME.height + 200)
 					that.setupSwitchToStageThree(GAME);
+
 
 			}
 		}
 	}
 
 	let setupSwitchToStageTwoDone = false;
-	that.setupSwitchToStageTwo = ({ world: { add, clear } }) => {
-		//that.size.x -= 30;
-		//that.size.y -= 30;
-		//that.pos.x += 15;
+	that.setupSwitchToStageTwo = ({ world: { add, clear }, JSON }) => {
 		that.pos.y = 30;
-		//that.pos.x = 100;
 		that.velocity.y = 0;
-		console.log(that.pos.y);
 
-		that.stage++;
+		that.stage = 1;
 
 		that.lives = 8;
 
 		that.currentAttack = 0;
 
-		that.waitCounter = 60 * 2;
+		that.waitCounter = 60 * 4;
 
 		that.attackDelay = 1 * 60;
 
 		that.attacks = secondStageAttacks;
 
-
+		that.runAnimation("1up", JSON);
 
 		clear("texts");
-
-		for(let y = 0; y < that.lives; y++){
-			for(let x = 0; x < 10; x++){
-				//add(bossDoor(vec(that.pos.x + x * 15 - 15, that.pos.y + that.size.y + y * 15), y), "obstacles", 2);
-				
-			}
-		}
 
 		setupSwitchToStageTwoDone = true;
 	}
@@ -332,17 +367,23 @@ const boss = (pos) => {
 		that.cleanUpAttack(world);
 		that.attack(setupStageThreeAttack, { world, sprites, JSON });
 
-		add(lastAttackEnemy(vec(30, height + 30 * 1.5)), "enemies", 7);
-
-
+		that.stage = 2;
+		
 		that.gravity = 0;
 		that.acceleration.y = 0;
 		that.velocity.y = -10;
 
-		points[0].initPos = vec(195, 60);
-		points[0].pos = v.add(points[0].initPos, vec(0, 1));
+		for(let i = 0; i < 3; i++){
+			const r = reds.redBird(vec(357 + 20 * i, 500));
+			r.recharged = false;
+			r.originPos = vec(357 + 20 * i, 150);
+			r.isCarryingRaven = true;
+			r.handleOubX = r.handleOubY = undefined;
+			//that.checkOub = () => false;
+			add(r, "reds", 7);
+		}
 
-		setupSwitchToStageThreeDone = true;
+		that.frameState = "still";
 	}
 
 	that.isBoss = true;

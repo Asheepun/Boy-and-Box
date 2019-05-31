@@ -123,7 +123,7 @@ export const oneUp = (pos) => {
 
 	traits.addSpriteTrait({
 		img: "1up",
-		alpha: 0.9,
+		alpha: 0.8,
 	})(that);
 
 	traits.addMoveTrait({
