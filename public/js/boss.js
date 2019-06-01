@@ -74,6 +74,7 @@ const boss = (pos) => {
 
 			that.runAnimation("growing", JSON);
 		}
+		that.stopPlayerCounter = that.waitCounter - 10;
 
 		firstAttempt = false;
 	}
@@ -140,6 +141,8 @@ const boss = (pos) => {
 				
 				finalAttackCounter = 60;
 
+				that.stopPlayerCounter = finalAttackCounter;
+
 				doneFinalAttack = true;
 			}
 			if(!doneFinalAttack) that.pos.y += 7;
@@ -147,7 +150,9 @@ const boss = (pos) => {
 			finalAttackCounter--;
 
 			if(finalAttackCounter === 0){
-				add(lastAttackEnemy(vec(30, height + 15 * 2.5)), "enemies", 7);
+				add(lastAttackEnemy(vec(30, height + 15 * 1.5)), "enemies", 7);
+
+				that.runAnimation("attack", JSON);
 
 				points[0].initPos = vec(195, 60);
 				points[0].pos = v.add(points[0].initPos, vec(0, 1));
@@ -157,12 +162,19 @@ const boss = (pos) => {
 
 	}
 
-	that.checkDoorBtns = ({ world: { door_buttons, blockers } }) => {
+	that.checkDoorBtns = ({ world, world: { door_buttons, blockers, attackSprites, box }, sprites, JSON }) => {
 		if(door_buttons) door_buttons.forEach(btn => {
 			if(btn.partOfAttack && btn.hit && that.waitCounter < -120){
 				that.attackCounter = -1;
 
 				that.lives--;
+
+				//that.attack(failAttack, { world, sprites, JSON });
+				//box.pos = vec(-100, -100);
+
+				//attackSprites[0].remove();
+
+				that.stopPlayerCounter = 60 * 1.2;
 
 				that.waitCounter = that.attackDelay;
 			}
@@ -223,7 +235,7 @@ const boss = (pos) => {
 
 		const obstacleImg = generateTileImg(attack.template, sprites, JSON.grass_tiles, vec(15 * 17, 15 * 18));
 
-		add(attackSprite(vec(30, 0), obstacleImg, false, false, true), "attackSprites", 0);
+		add(attackSprite(vec(30, 0), obstacleImg, false, false, true), "attackSprites", 1);
 
 		/*
 		//staying obstacle
@@ -289,6 +301,7 @@ const boss = (pos) => {
 
 	that.handleSwitchStage = (GAME) => {
 		if(that.lives === 0){
+			if(that.stage < 2) that.stopPlayerCounter = 2;
 			if(that.stage === 0 && that.pos.y > GAME.height + 200){
 
 				if(setupWaitCounter === setupWait - 1 * 60){
@@ -312,6 +325,8 @@ const boss = (pos) => {
 				setupWaitCounter--;
 
 				that.waitCounter = 60 * 2;
+
+				that.stopPlayerCounter = 2;
 
 				//new doors
 				if(setupWaitCounter <= setupWait - 2.5 * 60){
@@ -351,6 +366,8 @@ const boss = (pos) => {
 
 		that.waitCounter = 60 * 4;
 
+		that.stopPlayerCounter = that.waitCounter;
+
 		that.attackDelay = 1 * 60;
 
 		that.attacks = secondStageAttacks;
@@ -368,6 +385,8 @@ const boss = (pos) => {
 		that.attack(setupStageThreeAttack, { world, sprites, JSON });
 
 		that.stage = 2;
+
+		that.stopPlayerCounter = 10 * 60;
 		
 		that.gravity = 0;
 		that.acceleration.y = 0;
@@ -394,7 +413,23 @@ const boss = (pos) => {
 		}
 	}
 
-	that.addMethods("setupStage", "checkStartTrigger", "handleAttacking", "checkDoorBtns", "handleSwitchStage", "checkPlayer");
+	that.stopPlayerCounter = 0;
+	that.stopPlayer = ({ world: { player } }) => {
+		that.stopPlayerCounter--;
+
+		if(that.stopPlayerCounter > 0){
+			player.alpha -= 0.1;
+			player.velocity.y = 0;
+			player.acceleration.y = 0;
+		}else{
+			player.alpha += 0.1;
+		}
+		if(player.alpha < 0.5) player.alpha = 0.5;
+		if(player.alpha > 1) player.alpha = 1;
+		
+	}
+
+	that.addMethods("setupStage", "checkStartTrigger", "handleAttacking", "checkDoorBtns", "handleSwitchStage", "checkPlayer", "stopPlayer");
 	//that.removeMethods("checkStartTrigger");
 
 	return that;
