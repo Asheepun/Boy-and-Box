@@ -9,7 +9,7 @@ const dynamicShadow = () => {
 	that.img.width = 32 * 15;
 	that.img.height = 18 * 15;
 
-	that.updateImg = ({ world: { player, points, reds, shine, door_buttons, boss }, sprites }) => {
+	that.updateImg = ({ world: { player, points, reds, shine, door_buttons, boss, oneUp }, sprites }) => {
 
 		that.ctx.clearRect(0, 0, that.img.width, that.img.height);
 		
@@ -33,14 +33,14 @@ const dynamicShadow = () => {
 
 		if(points.length === 0)
 			that.ctx.drawImage(sprites["shadows/100"], shine[0].center.x - 50, Math.floor(shine.reduce((x, s) => s.center.y + x, 0) / shine.length - 50), 100, 100);
-		if(boss && door_buttons){
-			//that.ctx.drawImage(sprites["shadows/60"], Math.floor(door_buttons[0].center.x - 30), Math.floor(door_buttons[0].center.y - 30));
+
+		if(boss){
+			if(boss.frameState === "init") that.ctx.drawImage(sprites["shadows/60"], boss.pos.x + 24, boss.pos.y + 80, 60, 60);
+			if(boss.frameState === "growing"
+			|| boss.frameState === "1up") that.ctx.drawImage(sprites["shadows/100"], boss.pos.x + 4, boss.pos.y + 50, 100, 100);
+			if(boss.stage === 2) that.ctx.drawImage(sprites["shadows/100"], boss.center.x - 63, boss.center.y - 70);
 		}
-		/*
-		if(points.length === 0) shine.forEach(s => {
-			that.ctx.fillRect(s.center.x - 30, s.center.y - 30, 60, 60);
-		});
-		*/
+		if(oneUp) that.ctx.drawImage(sprites["shadows/100"], oneUp.center.x - 50, oneUp.center.y - 50, 100, 100);
 	}
 
 	that.draw = (ctx) => {

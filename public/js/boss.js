@@ -139,7 +139,7 @@ const boss = (pos) => {
 
 			if(that.pos.y + that.size.y < 150 && !doneFinalAttack){
 				
-				finalAttackCounter = 60;
+				finalAttackCounter = 60 * 3;
 
 				that.stopPlayerCounter = finalAttackCounter;
 
@@ -315,7 +315,7 @@ const boss = (pos) => {
 					}), "texts", 10);
 
 					oneUp = particles.oneUp(vec(that.center.x - 16, 125));
-					GAME.world.add(oneUp, "particles", 10);
+					GAME.world.add(oneUp, "oneUp", 10, true);
 				}
 				if(setupWaitCounter === setupWait - 2 * 60){
 					GAME.world.remove(GAME.world.texts[GAME.world.texts.length-1]);
@@ -398,7 +398,6 @@ const boss = (pos) => {
 			r.originPos = vec(357 + 20 * i, 150);
 			r.isCarryingRaven = true;
 			r.handleOubX = r.handleOubY = undefined;
-			//that.checkOub = () => false;
 			add(r, "reds", 7);
 		}
 
@@ -419,9 +418,9 @@ const boss = (pos) => {
 
 		if(that.stopPlayerCounter > 0){
 			player.alpha -= 0.1;
-			player.velocity.y = 0;
-			player.acceleration.y = 0;
+			player.canJump = false;
 		}else{
+			player.canJump = true;
 			player.alpha += 0.1;
 		}
 		if(player.alpha < 0.5) player.alpha = 0.5;

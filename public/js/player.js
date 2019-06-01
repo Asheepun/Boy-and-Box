@@ -59,9 +59,12 @@ const player = (pos) => {
 	}
 
 	that.jumpSaveCounter = 0;
+	that.canJump = true;
 
 	that.jump = ({ world: { add, obstacles }, audio: { play } }) => {
-		if(that.jumpSaveCounter > 0 && !that.checkObstaclesAbove(obstacles) && that.pos.y > 0){
+		if(that.jumpSaveCounter > 0
+		&& !that.checkObstaclesAbove(obstacles) && that.pos.y > 0
+		&& that.canJump){
 			play("boy_jump1", {
 				volume: 0.4 + Math.random() * 0.1,
 			});
