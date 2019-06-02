@@ -91,6 +91,8 @@ const boss = (pos) => {
 
 	that.waitCounter = 0;
 
+	that.hasAttacked = false;
+
 	that.attacks = firstStageAttacks;
 
 	let doneFinalAttack = false;
@@ -118,6 +120,8 @@ const boss = (pos) => {
 		if(that.waitCounter === 0 && that.lives > 0){
 
 			that.cleanUpAttack(world);
+
+			that.hasAttacked = true;
 
 			that.attack(that.attacks[that.currentAttack], { world, sprites, JSON });
 

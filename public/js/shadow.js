@@ -9,6 +9,8 @@ const dynamicShadow = () => {
 	that.img.width = 32 * 15;
 	that.img.height = 18 * 15;
 
+	let bossInitShadowCounter = 0;
+
 	that.updateImg = ({ world: { player, points, reds, shine, door_buttons, boss, oneUp }, sprites }) => {
 
 		that.ctx.clearRect(0, 0, that.img.width, that.img.height);
@@ -35,9 +37,15 @@ const dynamicShadow = () => {
 			that.ctx.drawImage(sprites["shadows/100"], shine[0].center.x - 50, Math.floor(shine.reduce((x, s) => s.center.y + x, 0) / shine.length - 50), 100, 100);
 
 		if(boss){
+			bossInitShadowCounter--;
 			if(boss.frameState === "init") that.ctx.drawImage(sprites["shadows/60"], boss.pos.x + 24, boss.pos.y + 80, 60, 60);
+
 			if(boss.frameState === "growing"
 			|| boss.frameState === "1up") that.ctx.drawImage(sprites["shadows/100"], boss.pos.x + 4, boss.pos.y + 50, 100, 100);
+
+			if(boss.frameState === "growing"
+			&& boss.currentFrame >= 30) that.ctx.drawImage(sprites["shadows/160"], boss.pos.x - 33, boss.pos.y - 10, 160, 160);
+
 			if(boss.stage === 2) that.ctx.drawImage(sprites["shadows/100"], boss.center.x - 63, boss.center.y - 70);
 		}
 		if(oneUp) that.ctx.drawImage(sprites["shadows/100"], oneUp.center.x - 50, oneUp.center.y - 50, 100, 100);
