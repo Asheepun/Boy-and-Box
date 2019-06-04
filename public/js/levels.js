@@ -264,7 +264,7 @@ const levels = [
 			"¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤",
 		],
 		background: "planks",
-		music: "east-village",
+		music: "west-village",
 		texts: [
 			[
 				["Thank you for", "helping me!"],
@@ -304,7 +304,7 @@ const levels = [
 			"¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤",
 		],
 		background: "planks",
-		music: "east-village",
+		music: "west-village",
 		texts: [
 			[
 				["The others have", "been feeling", "sick lately."],

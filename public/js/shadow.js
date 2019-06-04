@@ -46,7 +46,12 @@ const dynamicShadow = () => {
 			if(boss.frameState === "growing"
 			&& boss.currentFrame >= 30) that.ctx.drawImage(sprites["shadows/160"], boss.pos.x - 33, boss.pos.y - 10, 160, 160);
 
+			if(boss.frameState === "1up"
+			&& boss.currentFrame >= 11) that.ctx.drawImage(sprites["shadows/160"], boss.pos.x - 33, boss.pos.y - 10, 160, 160);
+
 			if(boss.stage === 2) that.ctx.drawImage(sprites["shadows/100"], boss.center.x - 63, boss.center.y - 70);
+
+			if(door_buttons) door_buttons.forEach(b => that.ctx.drawImage(sprites["shadows/60"], Math.floor(b.center.x - 30), Math.floor(b.center.y - 30), 60, 60));
 		}
 		if(oneUp) that.ctx.drawImage(sprites["shadows/100"], oneUp.center.x - 50, oneUp.center.y - 50, 100, 100);
 	}

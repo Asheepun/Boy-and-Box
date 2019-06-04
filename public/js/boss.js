@@ -100,9 +100,6 @@ const boss = (pos) => {
 
 	that.handleAttacking = ({ world, height, world: { add, screenShaker, reds, points }, sprites, JSON, context }) => {
 
-		//console.log("vel: " + (that.velocity.y) + ", acc: " + (that.acceleration.y));
-		//console.log(that.pos.y, that.velocity.y);
-
 		that.waitCounter--;
 		that.attackCounter--;
 

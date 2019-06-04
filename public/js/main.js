@@ -101,7 +101,7 @@ Promise.all([
 		"blue_lock_dissappear",
 		//music
 		"the-beginning",
-		"east-village",
+		"west-village",
 		"enemies",
 	),
 	loaders.loadJSON(
