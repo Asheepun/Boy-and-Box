@@ -134,21 +134,14 @@ export const oneUp = (pos) => {
 }
 
 export const bossHalf = (pos, velocity, imgPos) => {
-	const that = traitHolder();
-
-	traits.addEntityTrait({
+	const that = particle({
 		pos,
-		size: vec(120, 60),
-	})(that);
-
-	traits.addSpriteTrait({
-		img: "boss",
-		imgPos
-	})(that);
-
-	traits.addMoveTrait({
 		velocity,
-	})(that);
+		size: vec(120, 60),
+		img: "boss",
+	});
+
+	that.imgPos = imgPos;
 
 	traits.addPhysicsTrait({
 		gravity: 0.004,
@@ -158,7 +151,68 @@ export const bossHalf = (pos, velocity, imgPos) => {
 		that.velocity.x *= 0.97;
 	}
 
-	that.addMethods("reduceXVel");
+	that.setupSprayer = ({ world: { add, remove }, height, width }) => {
+		 if(that.pos.y > height){
+			add(bossPieceSprayer(vec(width - 120 - 15, height + 20), ({  }) => {
+				console.log("DONE!!");
+			}), "bossPieceSprayer", 0, true);
+			remove(that);
+		}
+	}
+
+	that.addMethods("reduceXVel", "setupSprayer");
+
+	return that;
+}
+
+const bossPieceSprayer = (pos, func) => {
+	const that = traitHolder();
+
+	that.pos = pos.copy();
+
+	that.func = func;
+
+	that.lifeCounter = 60 * 3;
+
+	that.handleLifeCounter = (GAME) => {
+		that.lifeCounter--;
+		if(that.lifeCounter === 0){
+			that.func(GAME);
+			GAME.world.remove(that);
+		}
+	}
+
+	let counter = 0;
+	that.spray = ({ world: { add } }) => {
+		counter++;
+		if(counter % 2 === 0){
+			add(bossPiece(vec(that.pos.x + 10 + Math.random() * 100, that.pos.y), vec(Math.random() * 0.2 - 0.4, -3 * Math.random() - 6)), "particles", 4);
+		}
+	}
+
+	that.addMethods("spray", "handleLifeCounter");
+
+	return that;
+}
+
+export const bossPiece = (pos, velocity) => {
+	const that = particle({
+		pos,
+		size: vec(5 + Math.random() * 15, 5 + Math.random() * 15),
+		velocity,
+		img: "boss_piece",
+		imgSize: vec(5, 5)
+	});
+
+	that.rotation = Math.random() * 10;
+
+	if(Math.random() < 0.5){
+		that.imgPos.x += 7;
+	}
+
+	traits.addPhysicsTrait({
+		gravity: 0.01,
+	})(that);
 
 	return that;
 }
