@@ -39,6 +39,7 @@ const boss = (pos) => {
 		frames: "boss_frames",
 		initState: "still",
 	})(that);
+	firstAttempt = false;
 	if(firstAttempt) that.frameState = "init";
 
 	that.setupStage = ({ world, world: { add }, sprites, JSON }) => {
@@ -74,7 +75,7 @@ const boss = (pos) => {
 
 			that.runAnimation("growing", JSON);
 		}
-		that.stopPlayerCounter = that.waitCounter - 10;
+		//that.stopPlayerCounter = that.waitCounter - 10;
 
 		firstAttempt = false;
 	}
@@ -83,7 +84,7 @@ const boss = (pos) => {
 
 	that.attacking = false;
 
-	that.lives = 4;
+	that.lives = 0;
 
 	that.attackCounter = 0;
 
@@ -291,7 +292,7 @@ const boss = (pos) => {
 		box.pos = vec(-100, -100)
 	}
 
-	that.stage = 0;
+	that.stage = 1;
 
 	const setupWait = 4.5 * 60;
 	let setupWaitCounter = setupWait;
@@ -429,8 +430,20 @@ const boss = (pos) => {
 		
 	}
 
-	that.addMethods("setupStage", "checkStartTrigger", "handleAttacking", "checkDoorBtns", "handleSwitchStage", "checkPlayer", "stopPlayer");
-	//that.removeMethods("checkStartTrigger");
+	that.checkDeath = ({ world: { points, remove, add, clear } }) => {
+
+		if(points[0].pos.x > that.pos.x && points[0].pos.x < that.pos.x + that.size.x){
+			remove(that);
+			clear("attackCountdown");
+
+			add(particles.bossHalf(v.add(that.pos, vec(0, 15)), vec(1, -1.5), vec(0, 15)), "particles", 4);
+
+			add(particles.bossHalf(v.add(that.pos, vec(0, 75)), vec(-1, -1.5), vec(0, 75)), "particles", 4);
+		}
+	}
+
+	that.addMethods("setupStage", "checkStartTrigger", "handleAttacking", "checkDoorBtns", "handleSwitchStage", "checkPlayer", "stopPlayer", "checkDeath");
+	that.removeMethods("checkStartTrigger");
 
 	return that;
 }
@@ -888,8 +901,8 @@ const setupStageThreeAttack = {
 		",,,,,,,.,,,,,,,,,",
 		",,,,,,,,,,,,,,,,,",
 		",,,.,,,,,,,,,,,,,",
-		",,,,,,,,,,,,,,//,",
-		",,,,,,,,,,,,,,//,",
+		",,,,,,,,,,,,,,///.",
+		",,,,,,,,,,,,,,///.",
 		",,,,,,,.,,,,,,,,,",
 		",,,,,,,,,,,,,,,,,",
 		",,,,,,,,,,,,,,,,,",
@@ -1002,7 +1015,8 @@ const lastAttackEnemy = (pos) => {
 	})(that);
 
 	that.checkOver = ({ world: { points } }) => {
-		if(points[0].hit){
+		if(points.length > 0
+		&& points[0].hit){
 			that.velocity.y = 2.5;
 		}
 	}

@@ -133,6 +133,36 @@ export const oneUp = (pos) => {
 	return that;
 }
 
+export const bossHalf = (pos, velocity, imgPos) => {
+	const that = traitHolder();
+
+	traits.addEntityTrait({
+		pos,
+		size: vec(120, 60),
+	})(that);
+
+	traits.addSpriteTrait({
+		img: "boss",
+		imgPos
+	})(that);
+
+	traits.addMoveTrait({
+		velocity,
+	})(that);
+
+	traits.addPhysicsTrait({
+		gravity: 0.004,
+	})(that);
+
+	that.reduceXVel = () => {
+		that.velocity.x *= 0.97;
+	}
+
+	that.addMethods("reduceXVel");
+
+	return that;
+}
+
 const dustParticles = [];
 
 for(let i = 0; i < 100; i++){
