@@ -1,5 +1,8 @@
 import traitHolder, * as traits from "/js/lib/traits.js";
 import vec, * as v		 		from "/js/lib/vector.js";
+import generateLevel			from "/js/generateLevel.js";
+import { bossDefeat }			from "/js/levels.js";
+import { bird }					from "/js/bird.js";
 
 const particle = ({ pos, size, img, imgSize, velocity }) => {
 	const that = traitHolder();
@@ -154,7 +157,7 @@ export const bossHalf = (pos, velocity, imgPos) => {
 	that.setupSprayer = ({ world: { add, remove }, height, width }) => {
 		 if(that.pos.y > height){
 			add(bossPieceSprayer(vec(width - 120 - 15, height + 20), ({  }) => {
-				console.log("DONE!!");
+				add(bossFlash(), "particles", 30);
 			}), "bossPieceSprayer", 0, true);
 			remove(that);
 		}
@@ -213,6 +216,45 @@ export const bossPiece = (pos, velocity) => {
 	traits.addPhysicsTrait({
 		gravity: 0.01,
 	})(that);
+
+	return that;
+}
+
+export const bossFlash = () => {
+	const that = traitHolder();
+
+	that.alpha = 0;
+	that.alphaInc = 0.02;
+
+	that.flash = (GAME) => {
+		that.alpha += that.alphaInc;
+		if(that.alpha > 3){
+			that.alphaInc *= -1;
+
+			GAME.world.clear("shadow", "reds", "thorns", "blockers", "attackSprites", "vineImg", "tiles", "obstacles", "birds");
+			GAME.world.box.pos = vec(-100, -100);
+
+			generateLevel(bossDefeat, GAME);
+
+			for(let i = 0; i < 3; i++){
+				const b = bird(vec(347 + i * 30, 100));
+				b.isLastBossBird = true;
+				GAME.world.add(b, "birds", 4);
+			}
+		}
+		if(that.alpha < 0){
+			GAME.world.remove(that);
+		}
+	}
+
+	that.draw = (ctx, sprites, { width, height }) => {
+		ctx.globalAlpha = that.alpha;
+		ctx.fillStyle = "white";
+		ctx.fillRect(0, 0, width, height);
+		ctx.globalAlpha = 1;
+	}
+
+	that.addMethods("flash");
 
 	return that;
 }

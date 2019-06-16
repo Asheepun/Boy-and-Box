@@ -44,7 +44,12 @@ const generateLevel = ({ template, time, background, texts, shadow }, { world, w
 			pos = vec(scl * x, scl * y);
 
 			if(tile === "@") add(player(pos.copy()), "player", 4, true);
-			if(tile === "#" || tile === "¤" || tile === "%" || tile === "&" || tile === "/")
+			if(tile === "#"
+			|| tile === "¤"
+			|| tile === "%"
+			|| tile === "&"
+			|| tile === "/"
+			|| tile === "(")
 				add(obstacle(pos.copy()), "obstacles", 1);
 
 			if(tile === ","
@@ -67,6 +72,7 @@ const generateLevel = ({ template, time, background, texts, shadow }, { world, w
 			&& tile !== "%"
 			&& tile !== "&"
 			&& tile !== "/"
+			&& tile !== "("
 			&& x === template[0].length-1) add(shine(pos.copy()), "shine", 10);
 
 			if(tile === "b"){

@@ -1,7 +1,7 @@
 import traitHolder, * as traits from "/js/lib/traits.js";
 import vec, * as v				from "/js/lib/vector.js";
 
-const bird = (pos) => {
+export const bird = (pos) => {
 	const that = traitHolder();
 
 	traits.addEntityTrait({
@@ -49,9 +49,11 @@ const bird = (pos) => {
 		}
 	}
 
+	that.isLastBossBird = false;
+
 	that.hasBeenOffGround = 0;
 	that.checkToFly = ({ world: { player, reds, remove, add }, levelCleared, audio: { play } }) => {
-		if((v.sub(that.center, player.center).mag < 50 || levelCleared) && !that.flying){
+		if((v.sub(that.center, player.center).mag < 50 || (levelCleared && !that.isLastBossBird)) && !that.flying){
 			that.flying = true;
 			that.velocity.y = -2.5 - Math.random()*1;
 			that.velocity.x = -2 - Math.random();
@@ -98,7 +100,7 @@ const bird = (pos) => {
 	}
 
 	that.checkIfInfected = ({ currentLevel }) => {
-		if(currentLevel > 25){
+		if(currentLevel > 25 && currentLevel < 50){
 			that.img = "blue_bird_infected";
 			that.removeMethods("checkIfInfected");
 		}
