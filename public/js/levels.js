@@ -1540,6 +1540,7 @@ const levels = [
 		shadow: true,
 		boss: true,
 	},
+	/*
 	{
 		template: [
 			"((((((((((((((((((((((((((((((((",
@@ -1646,6 +1647,7 @@ const levels = [
 			],
 		]
 	}
+	*/
 ];
 
 export const bossDefeat = {

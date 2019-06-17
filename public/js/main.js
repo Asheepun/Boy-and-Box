@@ -14,6 +14,7 @@ import addBirds 				from "/js/bird.js";
 import levels					from "/js/levels.js";
 import setupSettings			from "/js/settings.js";
 import setupStartscreen 		from "/js/startscreen.js";
+import setupCredits				from "/js/credits.js";
 import * as progUtils			from "/js/progress.js";
 import screenShaker				from "/js/screenShaker.js";
 
@@ -137,6 +138,7 @@ Promise.all([
 		states: {
 			setupSettings,
 			setupStartscreen,
+			setupCredits,
 		},
 		state: undefined,
 		context: vec(0, 0),
@@ -185,6 +187,11 @@ Promise.all([
 	let musicHasStarted = false;
 
 	GAME.states.setupLevel = () => {
+
+		if(GAME.currentLevel === GAME.levels.length){
+			GAME.state = GAME.states.setupCredits;
+			return;
+		}
 
 		GAME.world.clearAll();
 	
@@ -284,7 +291,7 @@ Promise.all([
 		transitionDelayCounter--;
 		if(transitionDelayCounter <= 0){
 			GAME.state = GAME.states[nextState];
-			GAME.transitionPosX = 0;
+			GAME.transitionPosX = -20;
 		}
 	}
 
@@ -315,6 +322,9 @@ Promise.all([
 	GAME.transitionToNextLevel = (GAME) => {
 		delay = 5;
 		GAME.currentLevel++;
+		if(GAME.currentLevel === GAME.levels.length){
+			delay = 60 * 3;
+		}
 		if(GAME.levels[GAME.currentLevel-1].music
 		&& GAME.levels[GAME.currentLevel-1].music !== GAME.levels[GAME.currentLevel].music){
 			GAME.audio.fadeOutLoop(GAME.levels[GAME.currentLevel-1].music, 0.005);
