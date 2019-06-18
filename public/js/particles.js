@@ -228,8 +228,8 @@ export const bossFlash = () => {
 
 	that.flash = (GAME) => {
 		that.alpha += that.alphaInc;
-		if(that.alpha > 3){
-			that.alphaInc *= -1;
+		if(that.alpha > 3.5){
+			that.alphaInc *= -0.5;
 
 			GAME.world.clear("shadow", "reds", "thorns", "blockers", "attackSprites", "vineImg", "tiles", "obstacles", "birds");
 			GAME.world.box.pos = vec(-100, -100);
@@ -237,7 +237,7 @@ export const bossFlash = () => {
 			generateLevel(bossDefeat, GAME);
 
 			for(let i = 0; i < 3; i++){
-				const b = bird(vec(347 + i * 30, 100));
+				const b = bird(vec(357 + i * 20, 100));
 				b.isLastBossBird = true;
 				GAME.world.add(b, "birds", 4);
 			}

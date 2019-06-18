@@ -39,7 +39,6 @@ const boss = (pos) => {
 		frames: "boss_frames",
 		initState: "still",
 	})(that);
-	firstAttempt = false;
 	if(firstAttempt) that.frameState = "init";
 
 	that.setupStage = ({ world, world: { add }, sprites, JSON }) => {
@@ -84,7 +83,7 @@ const boss = (pos) => {
 
 	that.attacking = false;
 
-	that.lives = 0;
+	that.lives = 4;
 
 	that.attackCounter = 0;
 
@@ -152,7 +151,7 @@ const boss = (pos) => {
 			finalAttackCounter--;
 
 			if(finalAttackCounter === 0){
-				add(lastAttackEnemy(vec(30, height + 15 * 1.5)), "enemies", 7);
+				add(lastAttackEnemy(vec(30, height + 15 * 1.5)), "enemies", 10);
 
 				that.runAnimation("attack", JSON);
 
@@ -292,7 +291,7 @@ const boss = (pos) => {
 		box.pos = vec(-100, -100)
 	}
 
-	that.stage = 1;
+	that.stage = 0;
 
 	const setupWait = 4.5 * 60;
 	let setupWaitCounter = setupWait;
@@ -443,7 +442,7 @@ const boss = (pos) => {
 	}
 
 	that.addMethods("setupStage", "checkStartTrigger", "handleAttacking", "checkDoorBtns", "handleSwitchStage", "checkPlayer", "stopPlayer", "checkDeath");
-	that.removeMethods("checkStartTrigger");
+	//that.removeMethods("checkStartTrigger");
 
 	return that;
 }
@@ -934,47 +933,6 @@ const setupAttack = {
 	]
 };
 
-const lastAttack = {
-	template: [
-		".................",
-		".................",
-		".................",
-		".................",
-		".................",
-		".................",
-		".................",
-		".................",
-		".................",
-		".................",
-		".................",
-		".................",
-		".................",
-		".................",
-		".................",
-		".................",
-		".................",
-		".................",
-		"/////////////////",
-		"/////////////////",
-		"/////////////////",
-		"/////////////////",
-		"/////////////////",
-		"/////////////////",
-		"/////////////////",
-		"/////////////////",
-		"/////////////////",
-		"/////////////////",
-		"/////////////////",
-		"/////////////////",
-		"/////////////////",
-		"/////////////////",
-		"/////////////////",
-		"/////////////////",
-		"/////////////////",
-		"/////////////////",
-	]
-}
-
 const failAttack = {
 	template: [
 		",,,,,,,,,,,,,,,,,",
@@ -998,16 +956,39 @@ const failAttack = {
 	],
 };
 
+const lastAttackEnemyImgTemplate = [
+	".xxxxxxxxxxxxxxxxx.",
+	"./////////////////.",
+	"./////////////////.",
+	"./////////////////.",
+	"./////////////////.",
+	"./////////////////.",
+	"./////////////////.",
+	"./////////////////.",
+	"./////////////////.",
+	"./////////////////.",
+	"./////////////////.",
+	"./////////////////.",
+	"./////////////////.",
+	"./////////////////.",
+	"./////////////////.",
+	"./////////////////.",
+	"./////////////////.",
+	"./////////////////.",
+	"./////////////////.",
+];
+
 const lastAttackEnemy = (pos) => {
 	const that = traitHolder();
 
 	traits.addEntityTrait({
 		pos,
-		size: vec(17 * 15, 100 * 15),
+		size: vec(17 * 15, 18 * 15),
 	})(that);
 
 	traits.addSpriteTrait({
-		color: "red",
+		img: "last_enemy",
+		imgSize: v.div(that.size, 5),
 	})(that);
 
 	traits.addMoveTrait({
@@ -1022,10 +1003,39 @@ const lastAttackEnemy = (pos) => {
 	}
 
 	that.checkPlayer = ({ world: { player } }) => {
-		if(col.checkHitBoxCol(that, player)){
+		if(player.pos.y + player.size.y > that.pos.y + 5){
 			player.hit = true;
 		}
 	}
+
+	/*
+	that.img = document.createElement("canvas");
+	that.ctx = that.img.getContext("2d");
+	that.img.width = that.size.x;
+	that.img.height = that.size.y;
+
+	that.thornImg = thornImg(lastAttackEnemyImgTemplate);
+
+	that.generateImg = ({ sprites, JSON }) => {
+
+		that.ctx.drawImage(generateTileImg(lastAttackEnemyImgTemplate, sprites, JSON["grass_tiles"], vec(that.size.x + 30, that.size.y)),
+			15, 15, that.size.x, that.size.y,
+			0, 0, that.size.x, that.size.y
+		);
+		
+		that.removeMethods("generateImg");
+	}
+
+	that.draw = (ctx, sprites, GAME) => {
+		that.thornImg.update(GAME);
+		that.thornImg.update(GAME);
+		that.thornImg.update(GAME);
+		that.thornImg.update(GAME);
+		ctx.drawImage(that.thornImg.img, that.pos.x - 15, that.pos.y - 15);
+
+		ctx.drawImage(that.img, that.pos.x, that.pos.y, that.size.x, that.size.y);
+	}
+	*/
 
 	that.addMethods("checkOver", "checkPlayer");
 

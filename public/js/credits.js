@@ -4,6 +4,7 @@ import * as text				from "/js/lib/text.js";
 import { tiles, obstacle }		from "/js/generateLevel.js";
 import box						from "/js/box.js";
 import player					from "/js/player.js";
+import point					from "/js/points.js";
 
 const setupCredits = (GAME) => {
 
@@ -15,6 +16,7 @@ const setupCredits = (GAME) => {
 	GAME.world.add(box(vec(135, 180)), "box", 19, true);
 	GAME.world.add(obstacle(vec(-100, -100)), "obstacles", 0, true);
 	GAME.world.add(obstacle(vec(-100, -100)), "buttons", 0, true);
+	GAME.world.add(point(vec(-100, -100)), "points", 0);
 
 	const velocity = vec(0, -0.2);
 
@@ -90,6 +92,8 @@ const credits = (GAME) => {
 		GAME.world.player.jump(GAME);
 	}
 	if(!GAME.keys.w.down && !GAME.keys.space.down) GAME.world.player.stopJump();
+
+	GAME.levelCleared = false;
 
 	GAME.world.update(GAME);
 

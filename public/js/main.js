@@ -82,6 +82,7 @@ Promise.all([
 		"lab_table",
 		"boss",
 		"boss_piece",
+		"last_enemy",
 		"1up",
 	),
 	loaders.loadAudio(
