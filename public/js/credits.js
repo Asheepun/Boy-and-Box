@@ -14,13 +14,15 @@ const setupCredits = (GAME) => {
 
 	GAME.world.add(player(vec(135, 120)), "player", 20, true);
 	GAME.world.add(box(vec(135, 180)), "box", 19, true);
-	GAME.world.add(obstacle(vec(-100, -100)), "obstacles", 0, true);
-	GAME.world.add(obstacle(vec(-100, -100)), "buttons", 0, true);
+	GAME.world.add(obstacle(vec(-100, -100)), "obstacles", 0);
+	GAME.world.add(obstacle(vec(-100, -100)), "buttons", 0);
 	GAME.world.add(point(vec(-100, -100)), "points", 0);
 
 	const velocity = vec(0, -0.2);
 
 	const originY = GAME.height + 80
+
+	const up = false;
 
 	GAME.world.add(traits.textEntity({
 		pos: vec(GAME.width / 2, originY),
@@ -28,7 +30,8 @@ const setupCredits = (GAME) => {
 		size: 20,
 		text: [
 			"You won!",
-		]
+		],
+		up,
 	}), "texts", 10);
 	let deathText = [
 		"And you only died " + GAME.deaths + " times!",
@@ -39,6 +42,7 @@ const setupCredits = (GAME) => {
 		velocity,
 		size: 10,
 		text: deathText,
+		up,
 	}), "texts", 10);
 
 	GAME.world.add(traits.textEntity({
@@ -47,11 +51,12 @@ const setupCredits = (GAME) => {
 		size: 20,
 		text: [
 			"Credits"
-		]
+		],
+		up,
 	}), "texts", 10);
 
 	GAME.world.add(traits.textEntity({
-		pos: vec(GAME.width / 2, originY + 310),
+		pos: vec(GAME.width / 2, originY + 260),
 		velocity,
 		size: 10,
 		text: [
@@ -60,7 +65,18 @@ const setupCredits = (GAME) => {
 			"Sound effects - Fridolf Tofft Glans",
 			"",
 			"Best playtester - Norton Ehrnborn",
-		]
+		],
+		up,
+	}), "texts", 10);
+
+	GAME.world.add(traits.textEntity({
+		pos: vec(GAME.width / 2, originY + 460),
+		velocity: velocity.copy(),
+		size: 15,
+		text: [
+			"Thank you for playing!",
+		],
+		up,
 	}), "texts", 10);
 
 	/*
@@ -75,9 +91,13 @@ const setupCredits = (GAME) => {
 	*/
 
 	GAME.state = credits;
+	GAME.creditsOps = {
+		bla: false,
+		lastText: undefined,
+		menuCounter: 60 * 7.5,
+	};
 }
 
-let bla = false;
 const credits = (GAME) => {
 
 	if(GAME.keys.r.down) GAME.world.player.hit = true;
@@ -95,14 +115,27 @@ const credits = (GAME) => {
 
 	GAME.levelCleared = false;
 
+	GAME.creditsOps.lastText = GAME.world.texts[GAME.world.texts.length - 1];
+	if(GAME.creditsOps.lastText.pos.y < GAME.height / 2){
+		GAME.creditsOps.lastText.velocity.y *= 0.97;
+		GAME.creditsOps.menuCounter--;
+	}
+
 	GAME.world.update(GAME);
 
 	if(GAME.world.player.hitCounter > 2){
 		GAME.deaths++;
 	}
+	if(GAME.creditsOps.menuCounter === 0){
+		GAME.world.clearAll();
+		GAME.fadeToState("setupStartscreen")
+	}
 
-	if(bla) GAME.transitionPosX += 20;
-	bla = true;
+	if(GAME.creditsOps.bla) GAME.transitionPosX += 20;
+	GAME.creditsOps.bla = true;
+
+	GAME.transitionFade -= 0.01;
+	if(GAME.transitionFade < 0) GAME.transitionFade = 0;
 }
 
 export default setupCredits;

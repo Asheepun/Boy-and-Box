@@ -414,7 +414,7 @@ export const addTalkTrait = ({ texts, size, Yoffset, condition, sound = false, s
 	that.addMethods("checkTextCondition", "talk");
 }
 
-export const textEntity = ({ pos, size, text, velocity = vec(0, 0) }) => {
+export const textEntity = ({ pos, size, text, velocity = vec(0, 0), up = true }) => {
 	const that = traitHolder();
 
 	that.pos = pos;
@@ -427,15 +427,15 @@ export const textEntity = ({ pos, size, text, velocity = vec(0, 0) }) => {
 	that.update = () => {
 		that.pos = v.add(that.pos, that.velocity);
 	}
-	
+
 	that.draw = (ctx, sprites, GAME) => {
 		ctx.globalAlpha = 1;
 		ctx.fillStyle = "white"
 		ctx.font = that.size + "px game";
 		for(let i = 0; i < that.text.length; i++){
 			offsetX = (that.text[i].length / 2) * (that.size / 2);
-			if(that.text[i].constructor === Function) ctx.fillText(that.text[i](GAME), that.pos.x - offsetX, that.pos.y - (size + 2) * (that.text.length-1 - i));
-			else ctx.fillText(that.text[i], that.pos.x - offsetX, that.pos.y - (size + 2) * (that.text.length-1 - i));
+			if(that.text[i].constructor === Function) ctx.fillText(that.text[i](GAME), that.pos.x - offsetX, that.pos.y + (size + 2) * (up ? -(that.text.length-1 - i) : (i)));
+			else ctx.fillText(that.text[i], that.pos.x - offsetX, that.pos.y + (size + 2) * (up ? -(that.text.length-1 - i) : (i)));
 		}
 		ctx.globalAlpha = 1;
 	}

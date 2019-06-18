@@ -72,6 +72,9 @@ const setupStartscreen = (GAME) => {
 
 const startscreen = (GAME) => {
 
+	GAME.transitionFade -= 0.01;
+	if(GAME.transitionFade < 0) GAME.transitionFade = 0;
+
 	GAME.world.update(GAME);
 	
 }
