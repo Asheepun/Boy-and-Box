@@ -7,7 +7,6 @@
     "start": "node app.js"
   },
   "author": "Gustav Almström",
-  "license": "All Rights Reserved",
   "dependencies": {
     "express": "^4.16.3"
   }
