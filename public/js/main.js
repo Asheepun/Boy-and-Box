@@ -105,7 +105,9 @@ Promise.all([
 		//music
 		"the-beginning",
 		"west-village",
-		"enemies",
+		"east-village",
+		"enemies-west",
+		"enemies-east",
 	),
 	loaders.loadJSON(
 		"boy_frames",

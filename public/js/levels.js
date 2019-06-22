@@ -367,7 +367,7 @@ const levels = [
 			"####.........###################",
 		],
 		background: "sky",
-		music: "enemies",
+		music: "enemies-west",
 		texts: [
 			[
 				["h"],
@@ -398,7 +398,7 @@ const levels = [
 			"#.............##################",
 		],
 		background: "sky",
-		music: "enemies",
+		music: "enemies-west",
 	},
 	//13
 	{
@@ -423,7 +423,7 @@ const levels = [
 			"####################.....#######",
 		],
 		background: "sky",
-		music: "enemies",
+		music: "enemies-west",
 	},
 	//14
 	{
@@ -448,7 +448,7 @@ const levels = [
 			"#....###########################",
 		],
 		background: "sky",
-		music: "enemies",
+		music: "enemies-west",
 	},
 	//15
 	{
@@ -473,7 +473,7 @@ const levels = [
 			"###.........................####",
 		],
 		background: "sky",
-		music: "enemies",
+		music: "enemies-west",
 	},
 	//16
 	{
@@ -498,7 +498,7 @@ const levels = [
 			"####......###......######....###",
 		],
 		background: "sky",
-		music: "enemies",
+		music: "enemies-west",
 	},
 	//17
 	{
@@ -523,7 +523,7 @@ const levels = [
 			"####......#############......###",
 		],
 		background: "sky",
-		music: "enemies",
+		music: "enemies-west",
 	},
 	//18
 	{
@@ -611,6 +611,7 @@ const levels = [
 			"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
 		],
 		background: "planks",
+		music: "east-village",
 		shadow: true,
 	},
 	//21
@@ -636,6 +637,7 @@ const levels = [
 			"%%%%%,,,,,%%%%%%%%%%%.,,,,,,,..%",
 		],
 		background: "planks",
+		music: "east-village",
 		shadow: true,
 	},
 	//22
@@ -661,6 +663,7 @@ const levels = [
 			"%%%......%%%%......%%%%.....%%%%",
 		],
 		background: "planks",
+		music: "east-village",
 		shadow: true,
 	},
 	//23
@@ -686,6 +689,7 @@ const levels = [
 			"%%%%%%%,,,,,,,,,,.%%%%%%%%%%%%%%",
 		],
 		background: "planks",
+		music: "east-village",
 		shadow: true,
 	},
 	//24
@@ -711,6 +715,7 @@ const levels = [
 			"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
 		],
 		background: "planks",
+		music: "east-village",
 		shadow: true,
 	},
 	//25
@@ -736,6 +741,7 @@ const levels = [
 			"%%%%%%%%%%%%%................%%%",
 		],
 		background: "planks",
+		music: "east-village",
 		shadow: true,
 	},
 	//26
@@ -761,6 +767,7 @@ const levels = [
 			"%%%%%%%%%%%%..................%%",
 		],
 		background: "planks",
+		music: "east-village",
 		shadow: true,
 	},
 	//27
@@ -786,6 +793,7 @@ const levels = [
 			"%%...........%%%%...........%%%%",
 		],
 		background: "planks",
+		music: "east-village",
 		shadow: true,
 	},
 	//28
@@ -811,6 +819,7 @@ const levels = [
 			"%%%.............%%%%.........%%%",
 		],
 		background: "planks",
+		music: "east-village",
 		shadow: true,
 	},
 	//29
@@ -897,6 +906,7 @@ const levels = [
 			"&&&,,,,,&&&,,,,,,&&,,,,,,&&&&&&&",
 		],
 		background: "sky",
+		music: "enemies-east",
 	},
 	//31
 	{
@@ -921,6 +931,7 @@ const levels = [
 			"&&,,,,,&&,,,,,&&,,,&&,,,,,,,,&&&",
 		],
 		background: "sky",
+		music: "enemies-east",
 	},
 	//32
 	{
@@ -945,6 +956,7 @@ const levels = [
 			"&&........&&&&&.............&&&&",
 		],
 		background: "sky",
+		music: "enemies-east",
 	},
 	//33
 	{
@@ -969,6 +981,7 @@ const levels = [
 			"&&&&&&&&&&&&&&&&&&.........&&&&&",
 		],
 		background: "sky",
+		music: "enemies-east",
 	},
 	//34
 	{
@@ -993,6 +1006,7 @@ const levels = [
 			"&&&&&....................&&&&&&&",
 		],
 		background: "sky",
+		music: "enemies-east",
 	},
 	//35
 	{
@@ -1017,6 +1031,7 @@ const levels = [
 			"&&&&.........................&&&",
 		],
 		background: "sky",
+		music: "enemies-east",
 	},
 	//36
 	{
@@ -1041,6 +1056,7 @@ const levels = [
 			"&&&..............&&&&&&&&....&&&",
 		],
 		background: "sky",
+		music: "enemies-east",
 	},
 	//37
 	{
@@ -1065,6 +1081,7 @@ const levels = [
 			"&&.................,,,,,,&&&&&&&",
 		],
 		background: "sky",
+		music: "enemies-east",
 	},
 	//38
 	{
@@ -1089,6 +1106,7 @@ const levels = [
 			"&...................,,,,,&&&&&&&",
 		],
 		background: "sky",
+		music: "enemies-east",
 	},
 	//39
 	{
@@ -1113,6 +1131,7 @@ const levels = [
 			"&&&....&&&..............,,,,,&&&",
 		],
 		background: "sky",
+		music: "enemies-east",
 	},
 	//40
 	{
@@ -1137,6 +1156,7 @@ const levels = [
 			"&&&,,,,,,,&&,,,,&&,,,,&&&....&&&",
 		],
 		background: "sky",
+		music: "enemies-east",
 	},
 	//41
 	{
