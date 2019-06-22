@@ -107,7 +107,7 @@ export const loadAudio = (sfxVolume = 1, musicVolume = 1, ...urls) => new Promis
 	urls.forEach(url => {
 		const xhr = new XMLHttpRequest();
 
-		xhr.open("Get", `/assets/audio/${url}.wav`, true);
+		xhr.open("Get", `/assets/audio/${url}.ogg`, true);
 
 		xhr.responseType = "arraybuffer";
 

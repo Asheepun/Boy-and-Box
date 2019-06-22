@@ -89,7 +89,7 @@ Promise.all([
 		1,
 		1,
 		//sfx
-		"boy_jump1",
+		"boy_jump",
 		"boy_land",
 		"pickup_point",
 		"level_cleared",

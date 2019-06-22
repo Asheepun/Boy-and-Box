@@ -65,7 +65,7 @@ const player = (pos) => {
 		if(that.jumpSaveCounter > 0
 		&& !that.checkObstaclesAbove(obstacles) && that.pos.y > 0
 		&& that.canJump){
-			play("boy_jump1", {
+			play("boy_jump", {
 				volume: 0.4 + Math.random() * 0.1,
 			});
 			that.velocity.y = -4//5;
