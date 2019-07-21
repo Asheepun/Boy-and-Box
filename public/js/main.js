@@ -86,7 +86,9 @@ Promise.all([
 		"1up",
 	),
 	loaders.loadAudio(
+		//sfx volume
 		1,
+		//music volume
 		1,
 		//sfx
 		"boy_jump",
@@ -145,7 +147,7 @@ Promise.all([
 		},
 		state: undefined,
 		context: vec(0, 0),
-		currentLevel: 0,
+		currentLevel: 20,
 		volume: 1,
 		deaths: 0,
 		progress: {},
@@ -157,12 +159,13 @@ Promise.all([
 
 	GAME.audio.setVolume(0);
 
-	//localStorage.currentLevel = GAME.currentLevel;
+	localStorage.currentLevel = GAME.currentLevel;
 	
 	const prog = GAME.getProgress();
 
 	GAME.currentLevel = prog.currentLevel;
 	GAME.deaths = prog.deaths;
+	GAME.progress.beatRegular = prog.beatRegular;
 
 	GAME.keys = keys(
 		{
@@ -211,8 +214,8 @@ Promise.all([
 		}), "buttons", 15);
 
 		if(GAME.currentLevel === 0){
+			//GAME.world.add(helpers.boxText(vec(GAME.world.box.pos.x, 50)), "text", 3);
 			GAME.world.add(helpers.boxText(vec(170, 50)), "text", 3);
-			//GAME.world.add(helpers.boxHelper(vec(205, 50)), "particles", 1);
 		}
 
 		GAME.world.add(screenShaker(), "screenShaker", 0, true);

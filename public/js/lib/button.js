@@ -59,16 +59,41 @@ export const clickableText = ({ pos, size, text, action }) => {
 	that.text = text;
 	that.fontSize = size;
 
+	that.size = vec(0, 0);
+
+	that.inited = false;
+
+	that.initText = ({ ctx }) => {
+		ctx.font = that.fontSize + "px game";
+
+		that.size.x = ctx.measureText(that.text).width;
+		that.size.y = Number(that.fontSize);
+
+		that.pos.x -= Math.floor(that.size.x / 2);
+
+		that.fixCenter();
+
+		that.removeMethods("initText");
+
+		that.inited = true;
+	}
+
+	/*
 	that.size.x = that.text.length * that.fontSize / 2 + that.fontSize / 2;
-	that.size.y = Number(that.fontSize);
+	*/
 
 	that.draw = (ctx) => {
-		ctx.globalAlpha = that.alpha;
-		ctx.fillStyle = "white";
-		ctx.font = that.fontSize + "px game",
-		ctx.fillText(that.text, that.pos.x, that.pos.y + that.size.y - Math.floor(that.size.y / 6));
-		ctx.globalAlpha = 1;
+		if(that.inited){
+			ctx.globalAlpha = that.alpha;
+			ctx.fillStyle = "white";
+			ctx.font = that.fontSize + "px game";
+			ctx.fillText(that.text, that.pos.x, that.pos.y + that.size.y - Math.floor(that.size.y / 6));
+			ctx.globalAlpha = 1;
+		
+		}
 	}
+
+	that.addMethods("initText");
 
 	return that;
 }

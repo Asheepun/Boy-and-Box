@@ -7,7 +7,7 @@ const setupSettings = (GAME) => {
 
 	//return button
 	GAME.world.add(buttons.clickableText({
-		pos: vec(GAME.width / 2 - 35, 160),
+		pos: vec(GAME.width / 2, 160),
 		size: 20,
 		text: "Return",
 		action(GAME){

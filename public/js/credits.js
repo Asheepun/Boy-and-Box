@@ -8,6 +8,8 @@ import point					from "/js/points.js";
 
 const setupCredits = (GAME) => {
 
+	localStorage.beatRegular = true;
+
 	GAME.world.clearAll();
 
 	GAME.world.add(tiles(GAME.sprites["tiles/shadow"], "shadow"), "tiles", 1);

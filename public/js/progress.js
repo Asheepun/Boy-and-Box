@@ -5,9 +5,11 @@ export const getProgress = () => {
 	|| !storageAvailable()){
 		progress.currentLevel = 0;
 		progress.deaths = 0;
+		progress.beatRegular = false;
 	}else{
 		progress.currentLevel = Number(localStorage.currentLevel);
 		progress.deaths = Number(localStorage.deaths);
+		progress.beatRegular = localStorage.beatRegular === "true";
 	}
 
 	return progress;
@@ -16,6 +18,7 @@ export const getProgress = () => {
 export const saveProgress = (progress) => {
 	localStorage.currentLevel = progress.currentLevel;
 	localStorage.deaths = progress.deaths;
+	localStorage.beatRegular = progress.beatRegular;
 }
 
 function storageAvailable(type) {

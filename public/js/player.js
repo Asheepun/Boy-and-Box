@@ -100,7 +100,7 @@ const player = (pos) => {
 		that.landCounter = 10;
 		play("boy_land", {
 			//volume: 0.25 * (that.lastFallVelocity / (that.maxFallVelocity * that.maxFallVelocity)),
-			volume: 0.07,
+			volume: 0.1,//0.07,
 		});
 		if(that.velocity.x !== 0) landDirVel = that.velocity.x;
 		for(let i = 0; i < 2 + Math.random() * 2; i++){

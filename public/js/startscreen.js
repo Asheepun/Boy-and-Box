@@ -21,6 +21,11 @@ const newGameAction = (GAME) => {
 	GAME.fadeToState("setupLevel");
 }
 
+const modesAction = (GAME) => {
+	GAME.world.clear("buttons", "birds");
+	GAME.state = setupModes;
+}
+
 const setupStartscreen = (GAME) => {
 
 	GAME.world.add(objects.tiles(GAME.sprites["backgrounds/startscreen"]), "background", 0, true);
@@ -38,7 +43,7 @@ const setupStartscreen = (GAME) => {
 	GAME.world.add(buttons.clickableText({
 		text: "Options",
 		size: 20,
-		pos: vec(GAME.width / 2 - 35, 160),
+		pos: vec(GAME.width / 2, 160),
 		action: optionsAction,
 	}), "buttons", 10);
 
@@ -47,20 +52,27 @@ const setupStartscreen = (GAME) => {
 		GAME.world.add(buttons.clickableText({
 			text: "Start",
 			size: 20,
-			pos: vec(GAME.width / 2 - 24, 100),
+			pos: vec(GAME.width / 2, 100),
 			action: setupLevelAction,
+		}), "buttons", 10);
+	}else if(GAME.progress.beatRegular){
+		GAME.world.add(buttons.clickableText({
+			text: "Modes",
+			size: 20,
+			pos: vec(GAME.width / 2, 100),
+			action: modesAction,
 		}), "buttons", 10);
 	}else{
 		GAME.world.add(buttons.clickableText({
 			text: "Continue",
 			size: 20,
-			pos: vec(GAME.width / 2 - 40, 100),
+			pos: vec(GAME.width / 2, 100),
 			action: setupLevelAction,
 		}), "buttons", 10);
 		GAME.world.add(buttons.clickableText({
 			text: "New game",
 			size: 20,
-			pos: vec(GAME.width / 2 - 40, 130),
+			pos: vec(GAME.width / 2, 130),
 			action: newGameAction,
 		}), "buttons", 10);
 	}
@@ -93,7 +105,7 @@ const obstacle = (pos, size) => {
 const setupOptions = (GAME) => {
 	//return button
 	GAME.world.add(buttons.clickableText({
-		pos: vec(GAME.width / 2 - 35, 160),
+		pos: vec(GAME.width / 2, 160),
 		size: 20,
 		text: "Return",
 		action(GAME){
@@ -147,6 +159,49 @@ const options = (GAME) => {
 	if(GAME.transitionFade < 0) GAME.transitionFade = 0;
 	GAME.world.update(GAME);
 	GAME.fullscreenBtn.update(GAME);
+}
+
+const setupModes = (GAME) => {
+	//return button
+	GAME.world.add(buttons.clickableText({
+		pos: vec(GAME.width / 2, 200),
+		size: 20,
+		text: "Return",
+		action(GAME){
+			GAME.state = setupStartscreen;
+			GAME.world.box.waitedForDowned = false;
+			GAME.world.clear("settingsButtons");
+		}
+	}), "settingsButtons", 20);
+
+	GAME.world.add(buttons.clickableText({
+		pos: vec(GAME.width / 2, 60),
+		size: 20,
+		text: "Regular",
+		action(GAME){
+			GAME.currentLevel = 0;
+			GAME.deaths = 0;
+			GAME.fadeToState("setupLevel");
+		}
+	}), "settingsButtons", 20);
+
+	GAME.world.add(buttons.clickableText({
+		pos: vec(GAME.width / 2, 100),
+		size: 20,
+		text: "Retro",
+		action(GAME){
+			
+		}
+	}), "settingsButtons", 20);
+
+	GAME.state = modes;
+	
+}
+
+const modes = (GAME) => {
+	GAME.transitionFade -= 0.01;
+	if(GAME.transitionFade < 0) GAME.transitionFade = 0;
+	GAME.world.update(GAME);
 }
 
 function storageAvailable() {
