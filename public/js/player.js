@@ -180,8 +180,10 @@ const player = (pos) => {
 		if(that.hit) that.hitCounter++;
 		else that.hitCounter = 0;
 		if(that.hitCounter > 2){
-			transitionState("setupLevel");
+			that.dead = true;
 		}
+		//if(that.hitCounter > 2){
+		//}
 		that.hit = false;
 	}
 

@@ -28,6 +28,8 @@ const modesAction = (GAME) => {
 
 const setupStartscreen = (GAME) => {
 
+	GAME.world.clearAll();
+
 	GAME.world.add(objects.tiles(GAME.sprites["backgrounds/startscreen"]), "background", 0, true);
 
 	GAME.world.add(obstacle(vec(0, 50), vec(GAME.width, GAME.height)), "obstacles", 0);
@@ -76,8 +78,6 @@ const setupStartscreen = (GAME) => {
 			action: newGameAction,
 		}), "buttons", 10);
 	}
-
-	//GAME.states.setupOptions = setupOptions;
 
 	GAME.state = startscreen;
 }
@@ -190,7 +190,11 @@ const setupModes = (GAME) => {
 		size: 20,
 		text: "Retro",
 		action(GAME){
-			
+			GAME.currentLevel = 0;
+			GAME.deaths = 0;
+			GAME.lives = 3;
+			GAME.retroModeOn = true;
+			GAME.transitionState("setupRetroTransition");
 		}
 	}), "settingsButtons", 20);
 

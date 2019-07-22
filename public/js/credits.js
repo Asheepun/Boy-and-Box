@@ -8,7 +8,11 @@ import point					from "/js/points.js";
 
 const setupCredits = (GAME) => {
 
-	localStorage.beatRegular = true;
+	GAME.progress.beatRegular = true;
+
+	GAME.progress.deaths = GAME.deaths;
+	GAME.progress.currentLevel = GAME.currentLevel;
+	GAME.saveProgress(GAME.progress);
 
 	GAME.world.clearAll();
 
@@ -125,8 +129,10 @@ const credits = (GAME) => {
 
 	GAME.world.update(GAME);
 
-	if(GAME.world.player.hitCounter > 2){
+	if(GAME.world.player.dead){
 		GAME.deaths++;
+		GAME.transitionState("setupLevel");
+
 	}
 	if(GAME.creditsOps.menuCounter === 0){
 		GAME.world.clearAll();
