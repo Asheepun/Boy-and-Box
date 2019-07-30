@@ -8,8 +8,6 @@ import point					from "/js/points.js";
 
 const setupCredits = (GAME) => {
 
-	GAME.progress.beatRegular = true;
-
 	GAME.progress.deaths = GAME.deaths;
 	GAME.progress.currentLevel = GAME.currentLevel;
 	GAME.saveProgress(GAME.progress);

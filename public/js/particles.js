@@ -239,6 +239,7 @@ export const bossFlash = () => {
 			for(let i = 0; i < 3; i++){
 				const b = bird(vec(357 + i * 20, 100));
 				b.isLastBossBird = true;
+				b.removeMethods("checkIfInfected");
 				GAME.world.add(b, "birds", 4);
 			}
 		}

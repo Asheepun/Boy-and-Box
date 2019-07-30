@@ -15,7 +15,6 @@ import levels					from "/js/levels.js";
 import setupSettings			from "/js/settings.js";
 import setupStartscreen 		from "/js/startscreen.js";
 import setupCredits				from "/js/credits.js";
-import setupRetroTransition		from "/js/retroTransition.js";
 import * as progUtils			from "/js/progress.js";
 import screenShaker				from "/js/screenShaker.js";
 
@@ -145,14 +144,13 @@ Promise.all([
 			setupSettings,
 			setupStartscreen,
 			setupCredits,
-			setupRetroTransition,
 		},
 		state: undefined,
 		context: vec(0, 0),
 		currentLevel: 0,
 		volume: 1,
 		deaths: 0,
-		lives: 0,
+		//lives: 0,
 		progress: {},
 		getProgress: progUtils.getProgress,
 		saveProgress: progUtils.saveProgress,
@@ -168,7 +166,7 @@ Promise.all([
 
 	GAME.currentLevel = prog.currentLevel;
 	GAME.deaths = prog.deaths;
-	GAME.progress.beatRegular = prog.beatRegular;
+	//GAME.progress.beatRegular = prog.beatRegular;
 
 	GAME.keys = keys(
 		{
@@ -272,22 +270,11 @@ Promise.all([
 		GAME.world.update(GAME);
 
 		if(GAME.world.player.dead){
+
 			GAME.deaths++;
-			if(GAME.retroModeOn){
-				GAME.lives--;
-				if(GAME.lives === 0){
-					GAME.retroModeOn = false;
-
-					GAME.fadeToState("setupStartscreen");
-
-					return;
-				}
-
-				GAME.transitionState("setupRetroTransition");
-				return;
-			}
 
 			GAME.transitionState("setupLevel");
+
 		}
 
 		GAME.transitionPosX += 20;
@@ -297,9 +284,6 @@ Promise.all([
 		if(GAME.world.points.length <= 0){
 			GAME.levelCleared = true;
 		}
-
-		//handleScreenShake
-		//GAME.context = v.mul(GAME.context, 0.5);
 		
 	}
 

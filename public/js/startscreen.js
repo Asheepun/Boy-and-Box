@@ -57,14 +57,8 @@ const setupStartscreen = (GAME) => {
 			pos: vec(GAME.width / 2, 100),
 			action: setupLevelAction,
 		}), "buttons", 10);
-	}else if(GAME.progress.beatRegular){
-		GAME.world.add(buttons.clickableText({
-			text: "Modes",
-			size: 20,
-			pos: vec(GAME.width / 2, 100),
-			action: modesAction,
-		}), "buttons", 10);
-	}else{
+	}
+	else{
 		GAME.world.add(buttons.clickableText({
 			text: "Continue",
 			size: 20,
@@ -159,53 +153,6 @@ const options = (GAME) => {
 	if(GAME.transitionFade < 0) GAME.transitionFade = 0;
 	GAME.world.update(GAME);
 	GAME.fullscreenBtn.update(GAME);
-}
-
-const setupModes = (GAME) => {
-	//return button
-	GAME.world.add(buttons.clickableText({
-		pos: vec(GAME.width / 2, 200),
-		size: 20,
-		text: "Return",
-		action(GAME){
-			GAME.state = setupStartscreen;
-			GAME.world.box.waitedForDowned = false;
-			GAME.world.clear("settingsButtons");
-		}
-	}), "settingsButtons", 20);
-
-	GAME.world.add(buttons.clickableText({
-		pos: vec(GAME.width / 2, 60),
-		size: 20,
-		text: "Regular",
-		action(GAME){
-			GAME.currentLevel = 0;
-			GAME.deaths = 0;
-			GAME.fadeToState("setupLevel");
-		}
-	}), "settingsButtons", 20);
-
-	GAME.world.add(buttons.clickableText({
-		pos: vec(GAME.width / 2, 100),
-		size: 20,
-		text: "Retro",
-		action(GAME){
-			GAME.currentLevel = 0;
-			GAME.deaths = 0;
-			GAME.lives = 3;
-			GAME.retroModeOn = true;
-			GAME.transitionState("setupRetroTransition");
-		}
-	}), "settingsButtons", 20);
-
-	GAME.state = modes;
-	
-}
-
-const modes = (GAME) => {
-	GAME.transitionFade -= 0.01;
-	if(GAME.transitionFade < 0) GAME.transitionFade = 0;
-	GAME.world.update(GAME);
 }
 
 function storageAvailable() {

@@ -99,8 +99,8 @@ export const bird = (pos) => {
 		}
 	}
 
-	that.checkIfInfected = ({ currentLevel }) => {
-		if(currentLevel > 25 && currentLevel < 50){
+	that.checkIfInfected = ({ levels, currentLevel }) => {
+		if(currentLevel >= 19 && currentLevel < levels.length){
 			that.img = "blue_bird_infected";
 			that.removeMethods("checkIfInfected");
 		}
