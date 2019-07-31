@@ -157,7 +157,8 @@ export const bouncer = (pos, texts) => {
 
 export const blueDoc = (pos) => {
 	const that = blue(pos, [
-		["He's not doing", "so well."]
+		["He's not doing", "so well..."],
+		["Got red boils", "all over."],
 	]);
 
 	that.img = "blue_doc";

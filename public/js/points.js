@@ -112,9 +112,13 @@ export const jumpingPoint = (pos) => {
 
 	traits.addTalkTrait({
 		texts: [
-			["Leave me alone!"],
-			["Go away!"],
-			["don't pick on me!"],
+			["Roots and twines."],
+			[
+				"He thought he could",
+				"hide me...",
+			],
+			["Take me to the crown!"],
+			["Let me free this world!"],
 		],
 		size: 9,
 		Yoffset: 7,
@@ -136,7 +140,6 @@ export const jumpingPoint = (pos) => {
 	that.handleOubY = () => {};
 
 	that.onOubDown = () => {
-		console.log("CHECK")
 		that.pos = vec(-100, -100);
 		that.canMove = false;
 	}
