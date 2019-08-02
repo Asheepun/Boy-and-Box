@@ -1233,6 +1233,7 @@ const levels = [
 		],
 		background: "lab",
 		shadow: true,
+		music: "lab-first-part",
 	},
 	//44
 	{
@@ -1258,6 +1259,7 @@ const levels = [
 		],
 		background: "lab",
 		shadow: true,
+		music: "lab-first-part",
 	},
 	//45
 	{
@@ -1283,6 +1285,7 @@ const levels = [
 		],
 		background: "lab",
 		shadow: true,
+		music: "lab-first-part",
 	},
 	//46
 	{
@@ -1308,6 +1311,7 @@ const levels = [
 		],
 		background: "lab",
 		shadow: true,
+		music: "lab-first-part",
 	},
 	//47
 	{
@@ -1333,6 +1337,7 @@ const levels = [
 		],
 		background: "lab",
 		shadow: true,
+		music: "lab-first-part",
 	},
 	//48
 	{
@@ -1358,6 +1363,7 @@ const levels = [
 		],
 		background: "lab",
 		shadow: true,
+		music: "lab-first-part",
 	},
 	//49
 	{
@@ -1383,6 +1389,7 @@ const levels = [
 		],
 		background: "lab",
 		shadow: true,
+		music: "lab-first-part",
 	},
 	//50
 	{
@@ -1408,6 +1415,7 @@ const levels = [
 		],
 		background: "lab",
 		shadow: true,
+		music: "lab-first-part",
 	},
 	//51
 	{
@@ -1458,6 +1466,7 @@ const levels = [
 		],
 		background: "lab",
 		shadow: true,
+		music: "lab-second-part",
 	},
 	//53
 	{
@@ -1483,6 +1492,7 @@ const levels = [
 		],
 		background: "lab",
 		shadow: true,
+		music: "lab-second-part",
 	},
 	//54
 	{
@@ -1508,6 +1518,7 @@ const levels = [
 		],
 		background: "lab",
 		shadow: true,
+		music: "lab-second-part",
 	},
 	//55
 	{

@@ -89,7 +89,7 @@ Promise.all([
 		//sfx volume
 		1,
 		//music volume
-		1,
+		0.15,
 		//sfx
 		"boy_jump",
 		"boy_land",
@@ -110,6 +110,8 @@ Promise.all([
 		"east-village",
 		"enemies-west",
 		"enemies-east",
+		"lab-first-part",
+		"lab-second-part",
 	),
 	loaders.loadJSON(
 		"boy_frames",
@@ -147,10 +149,9 @@ Promise.all([
 		},
 		state: undefined,
 		context: vec(0, 0),
-		currentLevel: 35,
+		currentLevel: 49,
 		volume: 1,
 		deaths: 0,
-		//lives: 0,
 		progress: {},
 		getProgress: progUtils.getProgress,
 		saveProgress: progUtils.saveProgress,
@@ -166,7 +167,6 @@ Promise.all([
 
 	GAME.currentLevel = prog.currentLevel;
 	GAME.deaths = prog.deaths;
-	//GAME.progress.beatRegular = prog.beatRegular;
 
 	GAME.keys = keys(
 		{
