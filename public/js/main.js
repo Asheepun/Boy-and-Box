@@ -89,7 +89,7 @@ Promise.all([
 		//sfx volume
 		1,
 		//music volume
-		0.15,
+		0.35,
 		//sfx
 		"boy_jump",
 		"boy_land",
@@ -149,7 +149,7 @@ Promise.all([
 		},
 		state: undefined,
 		context: vec(0, 0),
-		currentLevel: 49,
+		currentLevel: 10,
 		volume: 1,
 		deaths: 0,
 		progress: {},

@@ -4,10 +4,15 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "test": "nexe app.js"
   },
   "author": "Gustav Almström",
   "dependencies": {
     "express": "^4.16.3"
+  },
+  "devDependencies": {
+    "enclose": "^2.2.0",
+    "nexe": "^3.3.2"
   }
 }

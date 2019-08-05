@@ -45,7 +45,7 @@ export const red = (pos) => {
 		],
 		sound: "red" + Math.floor(Math.random() * 3),
 		soundSpec: {
-			volume: 0.25 + Math.random() * 0.1,
+			volume: 0.32 + Math.random() * 0.1,
 		},
 		size: 10,
 		Yoffset: 9,
