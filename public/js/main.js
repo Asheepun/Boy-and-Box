@@ -149,7 +149,7 @@ Promise.all([
 		},
 		state: undefined,
 		context: vec(0, 0),
-		currentLevel: 10,
+		currentLevel: 0,
 		volume: 1,
 		deaths: 0,
 		progress: {},
@@ -161,7 +161,7 @@ Promise.all([
 
 	GAME.audio.setVolume(0);
 
-	localStorage.currentLevel = GAME.currentLevel;
+	//localStorage.currentLevel = GAME.currentLevel;
 	
 	const prog = GAME.getProgress();
 
