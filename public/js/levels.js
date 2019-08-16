@@ -276,8 +276,7 @@ const levels = [
 			],
 			[
 				["Welcome to", "Blue's Town!"],
-				["It's the furtest", " west village", "of our world!"],
-				//["It's the furtest", "west village in", "the world!"],
+				["It's the furtest", "west village", "in the world!"],
 			]
 		]
 	},
@@ -307,7 +306,7 @@ const levels = [
 		music: "west-village",
 		texts: [
 			[
-				["The others have", "been feeling", "ill lately."],
+				["The others have", "been feeling", "sick lately."],
 				["We don't know", "what could have", "caused it."],
 			],
 		]
@@ -1547,6 +1546,14 @@ const levels = [
 		texts: [
 			[
 				[
+					"Good luck.",
+				],
+				[
+					"You can do",
+					"this!",
+				],
+				/*
+				[
 					"Beyond lies the",
 					"roots's crown.",
 				],
@@ -1555,6 +1562,7 @@ const levels = [
 					"through trials",
 					"and errors.",
 				],
+				*/
 			],
 		],
 	},
