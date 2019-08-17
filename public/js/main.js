@@ -112,6 +112,9 @@ Promise.all([
 		"enemies-east",
 		"lab-first-part",
 		"lab-second-part",
+		"boss-intro",
+		"boss-first-stage",
+		"boss-second-stage",
 	),
 	loaders.loadJSON(
 		"boy_frames",
