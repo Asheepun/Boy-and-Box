@@ -70,13 +70,10 @@ const boss = (pos) => {
 		that.waitCounter = 1 * 60;
 
 		if(firstAttempt){
-			that.waitCounter = 60 * 5;
+			that.waitCounter = 60 * 5.5;
 
 			that.runAnimation("growing", JSON);
 
-			play("boss-intro", {
-				type: "music",
-			});
 		}
 
 		that.stopPlayerCounter = that.waitCounter - 10;
@@ -103,7 +100,7 @@ const boss = (pos) => {
 	let doneFinalAttack = false;
 	let finalAttackCounter = 0;
 
-	that.handleAttacking = ({ world, height, world: { add, screenShaker, reds, points, player }, sprites, JSON, context, audio: { loop } }) => {
+	that.handleAttacking = ({ world, height, world: { add, screenShaker, reds, points, player }, sprites, JSON, context, audio: { loop, play } }) => {
 
 		that.waitCounter--;
 		that.attackCounter--;
@@ -117,6 +114,14 @@ const boss = (pos) => {
 		if(that.waitCounter === 15 && that.lives > 0){
 			screenShaker.shake(vec(0, -20), 0.3, 15, () => {
 				screenShaker.shake(vec(0, 10), 0.75, 2);
+			});
+		}
+
+		if(firstAttempt
+		&& that.frameState === "growing"
+		&& that.currentFrame === 12){
+			play("boss-intro", {
+				type: "music",
 			});
 		}
 
@@ -363,6 +368,14 @@ const boss = (pos) => {
 
 				//new doors
 				if(setupWaitCounter <= 2 * 60){
+
+					if(GAME.audio.loops["boss-second-stage"] === undefined){
+						GAME.audio.loop("boss-second-stage", {
+							type: "music",
+							volume: 1.5
+						});
+					}
+
 					if(newDoorPos.y >= -8)
 						GAME.world.add(bossDoor(vec(that.pos.x + newDoorPos.x * 15 - 15, 270 + newDoorPos.y * 15), 8 + newDoorPos.y), "obstacles", 2);
 					else that.setupSwitchToStageTwo(GAME);
@@ -406,13 +419,6 @@ const boss = (pos) => {
 		that.attacks = secondStageAttacks;
 
 		that.runAnimation("1up", JSON);
-
-		if(loops["boss-second-stage"] === undefined){
-			loop("boss-second-stage", {
-				type: "music",
-				volume: 1.5
-			});
-		}
 
 		clear("texts");
 
@@ -468,9 +474,12 @@ const boss = (pos) => {
 		
 	}
 
-	that.checkDeath = ({ world: { points, remove, add, clear } }) => {
+	that.checkDeath = ({ world: { points, remove, add, clear }, audio: { fadeOutLoop } }) => {
 
 		if(points[0].pos.x > that.pos.x && points[0].pos.x < that.pos.x + that.size.x){
+
+			fadeOutLoop("boss-second-stage", 0.005);
+
 			remove(that);
 			clear("attackCountdown");
 

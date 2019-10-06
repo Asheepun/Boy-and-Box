@@ -44,7 +44,7 @@ const dynamicShadow = () => {
 			|| boss.frameState === "1up") that.ctx.drawImage(sprites["shadows/100"], boss.pos.x + 4, boss.pos.y + 50, 100, 100);
 
 			if(boss.frameState === "growing"
-			&& boss.currentFrame >= 30) that.ctx.drawImage(sprites["shadows/160"], boss.pos.x - 33, boss.pos.y - 10, 160, 160);
+			&& boss.currentFrame >= 42) that.ctx.drawImage(sprites["shadows/160"], boss.pos.x - 33, boss.pos.y - 10, 160, 160);
 
 			if(boss.frameState === "1up"
 			&& boss.currentFrame >= 11) that.ctx.drawImage(sprites["shadows/160"], boss.pos.x - 33, boss.pos.y - 10, 160, 160);
