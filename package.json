@@ -9,7 +9,7 @@
   },
   "author": "Gustav Almström",
   "dependencies": {
-    "express": "^4.16.3"
+    "express": "^4.17.1"
   },
   "devDependencies": {
     "enclose": "^2.2.0",
