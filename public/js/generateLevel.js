@@ -97,6 +97,7 @@ const generateLevel = ({ template, time, background, texts, shadow }, { world, w
 
 			if(tile === "[") add(tileObject(pos.copy(), "lab_shelf", vec(30, 15)), "furniture", 1);
 			if(tile === "~") add(tileObject(pos.copy(), "lab_table", vec(45, 30)), "furniture", 1);
+			if(tile === "U") add(tileObject(pos.copy(), "bird_cage", vec(30, 30)), "furniture", 1);
 
 			if(tile === "x"
 			|| (tile === "-"
@@ -209,6 +210,14 @@ const bookShelf = (pos) => {
 	const that = tileObject(pos, "bookshelf");
 
 	that.size = vec(30, 45);
+
+	return that;
+}
+
+const birdCage = (pos) => {
+	const that = tileObject(pos, "bird_cage");
+
+	that.size = vec(30, 30);
 
 	return that;
 }

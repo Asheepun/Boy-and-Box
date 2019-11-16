@@ -80,6 +80,7 @@ Promise.all([
 		"blue_particle",
 		"lab_shelf",
 		"lab_table",
+		"bird_cage",
 		"boss",
 		"boss_piece",
 		"last_enemy",
