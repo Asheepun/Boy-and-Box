@@ -109,6 +109,7 @@ const boss = (pos) => {
 		if(that.waitCounter === /*(that.stage === 0 ? 20 : 10)*/ 15 && that.lives > 0){
 
 			that.runAnimation("attack", JSON);
+
 			//context.y = Math.pow(0.9, 1 / 15) * 15;
 		}
 
@@ -151,6 +152,11 @@ const boss = (pos) => {
 		}
 		
 		if(that.waitCounter === 0 && that.lives > 0){
+
+			play("crash" + Math.floor(Math.random() * 3), {
+				volume: 0.4 + Math.random() * 0.2,
+				type: "sfx",
+			});
 
 			that.cleanUpAttack(world);
 

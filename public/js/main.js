@@ -105,6 +105,9 @@ Promise.all([
 		"menu_hover",
 		"menu_select",
 		"blue_lock_dissappear",
+		"crash0",
+		"crash1",
+		"crash2",
 		//music
 		"the-beginning",
 		"west-village",
@@ -116,6 +119,7 @@ Promise.all([
 		"boss-intro",
 		"boss-first-stage",
 		"boss-second-stage",
+		"credits"
 	),
 	loaders.loadJSON(
 		"boy_frames",
@@ -153,7 +157,7 @@ Promise.all([
 		},
 		state: undefined,
 		context: vec(0, 0),
-		currentLevel: 56,
+		currentLevel: 57,
 		volume: 1,
 		deaths: 0,
 		progress: {},

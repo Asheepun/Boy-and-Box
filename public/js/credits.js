@@ -6,7 +6,18 @@ import box						from "/js/box.js";
 import player					from "/js/player.js";
 import point					from "/js/points.js";
 
+let playedSong = false;
+
 const setupCredits = (GAME) => {
+
+	if(!playedSong){
+		GAME.audio.play("credits", {
+			volume: 2,
+			type: "music",
+		});
+	}
+
+	playedSong = true;
 
 	GAME.progress.deaths = GAME.deaths;
 	GAME.progress.currentLevel = GAME.currentLevel;
