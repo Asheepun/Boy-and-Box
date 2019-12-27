@@ -64,7 +64,7 @@ const setupCredits = (GAME) => {
 		velocity,
 		size: 10,
 		text: [
-			"Art, programming and music - Gustav Almstrom",
+			"Art, programming and music - Gustav Almström",
 			"",
 			"Sound effects - Fridolf Tofft Glans",
 			"",

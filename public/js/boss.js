@@ -10,6 +10,7 @@ import * as reds				from "/js/reds.js";
 import { optimizeObstacles }	from "/js/generateLevel.js";
 
 let firstAttempt = true;
+let beatStageOne = false;
 
 const boss = (pos) => {
 	const that = traitHolder();
@@ -65,14 +66,14 @@ const boss = (pos) => {
 
 	that.start = ({ JSON, audio: { play } }) => {
 
-		that.frameState = "still";
+		//that.frameState = "still";
 
 		that.waitCounter = 1 * 60;
 
 		if(firstAttempt){
-			that.waitCounter = 60 * 5.5;
+			that.waitCounter = 60 * 7;
 
-			that.runAnimation("growing", JSON);
+			//that.runAnimation("growing", JSON);
 
 		}
 
@@ -100,7 +101,7 @@ const boss = (pos) => {
 	let doneFinalAttack = false;
 	let finalAttackCounter = 0;
 
-	that.handleAttacking = ({ world, height, world: { add, screenShaker, reds, points, player }, sprites, JSON, context, audio: { loop, play } }) => {
+	that.handleAttacking = ({ world, height, world: { add, screenShaker, reds, points, player, setRemoveIf, box, attackSprites }, sprites, JSON, context, audio: { loop, play } }) => {
 
 		that.waitCounter--;
 		that.attackCounter--;
@@ -117,6 +118,13 @@ const boss = (pos) => {
 			});
 		}
 
+		if(that.waitCounter === 5.5 * 60){
+
+			that.frameState = "still";
+
+			that.runAnimation("growing", JSON);
+		}
+
 		if(firstAttempt
 		&& that.frameState === "growing"
 		&& that.currentFrame === 12){
@@ -131,6 +139,14 @@ const boss = (pos) => {
 			}
 			if(player.pos.x < 150){
 				player.pos.x = 150;
+			}
+		}
+		if(that.stage === 0 && that.lives <= 0){
+			if(player.pos.x + player.size.x > 15 * 5){
+				player.pos.x = 15 * 5 - player.size.x;
+			}
+			if(player.pos.x < 15 * 3){
+				player.pos.x = 15 * 3;
 			}
 		}
 		
@@ -180,6 +196,15 @@ const boss = (pos) => {
 			finalAttackCounter--;
 
 			if(finalAttackCounter === 0){
+
+				setRemoveIf((x) => x.partOfAttack, "obstacles", "blockers", "door_buttons");
+
+				attackSprites.forEach(x => x.remove());
+
+				box.pos = vec(-100, -100)
+
+				that.attack(stageThreeAttack, { world, sprites, JSON });
+
 				add(lastAttackEnemy(vec(30, height + 15 * 1.5)), "enemies", 10);
 
 				that.runAnimation("attack", JSON);
@@ -313,7 +338,7 @@ const boss = (pos) => {
 
 		setRemoveIf((x) => x.partOfAttack, "obstacles", "blockers", "door_buttons");
 
-		attackSprites.forEach(x => x.remove())
+		attackSprites.forEach(x => x.remove());
 
 		clear("reds", /*"attackSprites"*/);
 
@@ -322,7 +347,10 @@ const boss = (pos) => {
 
 	that.stage = 0;
 
-	const setupWait = 8 * 60;
+	let setupWait = 8 * 60;
+	if(beatStageOne){
+		setupWait = 4.5 * 60;
+	}
 	let setupWaitCounter = setupWait;
 	let newDoorPos = vec(0, -1);
 
@@ -335,6 +363,15 @@ const boss = (pos) => {
 		if(that.lives === 0){
 			if(that.stage < 2) that.stopPlayerCounter = 2;
 			if(that.stage === 0 && that.pos.y > GAME.height + 200){
+
+				const player = GAME.world.player;
+
+				if(player.pos.x + player.size.x > 15 * 5){
+					player.pos.x = 15 * 5 - player.size.x;
+				}
+				if(player.pos.x < 15 * 3){
+					player.pos.x = 15 * 3;
+				}
 
 				if(!fadedOutFirstStage
 				&& GAME.audio.loops["boss-first-stage"] !== undefined){
@@ -366,15 +403,17 @@ const boss = (pos) => {
 
 				that.stopPlayerCounter = 2;
 
-				//new doors
-				if(setupWaitCounter <= 2 * 60){
-
+				if(setupWaitCounter === 2.1 * 60){
 					if(GAME.audio.loops["boss-second-stage"] === undefined){
 						GAME.audio.loop("boss-second-stage", {
 							type: "music",
 							volume: 1.5
 						});
 					}
+				}
+
+				//new doors
+				if(setupWaitCounter <= 2 * 60){
 
 					if(newDoorPos.y >= -8)
 						GAME.world.add(bossDoor(vec(that.pos.x + newDoorPos.x * 15 - 15, 270 + newDoorPos.y * 15), 8 + newDoorPos.y), "obstacles", 2);
@@ -391,11 +430,36 @@ const boss = (pos) => {
 
 			if(that.stage === 1){
 
-				if(!setupSwitchToStageThreeDone && that.pos.y > GAME.height + 200)
+				if(!setupSwitchToStageThreeDone && that.pos.y > GAME.height + 200){
 					that.setupSwitchToStageThree(GAME);
+				}
 
+				if(that.lives <= 0){
+					const player = GAME.world.player;
 
+					if(player.pos.x < 17 * 15){
+						player.pos.x = 17 * 15;
+					}
+					if(player.pos.x + player.size.x > 19 * 15){
+						player.pos.x = 19 * 15 - player.size.x;
+					}
+				
+				}
 			}
+
+			if(that.stage === 2){
+				if(that.stopPlayerCounter > 0){
+					const player = GAME.world.player;
+
+					if(player.pos.x < 16 * 15){
+						player.pos.x = 16 * 15;
+					}
+					if(player.pos.x + player.size.x > 19 * 15){
+						player.pos.x = 19 * 15 - player.size.x;
+					}
+				}
+			}
+
 		}
 	}
 
@@ -403,6 +467,8 @@ const boss = (pos) => {
 	that.setupSwitchToStageTwo = ({ world: { add, clear }, JSON, audio: { loops, loop, fadeOutLoop } }) => {
 		that.pos.y = 30;
 		that.velocity.y = 0;
+
+		beatStageOne = true;
 
 		that.stage = 1;
 
@@ -903,7 +969,7 @@ const secondStageAttacks = [
 			".,,,,,,,,,,,,,,,,",
 			".,,,,,,,,,,,,,,,,",
 			".,,,,,,//,,,,,,,,",
-			",,,,,,,//,,,,,,,,",
+			".,,,,,,//,,,,,,,,",
 			",,,,,,,,,,,,,,,,,",
 			",,,,,,,,,,,,,,,,,",
 		],
@@ -945,6 +1011,29 @@ const setupStageThreeAttack = {
 		",,,,,,,,,,,,,,,,,",
 		",,,,,,,,,,,,,,,,,",
 		",,,,,,,,,,,,,,,,,",
+		",,,,,,,,,,,,,,,,,",
+		",,,,,,,,,,,,,,,,,",
+		",,,,,,,,,,,,,,,,,",
+		",,,,,,,,,,,,,,///.",
+		",,,,,,,,,,,,,,///.",
+		",,,,,,,,,,,,,,,,,",
+		",,,,,,,,,,,,,,,,,",
+		",,,,,,,,,,,,,,,,,",
+		",,,,,,,,,,,,,,,,,",
+		",,,,,,,,,,,,,,,,,",
+	],
+};
+
+const stageThreeAttack = {
+	template: [
+		",,,,,,,,,,,,,,,,,",
+		",,,,,,,,,,,,,,,,,",
+		",,,,,,,,,,,,,,,,,",
+		",,,,,,,,,,,,,,,,,",
+		",,,,,,,,,,,,,,,,,",
+		",,,,,,,,,,,,,,,,,",
+		",,,,,,,,,,,,,,,,,",
+		",,,,,,,,,,,,,,,,,",
 		",,,,,,,.,,,,,,,,,",
 		",,,,,,,,,,,,,,,,,",
 		",,,.,,,,,,,,,,,,,",
@@ -955,8 +1044,8 @@ const setupStageThreeAttack = {
 		",,,,,,,,,,,,,,,,,",
 		",,,,,,,,,,,,,,,,,",
 		",,,,,,,,,,,,,,,,,",
-	],
-};
+	]
+}
 
 const setupAttack = {
 	template: [
