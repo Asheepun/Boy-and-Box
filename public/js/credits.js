@@ -109,7 +109,7 @@ const setupCredits = (GAME) => {
 	GAME.creditsOps = {
 		bla: false,
 		lastText: undefined,
-		menuCounter: 60 * 7.5,
+		menuCounter: 60 * 11,//7.5,
 	};
 }
 

@@ -154,7 +154,7 @@ const boss = (pos) => {
 		if(that.waitCounter === 0 && that.lives > 0){
 
 			play("crash" + Math.floor(Math.random() * 3), {
-				volume: 0.4 + Math.random() * 0.2,
+				volume: 0.2 + Math.random() * 0.1,
 				type: "sfx",
 			});
 
@@ -551,6 +551,9 @@ const boss = (pos) => {
 		if(points[0].pos.x > that.pos.x && points[0].pos.x < that.pos.x + that.size.x){
 
 			fadeOutLoop("boss-second-stage", 0.005);
+
+			firstAttempt = true;
+			beatStageOne = false;
 
 			remove(that);
 			clear("attackCountdown");

@@ -40,7 +40,7 @@ const setupStartscreen = (GAME) => {
 	GAME.world.add(obstacle(vec(0, 0), vec(0, 0)), "box", 0, true)
 	GAME.world.add(obstacle(vec(-100, 0), vec(0, 0)), "player", 0, true)
 	
-	addBirds(GAME);
+	addBirds(GAME, true);
 
 	GAME.world.add(buttons.clickableText({
 		text: "Options",

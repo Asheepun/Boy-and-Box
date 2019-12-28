@@ -111,12 +111,16 @@ export const bird = (pos) => {
 	return that;
 }
 
-const addBirds = ({ world, world: { add }, width, height }) => {
+const addBirds = ({ world, world: { add }, width, height, currentLevel, levels }, startScreen = false) => {
 	const amount = Math.floor(2 + Math.random() * 2);
 	const noise = width / amount;
 
 	for(let i = 0; i < amount; i++){
 		const b = bird(vec(i * noise + Math.random() * noise, 0));
+
+		if(startScreen && currentLevel >= 10 && currentLevel < levels.length){
+			b.img = "blue_bird_infected";
+		}
 		
 		b.velocity.y = 5;
 		for(let i = 0; i < height / 5; i++){
