@@ -111,6 +111,8 @@ Promise.all([
 		"boss_scream0",
 		"boss_scream1",
 		"boss_scream2",
+		"boss_final_scream",
+		"boss-defeat",
 		//music
 		"the-beginning",
 		"west-village",

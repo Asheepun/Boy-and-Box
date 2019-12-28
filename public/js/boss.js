@@ -111,7 +111,7 @@ const boss = (pos) => {
 			that.runAnimation("attack", JSON);
 
 			play("boss_scream" + Math.floor(Math.random() * 3), {
-				volume: 0.3 + Math.random() * 0.1,
+				volume: 0.35 + Math.random() * 0.1,
 				type: "sfx",
 			});
 
@@ -207,6 +207,10 @@ const boss = (pos) => {
 			finalAttackCounter--;
 
 			if(finalAttackCounter === 0){
+				play("boss_scream0", {
+					volume: 0.4,
+					type: "sfx",
+				})
 
 				setRemoveIf((x) => x.partOfAttack, "obstacles", "blockers", "door_buttons");
 
@@ -551,14 +555,19 @@ const boss = (pos) => {
 		
 	}
 
-	that.checkDeath = ({ world: { points, remove, add, clear }, audio: { fadeOutLoop } }) => {
+	that.checkDeath = ({ world: { points, remove, add, clear }, audio: { fadeOutLoop, play } }) => {
 
 		if(points[0].pos.x > that.pos.x && points[0].pos.x < that.pos.x + that.size.x){
 
-			fadeOutLoop("boss-second-stage", 0.005);
+			fadeOutLoop("boss-second-stage", 0.004);
 
 			firstAttempt = true;
 			beatStageOne = false;
+
+			play("crash0", {
+				volume: 0.4,
+				type: "sfx",
+			});
 
 			remove(that);
 			clear("attackCountdown");

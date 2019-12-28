@@ -168,6 +168,7 @@ export const bossHalf = (pos, velocity, imgPos) => {
 	return that;
 }
 
+let screamed = false;
 const bossPieceSprayer = (pos, func) => {
 	const that = traitHolder();
 
@@ -182,11 +183,21 @@ const bossPieceSprayer = (pos, func) => {
 		if(that.lifeCounter === 0){
 			that.func(GAME);
 			GAME.world.remove(that);
+			screamed = false;
 		}
 	}
 
 	let counter = 0;
-	that.spray = ({ world: { add } }) => {
+	that.spray = ({ world: { add }, audio: { play } }) => {
+
+		if(!screamed && counter === 0){
+			play("boss_final_scream", {
+				type: "sfx",
+				volume: 0.6,
+			});
+			screamed = true;
+		}
+
 		counter++;
 		if(counter % 2 === 0){
 			add(bossPiece(vec(that.pos.x + 10 + Math.random() * 100, that.pos.y), vec(Math.random() * 0.2 - 0.4, -3 * Math.random() - 6)), "particles", 4);
@@ -226,10 +237,20 @@ export const bossFlash = () => {
 	that.alpha = 0;
 	that.alphaInc = 0.02;
 
+	let playedJingle = false;
+
 	that.flash = (GAME) => {
 		that.alpha += that.alphaInc;
+		if(that.alpha < 2.3 && !playedJingle && that.alphaInc < 0){
+			GAME.audio.play("boss-defeat", {
+				volume: 0.5,
+				type: "sfx",
+			});
+
+			playedJingle = true;
+		}
 		if(that.alpha > 3.5){
-			that.alphaInc *= -0.5;
+			that.alphaInc *= -0.35;
 
 			GAME.world.clear("shadow", "reds", "thorns", "blockers", "attackSprites", "vineImg", "tiles", "obstacles", "birds");
 			GAME.world.box.pos = vec(-100, -100);
