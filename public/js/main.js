@@ -108,6 +108,9 @@ Promise.all([
 		"crash0",
 		"crash1",
 		"crash2",
+		"boss_scream0",
+		"boss_scream1",
+		"boss_scream2",
 		//music
 		"the-beginning",
 		"west-village",
@@ -157,7 +160,7 @@ Promise.all([
 		},
 		state: undefined,
 		context: vec(0, 0),
-		currentLevel: 57,
+		currentLevel: 56,
 		volume: 1,
 		deaths: 0,
 		progress: {},

@@ -110,6 +110,11 @@ const boss = (pos) => {
 
 			that.runAnimation("attack", JSON);
 
+			play("boss_scream" + Math.floor(Math.random() * 3), {
+				volume: 0.3 + Math.random() * 0.1,
+				type: "sfx",
+			});
+
 			//context.y = Math.pow(0.9, 1 / 15) * 15;
 		}
 
