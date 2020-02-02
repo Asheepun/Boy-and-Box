@@ -49,8 +49,9 @@ export const blue = (pos, texts) => {
 	})(that);
 
 	that.animate = ({ world: { player } }) => {
-		if(player.center.x > that.center.x) that.facing.x = 1;
-		else that.facing.x = -1;
+		that.facing.x = 1;
+		//if(player.center.x > that.center.x) that.facing.x = 1;
+		//else that.facing.x = -1;
 	}
 
 	that.addMethods("animate");

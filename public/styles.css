@@ -32,6 +32,16 @@ h1{
 	color: white;
 	font-family: game;
 }
+h2{
+	color: white;
+	font-family: game;
+	margin: 20px;
+}
+
+img{
+	width: 30%;
+	margin: 20px 5px;
+}
 
 p{
 	color: white;
